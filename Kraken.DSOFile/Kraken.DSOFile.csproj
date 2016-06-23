@@ -55,10 +55,8 @@
   <ItemGroup>
     <Content Include="About.txt" />
     <Content Include="Disabled Post-Build Event for Copy Files.txt" />
-    <Content Include="DsoFileSetup_KB224351_x86.exe" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DSOFileX64.zip" />
     <None Include="Kraken.DSOFile.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

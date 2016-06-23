@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.Core.FullTrust", "Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj", "{757C7239-0E1B-41BA-AED5-7A15AC141042}"
 EndProject
@@ -26,6 +26,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.DSOFile", "Kraken.DSOFile\Kraken.DSOFile.csproj", "{E5411BB3-96F4-4850-9C68-6FBD3686FA75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.SharePoint.OfficeDevPnP", "Kraken.SharePoint.OfficeDevPnP\Kraken.SharePoint.OfficeDevPnP.csproj", "{50051BD9-FF92-4C95-8DD0-6403D2661CC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{379093D5-89D0-478A-8526-0983F32E2FFA}"
+	ProjectSection(SolutionItems) = preProject
+		References\DsoFileSetup_KB224351_x86.exe = References\DsoFileSetup_KB224351_x86.exe
+		References\DSOFileX64.zip = References\DSOFileX64.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
