@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Chimera\ChimeraO365\</SolutionDir>
+    <NuGetPackageImportStamp>06e8fbf7</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+  </PropertyGroup>
+  <!-- debug vs release differences -->
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DebugSymbols>false</DebugSymbols>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- framework differences -->
+  <PropertyGroup Condition="$(Configuration.Contains('35'))">
+    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('40'))">
+    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('45'))">
+    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2DEE87B3-663E-4DF8-8510-3CAD67013BE0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kraken.SharePoint.Client</RootNamespace>
+    <AssemblyName>Kraken.SharePoint.Client</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Kraken.SharePoint.Client.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- TODO there are still a handful of constants that can't be gotten in System.IdentityModel so we need this even in 4.5 -->
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Client.Policy, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.Office.Client.Policy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.TranslationServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.SharePoint.Tools, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.Office.SharePoint.Tools.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ProjectServer.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.ProjectServer.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.Search.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.4915.1200\lib\net40-full\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharpSigned.105.2.3\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\ContentTypeCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cache\FolderCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Cache\ListCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Caml\CAML.cs" />
+    <Compile Include="Caml\CamlResources.Designer.cs">
+      <DependentUpon>CamlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ClientTools.cs" />
+    <Compile Include="Connections\MyWSTrustFeb2005RequestSerializer.cs" />
+    <Compile Include="Connections\ClientContextAuthentication.cs" />
+    <Compile Include="Connections\WebScrapingAuthenticator.cs" />
+    <Compile Include="Connections\MultiWebContextManager.cs" />
+    <Compile Include="Connections\SharePointCredential.cs" />
+    <Compile Include="Enums\BuiltInContentTypeId.cs" />
+    <Compile Include="Enums\BuiltInFieldId.cs" />
+    <Compile Include="Enums\BuiltInWebTemplates.cs" />
+    <Compile Include="Enums\StandardNavigationProviderNames.cs" />
+    <Compile Include="Enums\FieldTypeExtended.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ItemUpdateFrequency.cs" />
+    <Compile Include="Enums\ListItemHandlingType.cs" />
+    <Compile Include="Exceptions\ZeroByteFileUploadException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Extensions\ClientContextExtensions.cs" />
+    <Compile Include="Extensions\ClientObjectExtensions.cs" />
+    <Compile Include="Extensions\ContentTypeExtensions.cs" />
+    <Compile Include="Extensions\ICredentialExtensions.cs" />
+    <Compile Include="Extensions\NavigationExtensions.cs" />
+    <Compile Include="Extensions\SiteExtensions.cs" />
+    <Compile Include="Extensions\WorkflowExtensions.cs" />
+    <Compile Include="Files\FancyFileUploader.cs" />
+    <Compile Include="Files\LocalFileOrFolder.cs" />
+    <Compile Include="Files\LocalRemotePathMap.cs" />
+    <Compile Include="PropertyClasses\ContentTypeProperties.cs" />
+    <Compile Include="PropertyClasses\CoreMetadataInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="PropertyClasses\CreateItemOptions.cs" />
+    <Compile Include="Extensions\FieldExtensions.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Extensions\ListItemExtensions.cs" />
+    <Compile Include="Connections\WebContextManager.cs" />
+    <Compile Include="Extensions\FolderExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="PropertyClasses\NavigationProperties.cs" />
+    <Compile Include="PropertyClasses\ViewProperties.cs" />
+    <Compile Include="PropertyClasses\WebProperties.cs" />
+    <None Include="Enums\NOCOMPILE_FieldType.cs" />
+    <None Include="Kraken.SharePoint.Client.snk" />
+    <None Include="packages.config" />
+    <None Include="Unused Code\MyClientContext.cs" />
+    <Compile Include="PropertyClasses\FieldLinkProperties.cs" />
+    <Compile Include="PropertyClasses\ResolveLookupOptions.cs" />
+    <Compile Include="Files\BaseFileUploader.cs" />
+    <Compile Include="Files\CsomFileUploader.cs" />
+    <Compile Include="Files\FileTransferEngineFactory.cs" />
+    <Compile Include="Files\FrontPageRPCFileUploader.cs" />
+    <Compile Include="Files\IFileMetadataUpdater.cs" />
+    <Compile Include="Files\IFileTransferEngine.cs" />
+    <Compile Include="Files\WebDAVFileUploader.cs" />
+    <Compile Include="Helpers\Constants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\ContentTypeIdHelper.cs" />
+    <Compile Include="PropertyClasses\FieldTypeAlias.cs" />
+    <Compile Include="Helpers\FPRPC\DocumentInfo.cs" />
+    <Compile Include="Helpers\FPRPC\DocumentProperty.cs" />
+    <Compile Include="Helpers\FPRPC\DocumentPropertyCollection.cs" />
+    <Compile Include="PropertyClasses\FieldProperties.cs" />
+    <Compile Include="Helpers\FieldUtility.cs" />
+    <Compile Include="Helpers\FieldXmlHelpers.cs" />
+    <Compile Include="Helpers\FPRPC\FrontPageRPC.cs" />
+    <Compile Include="Helpers\FPRPC\FrontPageRPCException.cs" />
+    <Compile Include="Helpers\FPRPC\HashUtil.cs" />
+    <Compile Include="Helpers\LookupFieldProvisioner.cs" />
+    <Compile Include="PropertyClasses\MetadataInfo.cs" />
+    <Compile Include="Helpers\LinqReflectionUtility.cs" />
+    <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Helpers\XmlSerialization.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\ViewExtensions.cs" />
+    <Compile Include="Extensions\WebExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Caml\CamlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CamlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
+      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
+      <Name>Kraken.Core.SandboxTrust</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj">
+      <Project>{8340684f-3374-4741-af80-63af161e23df}</Project>
+      <Name>Kraken.Core.Security</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SharePoint.Cloud\Kraken.SharePoint.Cloud.csproj">
+      <Project>{8b6df604-44dd-4f6f-ae84-e2d6bf7112cb}</Project>
+      <Name>Kraken.SharePoint.Cloud</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\NOTE from Tom.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>REM cd R:\Kraken\$(ProjectName)$(OutDir)
+REM r:
+REM cd
+%25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "Kraken*.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net45-full"
+%25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "Kraken*.pdb" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net45-full"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

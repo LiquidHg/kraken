@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <title>Kraken SharePoint Client Library</title>
+    <id>Kraken.SharePoint.Client</id>
+    <version>0.1.55</version>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust.</description>
+    <releaseNotes>
+      0.1.55: Fix: OK I did something boneheaded and included the field properties without loading the collection.
+      0.1.54: Fix: The collection has not been initialized. in UpdateItem because now somehow we are asking for field internal name before ever getting it from CSOM. Must've rubbed something out during the refactoring that included consolidation of several executeQuery and introduction of ExceptionHandlingScope.
+      0.1.53: Fix: NullReferenceException on updateitem because null check and operation were transposed in code; added a null check and warning to LoadProperties method just in case.
+      0.1.52: Experimental: Combine createitem from 2 callbacks to one in order to resolve property not loaded. Still calls csom 2nd time for extended values in the property hash table.
+      0.1.51: Experimental: rewriting some ExceptionHandlingScope so they are properly implemented, added correct method to capture error messages.
+      0.1.50: Experimental: rolling back some exception handling scope for item creation because it was conflicting withscopes in other methods
+      0.1.49: Fix: Corrects a bug introduced in 0.1.45 that CreateItem/UpdateItem did not properly load BaseType because of a bug where it tried to get this from item instead of list. Added more verbose trace logging to item creation.
+      0.1.48: Fix: Obscure issue for Calculated fields and those with a (default value that is a formula) where the presence of FriendlyDisplayFormat in the SchemaXml seems to be causing "cannot complete this action" when you try to update the field or retrieve any list property related to the 'corrupted' field schema.
+      0.1.47: Experimental: Isolated problem to loading properties of a list that aren't allowed. Modified LoadAllProperties, LoadProperties, and EnsureProperty to include a debugging mode that will execute a query after each property so we can isolate which property causes the issue.
+      0.1.46: Experimental: Second attempt; rewrote exception handling scope fromt eh ground up for UpdateItem.
+      0.1.45: Experimental: First attempt to add exception handling scope to item add/update functions. Still getting "cannot complete this action" on call to UpdateItem but believe it is coming from an earlier CSOM call.
+      0.1.44: Experimental: Testing a fix for IsDocumentLibrary where sometimes trying to load list.BaseType throw "cannot complete this action"
+      0.1.43: Fix: web extension CreateOrUpdateFriendlyUrl did not propertly call context.Load for Id from the term set. Doesn't need to call context.ExecuteQuery twice. Additional logging to indicate success on finding prent friendly url's term.
+      0.1.42: Fix: web extension CreateOrUpdateFriendlyUrl fails to properly return new friendly Url due to Uri formatting issue.
+      0.1.41: Minor fix: web extension CreateFriendlyUrl renamed to CreateOrUpdateFriendlyUrl; now outputs Uri instead of string; output params fixed to provide a value on both create and update.
+      0.1.40: New commands: Added web extensions for working with global and local navigation properties as well as creating new friendly urls in navigation term set. Changes from 0.1.39 and earlier have been tested and seem to be working OK.
+      0.1.39: Experimental: Added list extension IsDocumentLibrary(); eliminated ClientContext extension Init() in favor of ClientObject extension EnsureProperty() because it's purpose is more intuitive and will often result in fewer lines of code. Made sure that BaseType is always loaded in in List and ListItem extensions UpdateItem().
+      0.1.38: Experimental: Identified NullReferenceException from 0.1.37 only occurs in doc libs when Title field is empty. Adding code to use FileLeafRef instead where needed.
+      0.1.37: Experimental: Fix for NullReferenceException in List extension UpdateItem.
+      0.1.36: Experimental: Added same error checking logic at the List extension UpdateItem level.
+      0.1.35: Experimental: Additional logging and error checking for ListItem extension item Update().
+      0.1.34: Minor bugfix for Content type extension AddFieldLink; some fixed to FieldTypeAlias
+      0.1.33: Content type extension AddFieldLink now loads the FieldLinks collection in content type so properties can be used properly.
+      0.1.32: Fixed issue in web extention GetSiteColumn where attempt to read URL safe for SharePoint 2010 causes a CSOM error.
+      0.1.31: All FieldLink creation (add Site Column to content type) extensions now return a FieldLink object on success or null on fail, saving another call to CSOM to get this later.
+      0.1.30: Fixed an issue in FieldProperties affecting validation of optional nullable properties. This bug was having an impact on commands for creating and setting field and site column properties.
+      0.1.29: New commands: Added GetWebTemplates extension to quickly get OOTB or custom web templates for the site collection.
+      0.1.28: Fixed a bug in web extensions TryGetList that caused it to fail under certain conditions where the list does not exist but SharePoint returned a ServerException that didn't meet the evaluation criteria.
+      0.1.28: Added executeQuery param to web.GetContentTypesInGroup
+      0.1.27: Fix for missing property load in web.GetContentTypesInGroup; added prototype class to implement workfor extension methods
+      0.1.26: Fixing logs for list extension method EnsureRemoteEvent so they correctly report the event they are attaching.
+      0.1.25: Added pseudo-enum class StandardNavigationProviderNames.
+    </releaseNotes>
+    <!--
+    -->
+    <summary>Developer library for creating SharePoint client (CSOM) projects.</summary>
+    <language>en-US</language>
+    <!--licenseUrl>http://www/liquid-hg.com/apps/kraken/license</licenseUrl>
+    <projectUrl>http://www/liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www/liquid-hg.com/apps/kraken/images/KrakenIcon.png</iconUrl-->
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <copyright>(c)Copyright 2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <dependencies>
+        <group targetFramework="net45">
+          <!--dependency id="Microsoft.Bcl.Build" version="1.0.21" /-->
+          <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5026.1200" />
+          <dependency id="Newtonsoft.Json" version="8.0.3" />
+          <dependency id="RestSharpSigned" version="105.2.3" />
+          <dependency id="log4net" version="2.0.5" />
+        </group>
+    </dependencies>
+    <references></references>
+    <tags>SharePoint Client CSOM</tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+  </files>
+</package>

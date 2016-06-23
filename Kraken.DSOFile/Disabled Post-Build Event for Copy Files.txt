@@ -1,0 +1,11 @@
+﻿These were removed because they created serious problems for the Nuget packager.
+If you want access to this helper class, you'll have to include it manually in your repo source.
+
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET45\DSOFile.dll" "."
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET45\Interop.DSOFile.dll" "."
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET45\DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net45-full"
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET45\Interop.DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net45-full"
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET40\DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net40-full"
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET40\Interop.DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net40-full"
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET35\DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net35-full"
+%SYSTEMROOT%\system32\xcopy.exe /Y/I/C "$(SolutionDir)References\DSO\64_NET35\Interop.DSOFile.dll" "$(SolutionDir)Kraken.SharePoint.Client.Nuget\lib\net35-full"

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1bb7d75a-49cc-4de3-b41e-7f641d7a229e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://portal.red.lab.colossusconsulting.com/_vti_bin/CellStorage.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CellStorage.xsd" MetadataType="Schema" ID="11ae1a6c-88e1-445b-9779-7c53e89379c3" SourceId="1" SourceUrl="http://portal.red.lab.colossusconsulting.com/_vti_bin/CellStorage.svc?xsd=xsd0" />
+    <MetadataFile FileName="CellStorage.disco" MetadataType="Disco" ID="40ee8603-9c3e-4e18-8622-280db18af37d" SourceId="1" SourceUrl="http://portal.red.lab.colossusconsulting.com/_vti_bin/CellStorage.svc?disco" />
+    <MetadataFile FileName="CellStorages.wsdl" MetadataType="Wsdl" ID="be9cfc14-a3be-45c5-ac0a-d6900ef26f30" SourceId="1" SourceUrl="http://portal.red.lab.colossusconsulting.com/_vti_bin/CellStorage.svc?wsdl" />
+    <MetadataFile FileName="CellStorage.wsdl" MetadataType="Wsdl" ID="4073aadc-6fff-4ffd-aad9-0aef30b1ca19" SourceId="1" SourceUrl="http://portal.red.lab.colossusconsulting.com/_vti_bin/CellStorage.svc?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

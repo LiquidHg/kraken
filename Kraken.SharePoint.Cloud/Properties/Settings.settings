@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Kraken.SharePoint.Cloud.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Kraken_SharePoint_Cloud_ListsWS_Lists" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Lists.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_WebsWS_Webs" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Webs.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_SitesWS_Sites" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Sites.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_SiteDataWS_SiteData" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/SiteData.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_SearchWS_QueryService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Search.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_SPSearchWS_QueryService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/SPSearch.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_ExcelServiceWS_ExcelService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/ExcelService.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_WebPartPagesWS_WebPartPagesWebService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/WebPartPages.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_UserProfileServiceWS_UserProfileService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/UserProfileService.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_ViewsWS_Views" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Views.asmx</Value>
+    </Setting>
+    <Setting Name="Kraken_SharePoint_Cloud_AuthenticationWS_Authentication" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://portal.red.lab.colossusconsulting.com/_vti_bin/Authentication.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

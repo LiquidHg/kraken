@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://schemas.microsoft.com/sharepoint/claims/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SPClaimProviderWebService" targetNamespace="http://schemas.microsoft.com/sharepoint/claims/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://schemas.microsoft.com/sharepoint/claims/Imports">
+      <xsd:import schemaLocation="http://portal.red.lab.colossusconsulting.com/_vti_bin/spclaimproviderwebservice.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/sharepoint/claims/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IClaimProviderWebService_ClaimTypes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ClaimTypes" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ClaimTypes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ClaimTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ClaimValueTypes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ClaimValueTypes" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ClaimValueTypes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ClaimValueTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_EntityTypes_InputMessage">
+    <wsdl:part name="parameters" element="tns:EntityTypes" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_EntityTypes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EntityTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ProviderSchemas_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProviderSchemas" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ProviderSchemas_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProviderSchemasResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_HierarchyProviderSchema_InputMessage">
+    <wsdl:part name="parameters" element="tns:HierarchyProviderSchema" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_HierarchyProviderSchema_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HierarchyProviderSchemaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_GetHierarchyAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHierarchyAll" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_GetHierarchyAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHierarchyAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_GetHierarchy_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHierarchy" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_GetHierarchy_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHierarchyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_SearchAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchAll" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_SearchAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_Resolve_InputMessage">
+    <wsdl:part name="parameters" element="tns:Resolve" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_Resolve_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveClaim_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveClaim" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveClaim_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveClaimResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveMultiple_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveMultiple" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveMultiple_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveMultipleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveMultipleClaim_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveMultipleClaim" />
+  </wsdl:message>
+  <wsdl:message name="IClaimProviderWebService_ResolveMultipleClaim_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResolveMultipleClaimResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IClaimProviderWebService">
+    <wsdl:operation name="ClaimTypes">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimTypes" message="tns:IClaimProviderWebService_ClaimTypes_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimTypesResponse" message="tns:IClaimProviderWebService_ClaimTypes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ClaimValueTypes">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimValueTypes" message="tns:IClaimProviderWebService_ClaimValueTypes_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimValueTypesResponse" message="tns:IClaimProviderWebService_ClaimValueTypes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EntityTypes">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/EntityTypes" message="tns:IClaimProviderWebService_EntityTypes_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/EntityTypesResponse" message="tns:IClaimProviderWebService_EntityTypes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProviderSchemas">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ProviderSchemas" message="tns:IClaimProviderWebService_ProviderSchemas_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ProviderSchemasResponse" message="tns:IClaimProviderWebService_ProviderSchemas_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HierarchyProviderSchema">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/HierarchyProviderSchema" message="tns:IClaimProviderWebService_HierarchyProviderSchema_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/HierarchyProviderSchemaResponse" message="tns:IClaimProviderWebService_HierarchyProviderSchema_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHierarchyAll">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchyAll" message="tns:IClaimProviderWebService_GetHierarchyAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchyAllResponse" message="tns:IClaimProviderWebService_GetHierarchyAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHierarchy">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchy" message="tns:IClaimProviderWebService_GetHierarchy_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchyResponse" message="tns:IClaimProviderWebService_GetHierarchy_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchAll">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/SearchAll" message="tns:IClaimProviderWebService_SearchAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/SearchAllResponse" message="tns:IClaimProviderWebService_SearchAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/Search" message="tns:IClaimProviderWebService_Search_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/SearchResponse" message="tns:IClaimProviderWebService_Search_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Resolve">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/Resolve" message="tns:IClaimProviderWebService_Resolve_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveResponse" message="tns:IClaimProviderWebService_Resolve_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveClaim">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveClaim" message="tns:IClaimProviderWebService_ResolveClaim_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveClaimResponse" message="tns:IClaimProviderWebService_ResolveClaim_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveMultiple">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultiple" message="tns:IClaimProviderWebService_ResolveMultiple_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultipleResponse" message="tns:IClaimProviderWebService_ResolveMultiple_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveMultipleClaim">
+      <wsdl:input wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultipleClaim" message="tns:IClaimProviderWebService_ResolveMultipleClaim_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultipleClaimResponse" message="tns:IClaimProviderWebService_ResolveMultipleClaim_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IClaimProviderWebService" type="tns:IClaimProviderWebService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ClaimTypes">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClaimValueTypes">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ClaimValueTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EntityTypes">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/EntityTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProviderSchemas">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ProviderSchemas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HierarchyProviderSchema">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/HierarchyProviderSchema" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHierarchyAll">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchyAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHierarchy">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/GetHierarchy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchAll">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/SearchAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/Search" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Resolve">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/Resolve" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveClaim">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveClaim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveMultiple">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultiple" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveMultipleClaim">
+      <soap:operation soapAction="http://schemas.microsoft.com/sharepoint/claims/IClaimProviderWebService/ResolveMultipleClaim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SPClaimProviderWebService">
+    <wsdl:port name="BasicHttpBinding_IClaimProviderWebService" binding="tns:BasicHttpBinding_IClaimProviderWebService">
+      <soap:address location="http://portal.red.lab.colossusconsulting.com/_vti_bin/spclaimproviderwebservice.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

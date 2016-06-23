@@ -1,0 +1,13 @@
+﻿Why I kept the classes in this folder in Kraken instead of moving them to CloudPower:
+
+It's not my ambition to create some secret to uploading files in SharePoint. Indeed, these methods are well known.
+By offering the file upload utilities as part of the open source project, my hope is that people will find it useful 
+and perhaps we'll see a growing community as folks use the library for their own solutions. I have done my best here
+to move those classes that add unique business value to LiquidMercury.SharePoint.Client where we can protect them
+and improve them, which is what I think really makes this utility competetive. In other words, it is not *that*
+we can upload a file to SharePoint, but how we upload files that makes CloudPower so cool.
+
+I would also have moved the metadata upate engine too, but it was so tangled up with teh secret sauce that I think at 
+this time we cannot easily do it. Better to keep it proprietary for now and come back later if we can and move it here.
+
+-TC 2/28/2015

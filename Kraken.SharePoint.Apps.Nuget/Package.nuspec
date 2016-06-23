@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <title>Kraken SharePoint Apps Library</title>
+    <id>Kraken.SharePoint.Apps</id>
+    <version>0.1.6</version>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <description>Kraken is a set of open source libraries for SharePoint development. The package includes code for writing provider hosted apps, including CSOM utilities.</description>
+    <releaseNotes>Removed (non-working) SQL azure server and password from the app.config; Password has been changed so don't bother trying to access it with the older package version. :-P</releaseNotes>
+    <summary>Developer library for creating SharePoint add-in/app projects.</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <copyright>(c)Copyright 2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <dependencies>
+        <group targetFramework="net45">
+          <dependency id="Kraken.SharePoint.Client" version="0.1.10" />
+          <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5026.1200" />
+          <dependency id="EntityFramework" version="6.1.3" />
+          <dependency id="Microsoft.Owin" version="3.0.1" />
+          <dependency id="OWIN" version="1.0" />
+        </group>
+    </dependencies>
+    <references></references>
+    <tags>SharePoint App Addin Add-in Client CSOM</tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+  </files>
+</package>

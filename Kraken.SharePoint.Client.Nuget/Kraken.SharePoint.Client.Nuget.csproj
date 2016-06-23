@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0451BAEF-DF2E-4B98-8644-94EE9415E389}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kraken.SharePoint.Client.Nuget</RootNamespace>
+    <AssemblyName>Kraken.SharePoint.Client.Nuget</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NuGetPackage.ps1" />
+    <None Include="NuGetSetup.ps1" />
+    <None Include="NuGet.exe" />
+    <None Include="NuGet.config" />
+    <None Include="Package.nuspec" />
+    <None Include="Push.cmd" />
+    <None Include="tools\init.ps1" />
+    <None Include="tools\install.ps1" />
+    <None Include="tools\uninstall.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\vsproj.include.kraken.xml" />
+    <Content Include="lib\net35-full\Kraken.Core.SandboxTrust.dll" />
+    <Content Include="lib\net35-full\Kraken.Core.SandboxTrust.pdb" />
+    <Content Include="lib\net35-full\Kraken.Security.dll" />
+    <Content Include="lib\net35-full\Kraken.Security.pdb" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.Client.dll" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.Client.pdb" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.Cloud.dll" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.Cloud.pdb" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.Cloud.XmlSerializers.dll" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.SandboxTrust.dll" />
+    <Content Include="lib\net35-full\Kraken.SharePoint.SandboxTrust.pdb" />
+    <Content Include="lib\net45-full\Kraken.Core.SandboxTrust.dll" />
+    <Content Include="lib\net45-full\Kraken.Core.SandboxTrust.pdb" />
+    <Content Include="lib\net45-full\Kraken.Security.dll" />
+    <Content Include="lib\net45-full\Kraken.Security.pdb" />
+    <Content Include="lib\net45-full\Kraken.SharePoint.Client.dll" />
+    <Content Include="lib\net45-full\Kraken.SharePoint.Client.pdb" />
+    <Content Include="lib\net45-full\Kraken.SharePoint.Cloud.dll" />
+    <Content Include="lib\net45-full\Kraken.SharePoint.Cloud.pdb" />
+    <Content Include="lib\net45-full\Kraken.SharePoint.Cloud.XmlSerializers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
+      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
+      <Name>Kraken.Core.SandboxTrust</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj">
+      <Project>{8340684f-3374-4741-af80-63af161e23df}</Project>
+      <Name>Kraken.Core.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SharePoint.Client\Kraken.SharePoint.Client.csproj">
+      <Project>{2dee87b3-663e-4df8-8510-3cad67013be0}</Project>
+      <Name>Kraken.SharePoint.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SharePoint.Cloud\Kraken.SharePoint.Cloud.csproj">
+      <Project>{8b6df604-44dd-4f6f-ae84-e2d6bf7112cb}</Project>
+      <Name>Kraken.SharePoint.Cloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>-->
+  <Target Name="AfterBuild">
+    <Delete Files=".\NuGet.log" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " ContinueOnError="True" Command="PowerShell.exe -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Unrestricted -Command &quot;&amp; {.\NuGetPackage.ps1} &quot;" IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " ContinueOnError="True" Command="PowerShell.exe -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command &quot;&amp; {.\NuGetPackage.ps1 -Publish} &quot;" IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+    <Message Text=" " Importance="High" />
+    <Message Text="Build Exit Code: $(ExitCode)" Importance="High" />
+    <Error Text="Encountered error(s) when creating package.%0aCheck the NuGet.log file for details." Condition=" '$(ExitCode)' == '1' " File="NuGet.log" />
+    <Error Text="Created package but encountered error(s) when trying to publish it.%0aCheck the NuGet.log file for details." Condition=" '$(Configuration)|$(Platform)|$(ExitCode)' == 'Release|AnyCPU|2' " File="NuGet.log" />
+    <Message Text="SUCCESS: Created package." Condition=" '$(Configuration)|$(Platform)|$(ExitCode)' == 'Debug|AnyCPU|0' " Importance="High" />
+    <Message Text="SUCCESS: Published package." Condition=" '$(Configuration)|$(Platform)|$(ExitCode)' == 'Release|AnyCPU|0' " Importance="High" />
+  </Target>
+</Project>

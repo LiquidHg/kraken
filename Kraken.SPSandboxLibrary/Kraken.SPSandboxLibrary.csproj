@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">DebugSP15_45</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<UseVSHostingProcess>false</UseVSHostingProcess>
+		<ErrorReport>prompt</ErrorReport>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<Prefer32Bit>false</Prefer32Bit>
+	</PropertyGroup>
+	<!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+	</PropertyGroup>
+	<!-- debug vs release differences -->
+	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+		<Optimize>false</Optimize>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+		<RunCodeAnalysis>true</RunCodeAnalysis>
+		<Optimize>false</Optimize>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('Release'))">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+		<DebugSymbols>false</DebugSymbols>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<!-- framework differences -->
+	<PropertyGroup Condition="$(Configuration.Contains('35'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('40'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
+		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('45'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
+		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ProductVersion>8.0.30703</ProductVersion>
+		<SchemaVersion>2.0</SchemaVersion>
+		<ProjectGuid>{DFF9B6EA-5C6E-4079-8506-181220FC7148}</ProjectGuid>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>Kraken.SharePoint</RootNamespace>
+		<AssemblyName>Kraken.SharePoint.SandboxTrust</AssemblyName>
+		<FileAlignment>512</FileAlignment>
+	</PropertyGroup>
+	<PropertyGroup>
+		<CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+		<CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
+		<CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
+		<CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+		<CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+		<CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+	</PropertyGroup>
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	<Choose>
+		<When Condition="$(Configuration.Contains('SP16'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\16\Microsoft.SharePoint.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<!--Reference Include="Microsoft.SharePoint.Security, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\16\Microsoft.SharePoint.Security.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\16\Microsoft.Office.Server.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\16\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\16\Microsoft.SharePoint.IdentityModel.dll</HintPath>
+					<Private>False</Private>
+				</Reference-->
+			</ItemGroup>
+		</When>
+		<When Condition="$(Configuration.Contains('SP14'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\14\Microsoft.SharePoint.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<!--Reference Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\14\Microsoft.SharePoint.Security.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\14\Microsoft.Office.Server.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\14\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\14\Microsoft.SharePoint.IdentityModel.dll</HintPath>
+					<Private>False</Private>
+				</Reference-->
+			</ItemGroup>
+		</When>
+		<Otherwise><!-- When Condition="$(Configuration.Contains('SP15'))" -->
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\15\Microsoft.SharePoint.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<!--Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\15\Microsoft.SharePoint.Security.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\15\Microsoft.Office.Server.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\15\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>..\References\SharePoint\15\Microsoft.SharePoint.IdentityModel.dll</HintPath>
+					<Private>False</Private>
+				</Reference -->
+			</ItemGroup>
+		</Otherwise>
+		<!-- /When -->
+	</Choose>
+	<ItemGroup>
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Data.DataSetExtensions" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Caml\CAML.cs" />
+		<Compile Include="Caml\CamlResources.Designer.cs">
+			<DependentUpon>CamlResources.resx</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Include="Events\ReadInfoPathListItemEventReceiver.cs" />
+		<Compile Include="Extensions\SPFileExtensions_SandboxSafe.cs" />
+		<Compile Include="Extensions\SPListExtensions_SandboxSafe.cs" />
+		<Compile Include="Extensions\SPListItemExtensions_SandboxSafe.cs" />
+		<Compile Include="Extensions\SPQueryExtensions_SandboxSafe.cs" />
+		<Compile Include="Extensions\SPViewExtensions_SandboxSafe.cs" />
+		<Compile Include="IdentityModel\SPClaimsAuthProviderTypes.cs" />
+		<Compile Include="IdentityModel\EncodedClaimInfo.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
+		<Compile Include="IdentityModel\ClaimConstants.cs" />
+		<Compile Include="IdentityModel\ClaimsEncodingBase.cs" />
+		<Compile Include="IdentityModel\SimpleClaimsTypeEncoding.cs" />
+		<Compile Include="IdentityModel\SimpleClaimsValueTypeEncoding.cs" />
+		<Compile Include="IdentityModel\SimpleClaimsDecoder.cs" />
+		<Compile Include="Users\UserInfoFieldConstants.cs" />
+		<Compile Include="WebParts\Extensions\WebPartDisplayModeExtensions.cs" />
+		<Compile Include="WebParts\Extensions\WebPartRequiredPropertyExtensions.cs" />
+		<Compile Include="WebParts\SandboxListDataWebPart.cs" />
+		<Compile Include="WebParts\SandboxWebPart.cs" />
+		<Compile Include="WebParts\Extensions\SandboxScriptExtensions.cs" />
+		<Compile Include="WebParts\Extensions\ShowHideExpanderExtensions.cs" />
+		<Compile Include="WebParts\Extensions\WebPartErrorExtensions.cs" />
+		<Compile Include="WebParts\Extensions\WebPartPropertyExtensions.cs" />
+		<Compile Include="WebParts\Extensions\WebPartToolPaneExtensions.cs" />
+		<Compile Include="WebParts\FlexBaseDotNetWebPart.cs" />
+		<Compile Include="WebParts\IRequiredPropertiesWebPart.cs" />
+		<Compile Include="WebParts\ListDataHelper.cs" />
+		<Compile Include="WebParts\NotificationBag.cs" />
+		<Compile Include="WebParts\ScriptManager\SandboxScriptInfo.cs" />
+		<Compile Include="WebParts\ScriptManager\SandboxScriptManager.cs" />
+		<Compile Include="WebParts\ScriptManager\ScriptKey.cs" />
+		<Compile Include="WebParts\ToolParts\FlexDotNetBaseToolPart.cs" />
+		<Compile Include="WebParts\ToolParts\SiteAndListPickerToolPart.cs" />
+		<Compile Include="WebParts\WebPartNotification.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Caml\CamlResources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>CamlResources.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="key.snk" />
+	</ItemGroup>
+	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

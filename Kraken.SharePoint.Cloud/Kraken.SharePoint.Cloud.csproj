@@ -1,0 +1,920 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<UseVSHostingProcess>false</UseVSHostingProcess>
+		<ErrorReport>prompt</ErrorReport>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<Prefer32Bit>false</Prefer32Bit>
+	</PropertyGroup>
+	<!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+	</PropertyGroup>
+	<!-- debug vs release differences -->
+	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+		<Optimize>false</Optimize>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+		<RunCodeAnalysis>true</RunCodeAnalysis>
+		<Optimize>false</Optimize>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('Release'))">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+		<DebugSymbols>false</DebugSymbols>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<!-- framework differences -->
+	<PropertyGroup Condition="$(Configuration.Contains('35'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('40'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
+		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('45'))">
+		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
+		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+		<TargetFrameworkProfile>
+		</TargetFrameworkProfile>
+		<LangVersion>4</LangVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B6DF604-44DD-4F6F-AE84-E2D6BF7112CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kraken.SharePoint.Cloud</RootNamespace>
+    <AssemblyName>Kraken.SharePoint.Cloud</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+	  <CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
+	  <CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
+	  <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath Condition="$(Configuration.Contains('14'))">..\References\CSOM\14\Microsoft.SharePoint.Client.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('15'))">..\References\CSOM\15\Microsoft.SharePoint.Client.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('16'))">..\References\CSOM\16\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath Condition="$(Configuration.Contains('14'))">..\References\CSOM\14\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('15'))">..\References\CSOM\15\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('16'))">..\References\CSOM\16\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <HintPath Condition="$(Configuration.Contains('14'))">..\References\CSOM\14\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('15'))">..\References\CSOM\15\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('16'))">..\References\CSOM\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <HintPath Condition="$(Configuration.Contains('14'))">..\References\CSOM\14\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('15'))">..\References\CSOM\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+      <HintPath Condition="$(Configuration.Contains('16'))">..\References\CSOM\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
+      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
+      <Name>Kraken.Core.SandboxTrust</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj">
+      <Project>{8340684f-3374-4741-af80-63af161e23df}</Project>
+      <Name>Kraken.Core.Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Client2007\ContentType.cs" />
+    <Compile Include="Client2007\ContentTypeRepository.cs" />
+    <Compile Include="Client2007\List.cs" />
+    <Compile Include="Client2007\ListRepository.cs" />
+    <Compile Include="Client2007\SiteColumn.cs" />
+    <Compile Include="Client2007\Tests.cs" />
+    <Compile Include="Client2007\Web.cs" />
+    <Compile Include="Client2007\WebRepository.cs" />
+    <Compile Include="ContentTypes\ContentTypeExtensions.cs" />
+    <Compile Include="ContentTypes\FieldXMLTools.cs" />
+    <Compile Include="ContentTypes\ISPContentTypeTools.cs" />
+    <Compile Include="ContentTypes\SharePointNode.cs" />
+    <Compile Include="Office365Auth\AutehnticationExample.cs" />
+    <Compile Include="Office365Auth\MsOnlineClaimsHelper.cs" />
+    <Compile Include="Office365Auth\O365ClientContext.cs" />
+    <Compile Include="Office365Auth\SharePointAuthenticationType.cs" />
+    <Compile Include="Office365Auth\WcfClientContracts.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CellStorageHTTPS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CellStorageHTTP\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ExcelService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Lists\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Sites\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SPClaimProviderWebServiceHTTPS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SPClaimProviderWebServiceHTTP\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\UserGroup\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\UserProfileService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Views\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WebPartPages\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Webs\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ClientManagers\ExportOptions.cs" />
+    <Compile Include="Services\ClientManagers\ViewsWebServiceClientManager.cs" />
+    <Compile Include="Services\ClientManagers\ListsWebServiceClientManager.cs" />
+    <Compile Include="Services\Gateways\SPServiceGateways.cs" />
+    <Compile Include="Services\Mappers\ContentTypeMapper.cs" />
+    <Compile Include="Services\Mappers\ListMapper.cs" />
+    <Compile Include="Services\SharePointConnection.cs" />
+    <Compile Include="Services\SPServicesBindingFactory.cs" />
+    <Compile Include="Services\SPServicesClientFactory.cs" />
+    <Compile Include="Services\SPServiceUrl.cs" />
+    <Compile Include="Services\WebServiceClientManager.cs" />
+    <Compile Include="Services\ClientManagers\WebsWebServiceClientManager.cs" />
+    <Compile Include="Web References\AuthenticationWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ExcelServiceWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ListsWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SearchWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SiteDataWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SitesWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SPSearchWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\UserProfileServiceWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ViewsWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebPartPagesWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebsWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="key.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CellStorageHTTPS\cellstorage.wsdl" />
+    <None Include="Service References\CellStorageHTTPS\cellstorage.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CellStorageHTTPS\CellStoragesHttps.wsdl" />
+    <None Include="Service References\CellStorageHTTP\CellStorage.wsdl" />
+    <None Include="Service References\CellStorageHTTP\CellStorage.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CellStorageHTTP\CellStorages.wsdl" />
+    <None Include="Service References\ExcelService\ExcelService.wsdl" />
+    <None Include="Service References\ExcelService\Kraken.SharePoint.Cloud.ExcelService.ArrayOfAnyType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExcelService\Kraken.SharePoint.Cloud.ExcelService.SheetInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExcelService\Kraken.SharePoint.Cloud.ExcelService.Status.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ExcelService\Kraken.SharePoint.Cloud.ExcelService.WorkbookItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Lists\Lists.wsdl" />
+    <None Include="Service References\Sites\Kraken.SharePoint.Cloud.Sites.FormDigestInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Sites\Kraken.SharePoint.Cloud.Sites.Template.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Sites\Sites.wsdl" />
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTPS.ArrayOfString.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTPS.PickerEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTPS.SPProviderHierarchyTree.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTPS.SPProviderSchema.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\spclaimproviderwebservice.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\SPClaimProviderWebServiceHttps.wsdl" />
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTP.ArrayOfString.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTP.PickerEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTP.SPProviderHierarchyTree.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\Kraken.SharePoint.Cloud.SPClaimProviderWebServiceHTTP.SPProviderSchema.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\SPClaimProviderWebService.wsdl" />
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\spclaimproviderwebservice.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UserGroup\UserGroup.wsdl" />
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.ArrayOfString.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.ContactData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.GetUserProfileByIndexResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.InCommonData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.Leader.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.MembershipData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.OrganizationProfileData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.PinnedLinkData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.PropertyData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.PropertyInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\Kraken.SharePoint.Cloud.UserProfileService.QuickLinkData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\UserProfileService\UserProfileService.wsdl" />
+    <None Include="Service References\Views\Views.wsdl" />
+    <None Include="Service References\WebPartPages\WebPartPages.wsdl" />
+    <None Include="Service References\Webs\Kraken.SharePoint.Cloud.Webs.CustomizedPageStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Webs\Webs.wsdl" />
+    <None Include="System.ServiceModel.Channels.Message.datasource" />
+    <None Include="System.Xml.Linq.XElement.datasource" />
+    <None Include="Web References\AuthenticationWS\Authentication.wsdl" />
+    <None Include="Web References\AuthenticationWS\AuthenticationMode.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenticationWS\LoginResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenticationWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ExcelServiceWS\ExcelService.wsdl" />
+    <None Include="Web References\ExcelServiceWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ExcelServiceWS\SheetInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ExcelServiceWS\Status.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ExcelServiceWS\WorkbookItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ListsWS\Lists.wsdl" />
+    <None Include="Web References\ListsWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SearchWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SearchWS\Search.wsdl" />
+    <None Include="Web References\SiteDataWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SiteDataWS\SiteData.wsdl" />
+    <None Include="Web References\SiteDataWS\_sFPUrl.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sList.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sListMetadata.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sListWithTime.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sProperty.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sSiteMetadata.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sWebMetadata.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SiteDataWS\_sWebWithTime.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SitesWS\FormDigestInformation.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SitesWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SitesWS\Sites.wsdl" />
+    <None Include="Web References\SitesWS\Template.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\SPSearchWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SPSearchWS\SPSearch.wsdl" />
+    <None Include="Web References\UserProfileServiceWS\ContactData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\GetUserProfileByIndexResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\InCommonData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\Leader.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\MembershipData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\OrganizationProfileData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\PinnedLinkData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\PropertyData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\PropertyInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\QuickLinkData.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\UserProfileServiceWS\UserProfileService.wsdl" />
+    <None Include="Web References\ViewsWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ViewsWS\Views.wsdl" />
+    <None Include="Web References\WebPartPagesWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebPartPagesWS\WebPartPages.wsdl" />
+    <None Include="Web References\WebsWS\CustomizedPageStatus.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WebsWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebsWS\Webs.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Authentication.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuthenticationWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Authentication.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_AuthenticationWS_Authentication</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/ExcelService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ExcelServiceWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/ExcelService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_ExcelServiceWS_ExcelService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Lists.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ListsWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Lists.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_ListsWS_Lists</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Search.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SearchWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Search.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_SearchWS_QueryService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/SiteData.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SiteDataWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/SiteData.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_SiteDataWS_SiteData</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Sites.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SitesWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Sites.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_SitesWS_Sites</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/SPSearch.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SPSearchWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/SPSearch.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_SPSearchWS_QueryService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/UserProfileService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\UserProfileServiceWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/UserProfileService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_UserProfileServiceWS_UserProfileService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Views.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ViewsWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Views.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_ViewsWS_Views</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/WebPartPages.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebPartPagesWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/WebPartPages.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_WebPartPagesWS_WebPartPagesWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://portal.red.lab.colossusconsulting.com/_vti_bin/Webs.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebsWS\</RelPath>
+      <UpdateFromURL>http://portal.red.lab.colossusconsulting.com/_vti_bin/Webs.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Kraken_SharePoint_Cloud_WebsWS_Webs</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\ListsWS\Lists.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\WebsWS\Webs.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CellStorageHTTPS\" />
+    <WCFMetadataStorage Include="Service References\CellStorageHTTP\" />
+    <WCFMetadataStorage Include="Service References\ExcelService\" />
+    <WCFMetadataStorage Include="Service References\Lists\" />
+    <WCFMetadataStorage Include="Service References\Sites\" />
+    <WCFMetadataStorage Include="Service References\SPClaimProviderWebServiceHTTPS\" />
+    <WCFMetadataStorage Include="Service References\SPClaimProviderWebServiceHTTP\" />
+    <WCFMetadataStorage Include="Service References\UserGroup\" />
+    <WCFMetadataStorage Include="Service References\UserProfileService\" />
+    <WCFMetadataStorage Include="Service References\Views\" />
+    <WCFMetadataStorage Include="Service References\WebPartPages\" />
+    <WCFMetadataStorage Include="Service References\Webs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Lists\Lists.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Lists\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Lists\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Lists\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Webs\Webs.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Webs\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Webs\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Webs\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Views\Views.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Views\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Views\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Views\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserGroup\UserGroup.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserGroup\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserGroup\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserGroup\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserProfileService\UserProfileService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserProfileService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserProfileService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\UserProfileService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\SitesWS\Sites.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Sites\Sites.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Sites\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Sites\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Sites\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\SiteDataWS\SiteData.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\SearchWS\Search.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\SPSearchWS\SPSearch.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\ExcelServiceWS\ExcelService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\spclaimproviderwebservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTP\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\spclaimproviderwebservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SPClaimProviderWebServiceHTTPS\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTP\CellStorage.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTP\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTP\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTP\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTPS\cellstorage.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTPS\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTPS\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CellStorageHTTPS\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WebPartPages\WebPartPages.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WebPartPages\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WebPartPages\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WebPartPages\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\WebPartPagesWS\WebPartPages.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\UserProfileServiceWS\UserProfileService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ExcelService\ExcelService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ExcelService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ExcelService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ExcelService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Client\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\ViewsWS\Views.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\AuthenticationWS\Authentication.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
