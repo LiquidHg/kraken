@@ -1,0 +1,5 @@
+R:\Kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug\Kraken.SPFarmLibrary.Nuget.dll
+R:\Kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug\Kraken.SPFarmLibrary.Nuget.pdb
+R:\Kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug\Kraken.SPFarmLibrary.Nuget.csprojResolveAssemblyReference.cache
+R:\Kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug\Kraken.SPFarmLibrary.Nuget.dll
+R:\Kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug\Kraken.SPFarmLibrary.Nuget.pdb

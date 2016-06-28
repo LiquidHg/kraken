@@ -9,7 +9,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>R:\Kraken\Backup3\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>R:\Kraken.GitHub\kraken\Backup\Kraken.SPLoggingCategories\</UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
