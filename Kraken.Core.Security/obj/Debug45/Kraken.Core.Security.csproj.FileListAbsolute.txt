@@ -1,0 +1,6 @@
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.dll
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.pdb
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\bin\Debug45\log4net.dll
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\bin\Debug45\log4net.xml
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Security.dll
+R:\Kraken.GitHub\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Security.pdb

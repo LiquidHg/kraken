@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- the following VS.net project references
+	     are provided to allow for correct compilation
+		 of VS projects that target both .NET 3.5 and 4.5
+		 in the same solution by using SharePoint 2010/2013
+		 
+		 Usage: include this file and comment out the lines
+		 created by Nuget package manager. Note that from
+		 time to time you may need to update the package path.
+
+    Example Usage:
+    <PropertyGroup>
+      <SPRef>Core;Security;Moss;Profiles;Identity;Portal;Taxonomy;AdminPages;ClientRuntime</SPRef>
+    </PropertyGroup>
+    <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
+    -->
+    <Choose>
+		<When Condition="$(Configuration.Contains('SP16')) OR $(Configuration.Contains('_16'))">
+			<PropertyGroup>
+				<TargetOfficeVersion>16.0</TargetOfficeVersion>
+				<SharePointDir>16</SharePointDir>
+			</PropertyGroup>
+		</When>
+		<When Condition="$(Configuration.Contains('SP15')) OR $(Configuration.Contains('_15'))">
+			<PropertyGroup>
+				<TargetOfficeVersion>15.0</TargetOfficeVersion>
+				<SharePointDir>15</SharePointDir>
+			</PropertyGroup>
+		</When>
+		<When Condition="$(Configuration.Contains('SP14')) OR $(Configuration.Contains('_14'))">
+			<PropertyGroup>
+				<TargetOfficeVersion>14.0</TargetOfficeVersion>
+				<SharePointDir>14</SharePointDir>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<SharePointDir>XXX</SharePointDir>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+	<PropertyGroup>
+		<!-- ensure tokens are replaced in all files -->
+		<TokenReplacementFileExtensions>$(TokenReplacementFileExtensions);svc;xml;aspx;ascx;webpart;dwp;bdcm</TokenReplacementFileExtensions>
+	</PropertyGroup>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Core'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Security'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint.Security, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.Security.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Moss'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.Office.Server, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.Office.Server.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Profiles'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Identity'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.IdentityModel.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('PowerShell'))">
+			<ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Powershell, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.Powershell.dll</HintPath>
+					<Private>false</Private>
+    </Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Portal'))">
+			<ItemGroup>
+				<Reference Include="microsoft.sharepoint.portal, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\microsoft.sharepoint.portal.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('Taxonomy'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint.Taxonomy, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('AdminPages'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint.ApplicationPages.Administration, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.ApplicationPages.Administration.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(SPRef.Contains('ClientRuntime'))">
+			<ItemGroup>
+				<Reference Include="Microsoft.SharePoint.Client.ServerRuntime, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+					<SpecificVersion>true</SpecificVersion>
+					<HintPath>$(SolutionDir)References\SharePoint\$(SharePointDir)\Microsoft.SharePoint.Client.ServerRuntime.dll</HintPath>
+					<Private>false</Private>
+				</Reference>
+			</ItemGroup>
+		</When>
+	</Choose>
+	<!--Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="false" /-->
+</Project>

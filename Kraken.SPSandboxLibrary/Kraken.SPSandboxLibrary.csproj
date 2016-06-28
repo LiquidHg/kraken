@@ -1,80 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">DebugSP15_45</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<UseVSHostingProcess>false</UseVSHostingProcess>
-		<ErrorReport>prompt</ErrorReport>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<Prefer32Bit>false</Prefer32Bit>
-	</PropertyGroup>
-	<!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
-	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
-	</PropertyGroup>
-	<!-- debug vs release differences -->
-	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-		<RunCodeAnalysis>false</RunCodeAnalysis>
-		<Optimize>false</Optimize>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-		<RunCodeAnalysis>true</RunCodeAnalysis>
-		<Optimize>false</Optimize>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('Release'))">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<RunCodeAnalysis>false</RunCodeAnalysis>
-		<DebugSymbols>false</DebugSymbols>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<!-- framework differences -->
-	<PropertyGroup Condition="$(Configuration.Contains('35'))">
-		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
-		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-		<TargetFrameworkProfile>
-		</TargetFrameworkProfile>
-		<LangVersion>4</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('40'))">
-		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
-		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-		<TargetFrameworkProfile>
-		</TargetFrameworkProfile>
-		<LangVersion>4</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.Contains('45'))">
-		<DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
-		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-		<TargetFrameworkProfile>
-		</TargetFrameworkProfile>
-		<LangVersion>4</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup>
+  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+  </PropertyGroup>
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- 
+	Problem in referencing these includes from a SharePoint project when they use $(SolutionDir) instead of $(MSBuildProjectDirectory)
+	-->
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.KrakenCommon.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.DebugRelease.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
+  <!-- End: standard Kraken project build configurations -->
+  <PropertyGroup>
 		<ProductVersion>8.0.30703</ProductVersion>
 		<SchemaVersion>2.0</SchemaVersion>
 		<ProjectGuid>{DFF9B6EA-5C6E-4079-8506-181220FC7148}</ProjectGuid>
@@ -82,112 +41,17 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>Kraken.SharePoint</RootNamespace>
 		<AssemblyName>Kraken.SharePoint.SandboxTrust</AssemblyName>
-		<FileAlignment>512</FileAlignment>
-	</PropertyGroup>
-	<PropertyGroup>
-		<CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-		<CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-		<CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
-		<CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
-		<CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-		<CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-		<CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
 	</PropertyGroup>
 	<PropertyGroup>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
-	<Choose>
-		<When Condition="$(Configuration.Contains('SP16'))">
-			<ItemGroup>
-				<Reference Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>$(SolutionDir)References\SharePoint\16\Microsoft.SharePoint.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<!--Reference Include="Microsoft.SharePoint.Security, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\16\Microsoft.SharePoint.Security.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\16\Microsoft.Office.Server.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\16\Microsoft.Office.Server.UserProfiles.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\16\Microsoft.SharePoint.IdentityModel.dll</HintPath>
-					<Private>False</Private>
-				</Reference-->
-			</ItemGroup>
-		</When>
-		<When Condition="$(Configuration.Contains('SP14'))">
-			<ItemGroup>
-				<Reference Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>$(SolutionDir)References\SharePoint\14\Microsoft.SharePoint.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<!--Reference Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\14\Microsoft.SharePoint.Security.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\14\Microsoft.Office.Server.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\14\Microsoft.Office.Server.UserProfiles.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\14\Microsoft.SharePoint.IdentityModel.dll</HintPath>
-					<Private>False</Private>
-				</Reference-->
-			</ItemGroup>
-		</When>
-		<Otherwise><!-- When Condition="$(Configuration.Contains('SP15'))" -->
-			<ItemGroup>
-				<Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>$(SolutionDir)References\SharePoint\15\Microsoft.SharePoint.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<!--Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\15\Microsoft.SharePoint.Security.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\15\Microsoft.Office.Server.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\15\Microsoft.Office.Server.UserProfiles.dll</HintPath>
-					<Private>False</Private>
-				</Reference>
-				<Reference Include="Microsoft.SharePoint.IdentityModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-					<SpecificVersion>true</SpecificVersion>
-					<HintPath>..\References\SharePoint\15\Microsoft.SharePoint.IdentityModel.dll</HintPath>
-					<Private>False</Private>
-				</Reference -->
-			</ItemGroup>
-		</Otherwise>
-		<!-- /When -->
-	</Choose>
+  <!-- the following custom property defines which SharePoint DLLs will be referenced in the include below -->
+  <PropertyGroup>
+    <SPRef>Core</SPRef>
+    <!-- ;Security;Moss;Profiles;Identity;Portal;Taxonomy;AdminPages;ClientRuntime -->
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
 	<ItemGroup>
 		<Reference Include="System" />
 		<Reference Include="System.Core" />

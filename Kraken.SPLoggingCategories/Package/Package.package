@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="fd53aa50-00f3-4bdc-bd54-027fc97318dd" solutionId="fd53aa50-00f3-4bdc-bd54-027fc97318dd" resetWebServer="false" name="Kraken.SPLoggingCategories" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="fd53aa50-00f3-4bdc-bd54-027fc97318dd" solutionId="fd53aa50-00f3-4bdc-bd54-027fc97318dd" resetWebServer="false" sharePointProductVersion="15.0" name="Kraken.SPLoggingCategories" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <features>
     <featureReference itemId="20cbf97e-4826-4d65-8c9b-21a38bc50c64" />
   </features>

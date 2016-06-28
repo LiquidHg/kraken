@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug45</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug35' ">
   </PropertyGroup>
@@ -28,59 +19,26 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release45' ">
   </PropertyGroup>
-  <!-- debug vs release differences -->
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DebugSymbols>false</DebugSymbols>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <!-- framework differences -->
-  <PropertyGroup Condition="$(Configuration.Contains('35'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('40'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('45'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
+  <!-- 
+	Problem in referencing these includes from a SharePoint project when they use $(SolutionDir) instead of $(MSBuildProjectDirectory)
+	-->
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.KrakenCommon.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.DebugRelease.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
+  <!-- End: standard Kraken project build configurations -->
   <PropertyGroup>
     <ProjectGuid>{C48F2229-7581-4AC7-AF29-3C193D612380}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kraken.Tests</RootNamespace>
     <AssemblyName>Kraken.Tests</AssemblyName>
-    <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ActivationDependencies>
+    <ActivationDependency SolutionId="9d5f4078-2af7-446d-a49e-487720c1bfaf" SolutionName="Kraken.SharePoint.FarmLibrary" />
+  </ActivationDependencies>
+</Solution>

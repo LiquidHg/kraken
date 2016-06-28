@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- the following VS.net project references
+	     are provided to allow for correct compilation
+		 of VS projects that target both .NET 3.5, 4,
+		 and 4.5 in the same solution.
+		 
+		 This file contains common Visual Studio Project
+		 properties for Beowulf projects.
+		 -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug45</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<Prefer32Bit>false</Prefer32Bit>
+	<NoWarn>1685</NoWarn>
+	<OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <!-- Commented because we're now using newer automated package restore -->
+    <!--RestorePackages>true</RestorePackages-->
+    <!-- need this because VS2013 leaves this blank -->
+    <BuildingInsideVisualStudio Condition="'$(BuildingInsideVisualStudio)' == ''">false</BuildingInsideVisualStudio>
+  </PropertyGroup>
+	<!-- some folks have reported that definition of 
+	     $(VisualStudioVersion) and $(VSToolsPath)
+		 can break SharePoint builds. $(SharePointFlag) was 
+		 added to condition in BeowulfCommon.xml for that reason. 
+		 However, upon testing we found no evidence these
+		 were harmful in any way. Thus it is now commented.
+		 http://stackoverflow.com/questions/19718281/external-vs2013-build-error-error-msb4019-the-imported-project-path-was-not
+    -->
+	<!-- older versions of Visual Studio will leave this empty -->
+	<PropertyGroup Condition="'$(SharePointFlag)' == ''">
+		<VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+		<VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+	</PropertyGroup>
+	<PropertyGroup>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <FileAlignment>512</FileAlignment>
+	  <!-- these are annoying! Always set them to be empty if everyone is using VS23012 -->
+	  <FileUpgradeFlags>
+	  </FileUpgradeFlags>
+	  <OldToolsVersion>
+	  </OldToolsVersion>
+	  <UpgradeBackupLocation>
+	  </UpgradeBackupLocation>
+  </PropertyGroup>
+</Project>

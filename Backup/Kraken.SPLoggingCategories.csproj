@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+  </PropertyGroup>
+  <!-- 
+	Problem in referencing these includes from a SharePoint project when they use $(SolutionDir) instead of $(MSBuildProjectDirectory)
+	-->
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.KrakenCommon.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.DebugRelease.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
+  <!-- End: standard Kraken project build configurations -->
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{427C39F1-4F9C-470E-8D65-372D755903D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kraken.SharePoint.LoggingCategories</RootNamespace>
+    <AssemblyName>Kraken.SharePoint.LoggingCategories</AssemblyName>
+    <ProjectTypeGuids>{BB1F664B-9266-4fd6-B973-E1E44974B511};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+    <ActiveDeploymentConfiguration>No Activation</ActiveDeploymentConfiguration>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <!-- the following custom property defines which SharePoint DLLs will be referenced in the include below -->
+  <PropertyGroup>
+    <SPRef>Core;Security</SPRef>
+    <!-- ;Moss;Profiles;Identity;Portal;Taxonomy;AdminPages;ClientRuntime -->
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj">
+      <Project>{757c7239-0e1b-41ba-aed5-7a15ac141042}</Project>
+      <Name>Kraken.Core.FullTrust</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
+      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
+      <Name>Kraken.Core.SandboxTrust</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SPFarmLibrary\Kraken.SPFarmLibrary.csproj">
+      <Project>{ec689a42-1c8e-40cd-8df7-22a015875809}</Project>
+      <Name>Kraken.SPFarmLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SPSandboxLibrary\Kraken.SPSandboxLibrary.csproj">
+      <Project>{dff9b6ea-5c6e-4079-8506-181220fc7148}</Project>
+      <Name>Kraken.SPSandboxLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.EventReceiver.cs">
+      <DependentUpon>KrakenULSLoggingCategories.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DeployScripts\RegisterKrakenLoggingEvents.reg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DeployScripts\RegisterKrakenLoggingEvents.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.feature">
+      <FeatureId>{20cbf97e-4826-4d65-8c9b-21a38bc50c64}</FeatureId>
+    </None>
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{6d831ec5-c9e0-490e-a958-4b1698db8c2f}</SharePointProjectItemId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="packages.config" />
+    <None Include="Package\Package.package">
+      <PackageId>{fd53aa50-00f3-4bdc-bd54-027fc97318dd}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.Template.xml">
+      <DependentUpon>KrakenULSLoggingCategories.feature</DependentUpon>
+    </Content>
+    <Content Include="Images\Kraken.SharePoint\Blue-Kraken-icon.png" />
+    <Content Include="Images\Kraken.SharePoint\Blue-Kraken-icon32.png" />
+    <Content Include="Images\Kraken.SharePoint\Blue-Kraken-icon64.png" />
+    <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon.png" />
+    <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon32.png" />
+    <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon64.png" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">13.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="false" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+</Project>

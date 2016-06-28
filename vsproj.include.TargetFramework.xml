@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- the following VS.net project references
+	     are provided to allow for correct compilation
+		 of VS projects that target both .NET 3.5, 4,
+		 and 4.5 in the same solution.
+		 
+		 Usage: include the target framework in your build
+		 configuration name: "35", "40", or "45" (e.g. "Debug45")
+		 Include this file in the .vsproj and comment out the 
+		 same properties as created by visual studio.
+		 -->
+  <!-- framework differences -->
+  <PropertyGroup Condition="$(Configuration.Contains('35'))">
+    <DefineConstants>$(DefineConstants);DOTNET_V35</DefineConstants>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('40'))">
+    <DefineConstants>$(DefineConstants);DOTNET_V4</DefineConstants>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('45'))">
+    <DefineConstants>$(DefineConstants);DOTNET_V4;DOTNET_V45</DefineConstants>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+</Project>

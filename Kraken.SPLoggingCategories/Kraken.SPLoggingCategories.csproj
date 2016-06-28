@@ -1,16 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <!-- 
+	Problem in referencing these includes from a SharePoint project when they use $(SolutionDir) instead of $(MSBuildProjectDirectory)
+	-->
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.KrakenCommon.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.DebugRelease.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">DebugSP15_45</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>R:\Kraken.GitHub\kraken\Backup\Kraken.SPLoggingCategories\</UpgradeBackupLocation>
-    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <ProjectMode>SharePointCustomization</ProjectMode>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,93 +56,16 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
-  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP15_45' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP16_45' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP14_35' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP15_45' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'FxCopSP16_45' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP14_35' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP15_45' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseSP16_45' ">
-  </PropertyGroup>
-  <!-- debug vs release differences -->
-  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <Optimize>false</Optimize>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DebugSymbols>false</DebugSymbols>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <!-- framework differences -->
-  <PropertyGroup Condition="$(Configuration.Contains('35'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V35</DefineConstants>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('40'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4</DefineConstants>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('45'))">
-    <DefineConstants>$(DefineConstants);TRACE;DOTNET_V4;DOTNET_V45</DefineConstants>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>4</LangVersion>
-  </PropertyGroup>
+  <!-- End: standard Kraken project build configurations -->
   <PropertyGroup>
-    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('SP14'))">
-    <TargetOfficeVersion>14.0</TargetOfficeVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('SP15'))">
-    <TargetOfficeVersion>15.0</TargetOfficeVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('SP16'))">
-    <TargetOfficeVersion>16.0</TargetOfficeVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisRuleSetDirectories>$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
@@ -120,8 +74,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kraken.SharePoint.LoggingCategories</RootNamespace>
     <AssemblyName>Kraken.SharePoint.LoggingCategories</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{BB1F664B-9266-4fd6-B973-E1E44974B511};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SandboxedSolution>False</SandboxedSolution>
     <ActiveDeploymentConfiguration>No Activation</ActiveDeploymentConfiguration>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -130,59 +83,32 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <!-- the following custom property defines which SharePoint DLLs will be referenced in the include below -->
+  <PropertyGroup>
+    <SPRef>Core;Security</SPRef>
+    <!-- ;Moss;Profiles;Identity;Portal;Taxonomy;AdminPages;ClientRuntime -->
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
   <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.WorkflowActions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <Choose>
-    <When Condition="$(Configuration.Contains('SP16'))">
-      <ItemGroup>
-        <Reference Include="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\16\Microsoft.SharePoint.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-        <Reference Include="Microsoft.SharePoint.Security, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\16\Microsoft.SharePoint.Security.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <When Condition="$(Configuration.Contains('SP15'))">
-      <ItemGroup>
-        <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\15\Microsoft.SharePoint.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-        <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\15\Microsoft.SharePoint.Security.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <!-- When Condition="$(Configuration.Contains('SP14'))"-->
-      <ItemGroup>
-        <Reference Include="Microsoft.SharePoint, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\14\Microsoft.SharePoint.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-        <Reference Include="Microsoft.SharePoint.Security, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-          <SpecificVersion>true</SpecificVersion>
-          <HintPath>$(SolutionDir)References\SharePoint\14\Microsoft.SharePoint.Security.dll</HintPath>
-          <Private>false</Private>
-        </Reference>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj">
       <Project>{757c7239-0e1b-41ba-aed5-7a15ac141042}</Project>
@@ -208,6 +134,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DeployScripts\RegisterKrakenLoggingEvents.reg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -221,6 +148,7 @@
       <SharePointProjectItemId>{6d831ec5-c9e0-490e-a958-4b1698db8c2f}</SharePointProjectItemId>
     </None>
     <None Include="key.snk" />
+    <None Include="packages.config" />
     <None Include="Package\Package.package">
       <PackageId>{fd53aa50-00f3-4bdc-bd54-027fc97318dd}</PackageId>
     </None>
@@ -240,11 +168,6 @@
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon64.png" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
@@ -252,11 +175,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">13.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="false" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
 </Project>

@@ -1,0 +1,3 @@
+R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary.csprojResolveAssemblyReference.cache
+R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.Caml.CamlResources.resources
+R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary.csproj.GenerateResource.Cache

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- the following VS.net project references
+	     are provided to allow for correct compilation
+		 of VS projects that target both .NET 3.5, 4,
+		 and 4.5 in the same solution.
+		 
+		 Usage: include the target release in your build
+		 configuration name: "Debug", "FxCop", or "Release" (e.g. "Debug45")
+		 Include this file in the .vsproj and comment out the 
+		 same properties as created by visual studio.
+		 -->
+  <!-- debug vs release differences -->
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('FxCop'))">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DebugSymbols>false</DebugSymbols>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+</Project>

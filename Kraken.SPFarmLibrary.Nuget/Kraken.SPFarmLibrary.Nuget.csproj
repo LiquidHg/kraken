@@ -1,8 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug40' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCop35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCop40' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'FxCop45' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release35' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release40' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release45' ">
+  </PropertyGroup>
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">DebugSP16_45</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- 
+	Problem in referencing these includes from a SharePoint project when they use $(SolutionDir) instead of $(MSBuildProjectDirectory)
+	-->
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.KrakenCommon.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.DebugRelease.xml" />
+  <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
+  <!-- End: standard Kraken project build configurations -->
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0451BAEF-DF2E-4B98-8644-94EE9415E389}</ProjectGuid>
@@ -10,40 +44,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kraken.SPFarmLibrary.Nuget</RootNamespace>
     <AssemblyName>Kraken.SPFarmLibrary.Nuget</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
