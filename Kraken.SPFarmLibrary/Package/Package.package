@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="9d5f4078-2af7-446d-a49e-487720c1bfaf" solutionId="9d5f4078-2af7-446d-a49e-487720c1bfaf" resetWebServer="true" name="Kraken.SPFarmLibrary" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <projectOutputAssembly location="Kraken.Core.FullTrust.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj" />
+    <projectOutputAssembly location="Kraken.Core.SandboxTrust.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj" />
+    <projectOutputAssembly location="Kraken.Security.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Kraken.Core.Security\Kraken.Core.Security.csproj" />
+    <projectOutputAssembly location="Kraken.SharePoint.SandboxTrust.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Kraken.SPSandboxLibrary\Kraken.SPSandboxLibrary.csproj" />
+  </assemblies>
+  <projectItems>
+    <projectItemReference itemId="bd7a6bf6-6123-4a7b-a3a3-1c0bedf8b8ad" />
+  </projectItems>
+</package>
