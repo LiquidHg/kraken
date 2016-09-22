@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Solution xmlns="http://schemas.microsoft.com/sharepoint/" SolutionId="fd53aa50-00f3-4bdc-bd54-027fc97318dd" SharePointProductVersion="15.0">
+  <ActivationDependencies>
+    <ActivationDependency SolutionId="9d5f4078-2af7-446d-a49e-487720c1bfaf" SolutionName="Kraken.SharePoint.FarmLibrary" />
+  </ActivationDependencies>
+  <Assemblies>
+    <Assembly Location="Kraken.SharePoint.LoggingCategories.dll" DeploymentTarget="GlobalAssemblyCache" />
+  </Assemblies>
+  <TemplateFiles>
+    <TemplateFile Location="Images\Kraken.SharePoint\Blue-Kraken-icon.png" />
+    <TemplateFile Location="Images\Kraken.SharePoint\Blue-Kraken-icon32.png" />
+    <TemplateFile Location="Images\Kraken.SharePoint\Blue-Kraken-icon64.png" />
+    <TemplateFile Location="Images\Kraken.SharePoint\Lightbrown-Kraken-icon.png" />
+    <TemplateFile Location="Images\Kraken.SharePoint\Lightbrown-Kraken-icon32.png" />
+    <TemplateFile Location="Images\Kraken.SharePoint\Lightbrown-Kraken-icon64.png" />
+  </TemplateFiles>
+  <FeatureManifests>
+    <FeatureManifest Location="Kraken.SPLoggingCategories_KrakenULSLoggingCategories\Feature.xml" />
+  </FeatureManifests>
+</Solution>

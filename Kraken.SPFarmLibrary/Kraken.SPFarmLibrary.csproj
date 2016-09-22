@@ -31,6 +31,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <ActiveDeploymentConfiguration>No Activation</ActiveDeploymentConfiguration>
   </PropertyGroup>
   <!-- End: standard Kraken project build configurations -->
   <PropertyGroup>
@@ -185,6 +186,9 @@
     <Compile Include="WebParts\ToolParts\ListItemMultiPickerToolPart.cs" />
     <Compile Include="WebParts\ToolParts\ListItemPickerToolPart.cs" />
     <Compile Include="WebParts\ToolParts\SiteAndListPickerToolPart.cs" />
+    <None Include="Package\Package.package">
+      <PackageId>{9f398ceb-16e3-4de4-b61d-fab513277b51}</PackageId>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +204,7 @@
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon.png" />
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon32.png" />
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon64.png" />
+    <Content Include="Package\Package.Template.xml" />
     <Content Include="SPARK Copyleft.txt" />
   </ItemGroup>
   <ItemGroup>

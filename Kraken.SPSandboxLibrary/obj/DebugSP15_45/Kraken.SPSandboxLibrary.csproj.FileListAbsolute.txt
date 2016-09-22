@@ -5,3 +5,10 @@ R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SPSandbo
 R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll
 R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb
 R:\Kraken.GitHub\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SPSandboxLibrary.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll
+R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SPSandboxLibrary.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SharePoint.Caml.CamlResources.resources
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SPSandboxLibrary.csproj.GenerateResource.Cache
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb

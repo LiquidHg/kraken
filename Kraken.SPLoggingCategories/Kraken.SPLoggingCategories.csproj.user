@@ -10,5 +10,6 @@
     <ErrorReportUrlHistory />
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
+    <PublishToFileSystemTargetLocation>R:\Repos\Beowulf\Deploy15\WSP</PublishToFileSystemTargetLocation>
   </PropertyGroup>
 </Project>

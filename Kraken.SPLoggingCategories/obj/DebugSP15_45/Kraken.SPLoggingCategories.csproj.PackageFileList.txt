@@ -1,0 +1,1 @@
+bin\DebugSP15_45\Kraken.SPLoggingCategories.wsp
