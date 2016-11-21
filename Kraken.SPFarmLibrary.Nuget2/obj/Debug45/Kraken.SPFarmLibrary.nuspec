@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Kraken.SPFarmLibrary</id>
+    <version>0.1.2</version>
+    <title>Kraken SharePoint Farm Solution Library</title>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <developmentDependency>true</developmentDependency>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing farm WSP solutions that require full trust. Includes the sandbox library as a sub-set.</description>
+    <summary>Developer library for creating SharePoint farm WSP solution projects.</summary>
+    <releaseNotes>v0.1.2: Certificate utility updates; some improvements to handling of user profile manager; fixed flase-flag errors on install of Logging Categories to registry for machines that are not actually SharePoint servers (SMTP/SQL); v0.1.1: Updates to nuget packages to keep pace with consumer libs; v0.1.0: Initial release</releaseNotes>
+    <copyright>(c)Copyright 2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <tags>SharePoint WSP</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Microsoft.Bcl" version="1.1.10" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+        <dependency id="Microsoft.Net.Http" version="2.2.29" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.dll" target="lib\net45\Kraken.Core.FullTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.dll" target="lib\net45\Kraken.Core.SandboxTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.dll" target="lib\net45\Kraken.Security.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll" target="lib\net45\Kraken.SharePoint.SandboxTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.pdb" target="lib\net45\Kraken.Core.FullTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.pdb" target="lib\net45\Kraken.Core.SandboxTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.pdb" target="lib\net45\Kraken.Security.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb" target="lib\net45\Kraken.SharePoint.SandboxTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary\bin\DebugSP15_45\Kraken.SharePoint.FullTrust.dll" target="lib\net45\Kraken.SharePoint.FullTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary\bin\DebugSP15_45\Kraken.SharePoint.FullTrust.pdb" target="lib\net45\Kraken.SharePoint.FullTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Core.FullTrust.dll" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Core.FullTrust.pdb" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Core.SandboxTrust.dll" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Core.SandboxTrust.pdb" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Security.dll" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.Security.pdb" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.SharePoint.FullTrust.dll" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.SharePoint.FullTrust.pdb" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.SharePoint.LoggingCategories.dll" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net35-full\Kraken.SharePoint.LoggingCategories.pdb" target="lib\net35-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Core.FullTrust.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Core.FullTrust.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Core.SandboxTrust.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Core.SandboxTrust.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Security.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.Security.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.FullTrust.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.FullTrust.dll.config" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.FullTrust.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.LoggingCategories.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.LoggingCategories.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.SandboxTrust.dll" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\lib\net45-full\Kraken.SharePoint.SandboxTrust.pdb" target="lib\net45-full\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\Kraken.SPFarmLibrary.2010.wsp" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\Kraken.SPFarmLibrary.2013.wsp" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\Kraken.SPLoggingCategories.2010.wsp" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\Kraken.SPLoggingCategories.2013.wsp" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\RegisterKrakenLoggingEvents.ps1" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\RegisterKrakenLoggingEvents.reg" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy\SPDeployFunctions.ps1" target="content\Deploy\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\Readme.txt" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\tools\install.ps1" target="tools\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\tools\uninstall.ps1" target="tools\" exclude="" />
+  </files>
+</package>
