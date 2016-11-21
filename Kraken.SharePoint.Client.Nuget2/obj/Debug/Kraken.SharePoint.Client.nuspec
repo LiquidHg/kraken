@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Kraken.SharePoint.Client</id>
+    <version>0.2.2</version>
+    <title>Kraken SharePoint Client Library</title>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
+    <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
+    <releaseNotes>v0.2.2: With apologies to all, v0.2-0.2.1 had incorrect .net framework references in the build; this version includes corrections for 4.0/4.5 and also recompiles the older 3.5 version for the first time in a while.</releaseNotes>
+    <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <language>en-US</language>
+    <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5026.1200" />
+      </group>
+      <group>
+        <dependency id="Newtonsoft.Json" version="8.0.3" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+        <dependency id="log4net" version="2.0.5" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Core.SandboxTrust.dll" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Core.SandboxTrust.pdb" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Security.dll" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Security.pdb" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Client.dll" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Client.pdb" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.dll" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.pdb" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net35\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Core.SandboxTrust.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Core.SandboxTrust.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Security.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Security.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Client.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Client.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\NuGet.config" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\NuGet.exe" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\Readme.txt" target="" exclude="" />
+  </files>
+</package>

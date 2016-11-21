@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug45|AnyCPU">
+      <Configuration>Debug45</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>ce482c00-7a3d-47e2-823b-a2a9bbc6a757</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>Kraken.DotNet.Core</Id>
+    <Version>0.1.2</Version>
+    <Title>Kraken Core Library</Title>
+    <Authors>Thomas Carpe and Liquid Mercury Solutions</Authors>
+    <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
+    <Summary>Supporting .NET utility classes that fall outside of scope for SharePoint libraries.</Summary>
+    <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust.</Description>
+    <ReleaseNotes>v0.1.2: Certificate utility updates; v0.1.1: First Nuget package with core libs only.</ReleaseNotes>
+    <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
+    <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
+    <Copyright>Copyright © thomas.carpe</Copyright>
+    <Tags>Kraken.DotNet.Core.Nuget</Tags>
+    <EmbedSourceFiles>true</EmbedSourceFiles>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="CredentialProvider.VSS.exe" />
+    <Content Include="Kraken.DotNet.Core.nuspec" />
+    <Content Include="MicrosoftVisualStudioServicesCredentialProvider_Pre-releaseEULA.docx" />
+    <Content Include="NuGet.config" />
+    <Content Include="NuGet.exe" />
+    <Content Include="push.cmd" />
+    <Content Include="Readme.txt" />
+    <Content Include="ThirdPartyNotice.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>

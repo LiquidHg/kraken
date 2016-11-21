@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Kraken.SharePoint.Apps</id>
+    <version>0.1.7</version>
+    <title>Kraken SharePoint Apps Library</title>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Kraken is a set of open source libraries for SharePoint development. The package includes code for writing provider hosted apps, including CSOM utilities.</description>
+    <summary>Developer library for creating SharePoint add-in/app projects.</summary>
+    <releaseNotes>v0.1.7: Updated nuget package project; compiling on vs2015; changes to allow for all .net frameworks in single package.</releaseNotes>
+    <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <tags>SharePoint App Addin Add-in Client CSOM Office365 OfficeDevPnp</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+        <dependency id="log4net" version="2.0.5" />
+        <dependency id="AppForSharePointOnlineWebToolkit" version="3.1.2" />
+        <dependency id="EntityFramework" version="6.1.3" />
+        <dependency id="Microsoft.Owin" version="3.0.1" />
+        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5026.1200" />
+        <dependency id="Owin" version="1.0" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+        <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+        <dependency id="Microsoft.Azure.ActiveDirectory.GraphClient" version="2.1.0" />
+        <dependency id="Microsoft.Azure.KeyVault.Core" version="1.0.0" />
+        <dependency id="Microsoft.Data.Edm" version="5.6.4" />
+        <dependency id="Microsoft.Data.OData" version="5.6.4" />
+        <dependency id="Microsoft.Data.Services.Client" version="5.6.4" />
+        <dependency id="SharePointPnPCoreOnline" version="2.4.1605.0" />
+        <dependency id="System.Spatial" version="5.6.4" />
+        <dependency id="WindowsAzure.Storage" version="7.0.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.dll" target="lib\net45\Kraken.Core.SandboxTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.pdb" target="lib\net45\Kraken.Core.SandboxTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.dll" target="lib\net45\Kraken.Security.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.pdb" target="lib\net45\Kraken.Security.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.dll" target="lib\net45\Kraken.Core.FullTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.dll" target="lib\net45\Kraken.SharePoint.Client.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.dll" target="lib\net45\Kraken.SharePoint.Cloud.dll" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Windows Identity Foundation\v3.5\Microsoft.IdentityModel.dll" target="lib\net45\Microsoft.IdentityModel.dll" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Microsoft Identity Extensions\1.0\Microsoft.IdentityModel.Extensions.dll" target="lib\net45\Microsoft.IdentityModel.Extensions.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.pdb" target="lib\net45\Kraken.Core.FullTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.pdb" target="lib\net45\Kraken.SharePoint.Client.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.pdb" target="lib\net45\Kraken.SharePoint.Cloud.pdb" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Windows Identity Foundation\v3.5\en\Microsoft.IdentityModel.resources.dll" target="lib\net45\Microsoft.IdentityModel.resources.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.Apps.dll" target="lib\net45\Kraken.SharePoint.Apps.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.Apps.pdb" target="lib\net45\Kraken.SharePoint.Apps.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\Readme.txt" target="" exclude="" />
+  </files>
+</package>

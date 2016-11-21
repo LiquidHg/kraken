@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Kraken.DotNet.Core</id>
+    <version>0.1.2</version>
+    <title>Kraken Core Library</title>
+    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust.</description>
+    <summary>Supporting .NET utility classes that fall outside of scope for SharePoint libraries.</summary>
+    <releaseNotes>
+      v0.1.2: Certificate utility updates; v0.1.1: First Nuget package with core libs only.
+    </releaseNotes>
+    <copyright>(c)Copyright 2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <language>en-US</language>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+        <dependency id="log4net" version="2.0.5" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

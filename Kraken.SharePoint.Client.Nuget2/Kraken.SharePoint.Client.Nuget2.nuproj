@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>e90b8dfe-10b0-4aed-9239-231525055d29</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>Kraken.SharePoint.Client</Id>
+    <Version>0.2.2</Version>
+    <Title>Kraken SharePoint Client Library</Title>
+    <Authors>Thomas Carpe and Liquid Mercury Solutions</Authors>
+    <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
+    <Summary>Developer library for creating SharePoint client (CSOM) projects and apps.</Summary>
+    <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</Description>
+    <ReleaseNotes>v0.2.2: With apologies to all, v0.2-0.2.1 had incorrect .net framework references in the build; this version includes corrections for 4.0/4.5 and also recompiles the older 3.5 version for the first time in a while.</ReleaseNotes>
+    <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
+    <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
+    <DefaultLanguage>en-us</DefaultLanguage>
+    <Copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</Copyright>
+    <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
+    <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <GenerateSymbolPackage>true</GenerateSymbolPackage>
+    <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
+  </PropertyGroup>
+  <ItemGroup>
+    <Dependency Include="Microsoft.SharePointOnline.CSOM">
+      <Version>16.1.5026.1200</Version>
+      <TargetFramework>net45</TargetFramework>
+    </Dependency>
+    <Dependency Include="Newtonsoft.Json">
+      <Version>8.0.3</Version>
+    </Dependency>
+    <Dependency Include="RestSharpSigned">
+      <Version>105.2.3</Version>
+    </Dependency>
+    <Dependency Include="log4net">
+      <Version>2.0.5</Version>
+    </Dependency>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\net35\Kraken.Core.SandboxTrust.dll" />
+    <Content Include="lib\net35\Kraken.Core.SandboxTrust.pdb" />
+    <Content Include="lib\net35\Kraken.Security.dll" />
+    <Content Include="lib\net35\Kraken.Security.pdb" />
+    <Content Include="lib\net35\Kraken.SharePoint.Client.dll" />
+    <Content Include="lib\net35\Kraken.SharePoint.Client.pdb" />
+    <Content Include="lib\net35\Kraken.SharePoint.Cloud.dll" />
+    <Content Include="lib\net35\Kraken.SharePoint.Cloud.pdb" />
+    <Content Include="lib\net35\Kraken.SharePoint.Cloud.XmlSerializers.dll" />
+    <Content Include="lib\net45\Kraken.Core.SandboxTrust.dll" />
+    <Content Include="lib\net45\Kraken.Core.SandboxTrust.pdb" />
+    <Content Include="lib\net45\Kraken.Security.dll" />
+    <Content Include="lib\net45\Kraken.Security.pdb" />
+    <Content Include="lib\net45\Kraken.SharePoint.Client.dll" />
+    <Content Include="lib\net45\Kraken.SharePoint.Client.pdb" />
+    <Content Include="lib\net45\Kraken.SharePoint.Cloud.dll" />
+    <Content Include="lib\net45\Kraken.SharePoint.Cloud.pdb" />
+    <Content Include="lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" />
+    <Content Include="lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" />
+    <Content Include="lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" />
+    <Content Include="NuGet.config" />
+    <Content Include="NuGet.exe" />
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Language.nuspec" />
+    <None Include="Push.cmd" />
+  </ItemGroup>
+  <!--
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj" />
+    <ProjectReference Include="..\Kraken.SharePoint.Client\Kraken.SharePoint.Client.csproj" />
+    <ProjectReference Include="..\Kraken.SharePoint.Cloud\Kraken.SharePoint.Cloud.csproj" />
+    <ProjectReference Include="..\Kraken.SharePoint.OfficeDevPnP\Kraken.SharePoint.OfficeDevPnP.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryReference Include="net45-full/Kraken.Core.FullTrust.dll" />
+    <LibraryReference Include="net45-full/Kraken.Core.SandboxTrust.dll" />
+    <LibraryReference Include="net45-full/Kraken.Core.Security.dll" />
+    <LibraryReference Include="net45-full/Kraken.SharePoint.Client.dll" />
+    <LibraryReference Include="net45-full/Kraken.SharePoint.Cloud.dll" />
+    <LibraryReference Include="net45-full/Kraken.SharePoint.OfficeDevPnP.dll" />
+  </ItemGroup>
+  -->
+  <ItemGroup>
+    <Folder Include="lib\net40\" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+  <PropertyGroup>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+      REM NET 4.5
+      SET DESTPATH45="$(SolutionDir)Kraken.SharePoint.Client.Nuget2\lib\net45"
+      SET SOURCEPATH45A="$(SolutionDir)Kraken.SharePoint.Client\bin\DebugSP16_45\"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH45A%25Kraken*.dll" "%25DESTPATH45%25"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH45A%25Kraken*.pdb" "%25DESTPATH45%25"
+      SET SOURCEPATH45B="$(SolutionDir)Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH45B%25Kraken*.dll" "%25DESTPATH45%25"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH45B%25Kraken*.pdb" "%25DESTPATH45%25"
+      REM NET 3.5
+      SET DESTPATH35="$(SolutionDir)Kraken.SharePoint.Client.Nuget2\lib\net35"
+      SET SOURCEPATH35="$(SolutionDir)Kraken.SharePoint.Client\bin\DebugSP14_35\"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH35%25Kraken*.dll" "%25DESTPATH35%25"
+      %25SYSTEMROOT%25\system32\xcopy.exe /Y/I/C "%25SOURCEPATH35%25Kraken*.pdb" "%25DESTPATH35%25"
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

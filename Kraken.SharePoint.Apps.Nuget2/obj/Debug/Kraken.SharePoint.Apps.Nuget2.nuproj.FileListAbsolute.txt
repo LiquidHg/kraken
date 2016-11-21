@@ -1,0 +1,5 @@
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\bin\Debug\Kraken.SharePoint.Apps.0.1.7.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\bin\Debug\Kraken.SharePoint.Apps.0.1.7.symbols.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.nuspec
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.0.1.7.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.0.1.7.symbols.nupkg
