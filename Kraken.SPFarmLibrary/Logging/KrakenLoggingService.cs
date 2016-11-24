@@ -541,8 +541,14 @@ namespace Kraken.SharePoint.Logging {
           return;
 
         KrakenLoggingService service = KrakenLoggingService.Local;
-        if (service != null)
-          service.Delete();
+        if (service != null) {
+          try {
+            service.Delete();
+          } catch (NullReferenceException) {
+            // not much we can do here...
+          }
+        }
+
         foreach (SPServer server in farm.Servers) {
           RegistryKey eventLogKey = GetEventLogKey(server);
           if (eventLogKey == null)
@@ -574,8 +580,11 @@ namespace Kraken.SharePoint.Logging {
         eventLogKey = baseKey.OpenSubKey(EventLogApplicationRegistryKeyPath, true);
         if (eventLogKey == null)
           return null;
-      } catch (System.IO.IOException ex) {
-        Default.Write(ex, LoggingCategories.KrakenAlerts);
+      } catch (System.IO.IOException) {
+        // This is normal for SMTP and SQL servers
+        string msg = string.Format("Couldn't open registry key {0} on server = {0}. This is normal for servers such as SQL and SMTP which may be part of the farm but are not SharePoint servers, and in such cases this warning may be ignored.", EventLogApplicationRegistryKeyPath, server.Name);
+        Default.Write(msg, TraceSeverity.Monitorable, EventSeverity.Warning);
+        //Default.Write(ex, LoggingCategories.KrakenAlerts);
         return null;
       }
       return eventLogKey;

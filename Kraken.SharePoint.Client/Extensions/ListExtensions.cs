@@ -1,4 +1,4 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
   using System.Collections.Generic;
@@ -8,21 +8,26 @@
   using System.Security;
   using System.Xml.Linq;
 
-  using Microsoft.SharePoint.Client;
+  //using Microsoft.SharePoint.Client;
   using System.Diagnostics;
-  using Caml;
   using System.ComponentModel;
   //using Microsoft.SharePoint.Client.DocumentSet;
 
+  using Kraken.SharePoint.Client;
   using Kraken.SharePoint.Client.Caching;
+  using Kraken.SharePoint.Client.Caml;
   using Kraken.SharePoint.Client.Connections;
   using Kraken.SharePoint.Client.Helpers;
+  using kcloud=Kraken.SharePoint.Cloud;
+
   using Microsoft.SharePoint.Client.Utilities;
   using System.Collections;
 
   using wsClient = Kraken.SharePoint.Cloud.Client;
   using Kraken.Tracing;
+#if !DOTNET_V35
   using Microsoft.SharePoint.Client.EventReceivers;
+#endif
 
   public static class ListExpressions {
 
@@ -88,7 +93,13 @@
     */
   }
 
-  public static class ListExtensions {
+  /// <summary>
+  /// </summary>
+  /// <remarks>
+  /// Name has been changed so it is unique compared
+  /// to OfficeDevPnp class by the same name.
+  /// </remarks>
+  public static class KrakenListExtensions {
 
     /// <summary>
     /// Gets the full server relative URL coming from the root site.
@@ -109,7 +120,7 @@
       return Utils.CombineUrl(webUrl, rootFolderUrl);
     }
 
-    #region Folders
+#region Folders
 
     public static IEnumerable<Folder> GetFoldersAtTopLevel(this List list) {
       ClientContext context = (ClientContext)list.Context;
@@ -191,7 +202,7 @@
     existingFolder = listItems.FirstOrDefault().Folder;
      */
 
-    #endregion
+#endregion
 
 
     /// <summary>
@@ -225,33 +236,7 @@
       return isDocLib;
     }
 
-    #region Item Reteival
-
-    public static List<string> DefaultViewFields = new List<string>() {
-      "ID",
-      "Title",
-      "FileRef",
-      "FSObjType",
-      "Created",
-      "Modified",
-      "Author",
-      "Editor",
-      "ContentTypeId",
-      "File_x0020_Size",
-      "Last_x0020_Modified",
-      "Created_x0020_Date",
-      // strictly speaking we don't really need the rest of these in all cases
-      "_ModerationStatus",
-      "_Level",
-      "UniqueId",
-      "owshiddenversion",
-      "ProgId",
-      "FileLeafRef",
-      "HTML_x0020_File_x0020_Type",
-      "CheckoutUser",
-      "MetaInfo"
-    };
-
+#region Item Reteival
 
     /*
     private string GetSimpleCamlWhere(string fieldName, CAML.Operator op, string fieldType, string fieldValue) {
@@ -265,24 +250,50 @@
     }
      */
 
-    public static ListItemCollection GetItemsWithPaging(this List list, string fieldName, string fieldValue, CAML.Operator op = CAML.Operator.Eq, string fieldType = "TEXT", CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, List<string> viewFields = null, int pageIndex = 0, int pageSize = 2000, ITrace trace = null) {
+    public static ListItemCollection GetItemsWithPaging(
+      this List list, 
+      string fieldName, 
+      string fieldValue, 
+      CAML.Operator op = CAML.Operator.Eq, 
+      string fieldType = "TEXT", 
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll,
+      Dictionary<string, CAML.SortType> orderBy = null,
+      List<string> viewFields = null, 
+      int pageIndex = 0, 
+      int pageSize = -1, 
+      ITrace trace = null
+    ) {
       if (trace == null) trace = NullTrace.Default;
-      string where = Caml.CAML.Where(CAML.GetOperator(op, Caml.CAML.Value(fieldName), Caml.CAML.Value(fieldType, fieldValue)));
-      return list.GetItemsWithPaging(scope, where, viewFields, pageIndex, pageSize, trace);
+      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
+        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
+      string where = CAML.Where(CAML.GetOperator(op, CAML.Value(fieldName), CAML.Value(fieldType, fieldValue)));
+      return list.GetItemsWithPaging(scope, where, orderBy, viewFields, pageIndex, pageSize, trace);
     }
 
-    public static ListItemCollection GetItemsWithPaging(this List list, CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, string whereXml = "", List<string> viewFields = null, int pageIndex = 0, int pageSize = 2000, ITrace trace = null) {
+    public static ListItemCollection GetItemsWithPaging(
+      this List list, 
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+      string whereXml = "",
+      Dictionary<string, CAML.SortType> orderBy = null,
+      List<string> viewFields = null, 
+      int pageIndex = 0, 
+      int pageSize = -1, 
+      ITrace trace = null
+    ) {
       if (trace == null) trace = NullTrace.Default;
+      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
+        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
       // note that in this case null is different than an empty collection
-      if (viewFields == null)
-        viewFields = DefaultViewFields;
-      string viewFieldsXml = Caml.CAML.ViewFields(viewFields); // string.Empty;
-      /*
-      foreach (string field in viewFields) {
-        viewFieldsXml += string.Format("<FieldRef Name='{0}'/>", field);
+      string viewFieldsXml = viewFields.GetCamlViewFieldsXml();
+      string orderXml = string.Empty; 
+      if (orderBy != null) {
+        List<string> fields = new List<string>();
+        foreach (string fieldName in orderBy.Keys) {
+          fields.Add(CAML.FieldRef(fieldName, orderBy[fieldName]));
+        }
+        orderXml = CAML.OrderBy(fields.ToArray());
       }
-       */
-      return list.GetItemsWithPaging(scope, whereXml, viewFieldsXml, pageIndex, pageSize, trace);
+      return list.GetItemsWithPaging(scope, whereXml, orderXml, viewFieldsXml, pageIndex, pageSize, trace);
     }
 
     /// <summary>
@@ -294,8 +305,19 @@
     /// <param name="pageIndex">Zero-based page index for query</param>
     /// <param name="pageSize">Page item size</param>
     /// <returns>Collection of CSOM list items</returns>
-    public static ListItemCollection GetItemsWithPaging(this List list, CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, string whereXml = "", string viewFieldsXml = "", int pageIndex = 0, int pageSize = 2000, ITrace trace = null) {
+    public static ListItemCollection GetItemsWithPaging(
+      this List list, 
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+      string whereXml = "", 
+      string viewFieldsXml = "",
+      string orderXml = "",
+      int pageIndex = 0, 
+      int pageSize = -1, 
+      ITrace trace = null
+    ) {
       if (trace == null) trace = NullTrace.Default;
+      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
+        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
       // TODO eliminate options that require hard CAML string encoding
       /*
       if (string.IsNullOrEmpty(viewFieldsXml)) {
@@ -319,13 +341,14 @@
       }
 
       //string whereXml = CAML.Where(CAML.Eq(CAML.FieldRef("ContentType"), CAML.Value(currentCT.Name)));
-      string orderXml = string.Empty; //CAML.OrderBy(new string[] { orderBy });
       string viewXml = CAML.View(scope, CAML.Query(whereXml, orderXml), viewFieldsXml, CAML.RowLimit(pageSize));
-      if (!string.IsNullOrEmpty(viewXml))
+      if (!string.IsNullOrEmpty(viewXml)) {
+        trace.TraceVerbose("Generated CAML query: ");
+        trace.TraceVerbose(viewXml);
         camlQuery.ViewXml = viewXml;
-
+      }
       // diagnostic string
-      string camlDiag = (camlQuery.ViewXml ?? string.Empty) + "|" + camlQuery.DatesInUtc.ToString() + "|" + (camlQuery.FolderServerRelativeUrl ?? string.Empty) + "|" + ((camlQuery.ListItemCollectionPosition == null) ? string.Empty : camlQuery.ListItemCollectionPosition.PagingInfo);
+      string camlDiag = camlQuery.DatesInUtc.ToString() + "|" + (camlQuery.FolderServerRelativeUrl ?? string.Empty) + "|" + ((camlQuery.ListItemCollectionPosition == null) ? string.Empty : camlQuery.ListItemCollectionPosition.PagingInfo);
       trace.TraceVerbose(camlDiag);
 
       ListItemCollection items = list.GetItems(camlQuery);
@@ -338,6 +361,11 @@
       return items;
     }
 
+    // this can take a long time to run a query
+    public const int DEFAULT_LISTITEM_PAGE_SIZE = 4000;
+    public const int LISTITEM_LIMIT_USEDEFAULT = -1;
+    public const int LISTITEM_LIMIT_NOLIMIT = -2;
+
     /// <summary>
     /// Gets all items matching a query, using pagination
     /// to ensure that no returned data structure is too large.
@@ -349,17 +377,27 @@
     /// <param name="viewFields"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public static List<ListItem> GetItemsFromAllPages(this List list, ITrace trace, CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, string whereXml = "", List<string> viewFields = null, int pageSize = 2000) {
+    public static List<ListItem> GetAllItemsWithPaging(
+      this List list, ITrace trace, 
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+      string whereXml = "",
+      Dictionary<string, CAML.SortType> orderBy = null,
+      List<string> viewFields = null, 
+      int pageSize = -1) {
       if (trace == null) trace = NullTrace.Default;
-      List<ListItem> allItems = new List<ListItem>();
+      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
+        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
       ClientContext context = (ClientContext)list.Context;
       int numPages = (list.ItemCount / pageSize) + 1;
+      // pre-allocate the list to hold the number of references we'll need
+      int sizeOfList = list.ItemCount * 8; // hope this is not too big!
+      List < ListItem> allItems = new List<ListItem>(sizeOfList);
       trace.Trace(TraceLevel.Info, "{0} total items; page size {1}; iterating through {2} pages.", list.ItemCount, pageSize, numPages);
       int itemNumber = 0;
       for (int pageNum = 0; pageNum < numPages; pageNum++) {
         trace.Trace(TraceLevel.Info, "Processing page number {0}.", pageNum);
         trace.Trace(TraceLevel.Verbose, "Getting SharePoint List data...");
-        ListItemCollection items = list.GetItemsWithPaging(scope, whereXml, viewFields, pageNum, pageSize); // TODO dissappearing default param 'string.Empty', what was it?
+        ListItemCollection items = list.GetItemsWithPaging(scope, whereXml, orderBy, viewFields, pageNum, pageSize, trace); // TODO dissappearing default param 'string.Empty', what was it?
         trace.Trace(TraceLevel.Info, "Returned {0} items.", items.Count);
 
         string listUrl = list.RootFolder.ServerRelativeUrl;
@@ -373,6 +411,49 @@
       trace.Trace(TraceLevel.Verbose, "Done all pages. Count of items is {0}.", allItems.Count);
       return allItems;
     }
+
+    /// <summary>
+    /// Query a list and get a certain limited number of items back.
+    /// Useful in cases where page/throlle protection is not needed.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="rowLimit"></param>
+    /// <remarks>
+    /// Recommended to use GetAllItemsWithPaging when querying large lists.
+    /// </remarks>
+    /// <returns></returns>
+    public static ListItemCollection GetAllItems(this List list, CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, string whereXml = "", string orderByXml = "", List<string> viewFields = null, int rowLimit = -1) {
+      string viewFieldsXml = viewFields.GetCamlViewFieldsXml();
+      if (rowLimit == LISTITEM_LIMIT_USEDEFAULT)
+        rowLimit = DEFAULT_LISTITEM_PAGE_SIZE;
+      CamlQuery camlQuery = new CamlQuery();
+      camlQuery.ViewXml = CAML.View(
+        scope, 
+        CAML.Query(whereXml, orderByXml),
+        viewFieldsXml,
+        (rowLimit == LISTITEM_LIMIT_NOLIMIT) ? string.Empty : CAML.RowLimit(rowLimit)
+      );
+      ListItemCollection items = list.GetItems(camlQuery);
+      items.EnsureProperty(null);
+      return items;
+    }
+    public static ListItemCollection GetAllItems(
+      this List list,
+      string fieldName,
+      string fieldValue,
+      CAML.Operator op = CAML.Operator.Eq,
+      string fieldType = "TEXT",
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+      string orderByXml = "", 
+      List<string> viewFields = null, 
+      int rowLimit = -1
+    ) {
+      if (rowLimit == LISTITEM_LIMIT_USEDEFAULT)
+        rowLimit = DEFAULT_LISTITEM_PAGE_SIZE;
+      string where = CAML.Where(CAML.GetOperator(op, CAML.Value(fieldName), CAML.Value(fieldType, fieldValue)));
+      return list.GetAllItems(scope, where, orderByXml, viewFields, rowLimit);
+    }
+
 
     public static IEnumerable<ListItem> GetLookupItem(this List list, string value,
       ResolveLookupOptions options = null, ITrace trace = null) {
@@ -448,15 +529,6 @@
       return lookupValue;
     }
 
-    // TODO support pagination to get all the items ever in a list, even if it's Over 9000!!!!
-    public static ListItemCollection GetAllListItems(this List list, int rowLimit = 2500) {
-      CamlQuery camlQuery = new CamlQuery();
-      camlQuery.ViewXml = CAML.View(CAML.ViewScope.RecursiveAll, CAML.Query("", ""), "", CAML.RowLimit(rowLimit));
-      ListItemCollection items = list.GetItems(camlQuery);
-      items.EnsureProperty(null);
-      return items;
-    }
-
     public static ListItem GetListItemByDocumentUrl(this List list, string serverRelativeUrl) {
       if (string.IsNullOrEmpty(serverRelativeUrl))
         throw new ArgumentNullException("serverRelativeUrl");
@@ -470,9 +542,9 @@
       return null;
     }
 
-    #endregion
+#endregion
 
-    #region Item Creation
+#region Item Creation
 
     private static ListItemCreationInformation CreateItemCreationInfo(this List list, ListItemHandlingType type) {
       return CreateItemCreationInfo(list, type, null, string.Empty);
@@ -657,9 +729,9 @@
       return item;
     }
 
-    #endregion
+#endregion
 
-    #region Update Item
+#region Update Item
 
     /// <summary>
     /// This one should be used instead of the one from ListItem because
@@ -724,7 +796,11 @@
         object translatedValue = fieldValues[fieldName];
         if (options.ResolveLookups
           && field.FieldTypeKind == FieldType.Lookup) {
+#if !DOTNET_V35
           translatedValue = field.ResolveLookupValue(translatedValue, contextManager, trace);
+#else
+          throw new NotSupportedException("Sorry, but field.ResolveLookupValue was not implemented in SP14/ because CSOM did not support fiel.TypedObject. Set options.ResolveLookups to bypass this error.");
+#endif
         }
         if (options.HtmlEncodeText
           && (field.FieldTypeKind == FieldType.Text || field.FieldTypeKind == FieldType.Note)) {
@@ -748,9 +824,9 @@
       return result;
     }
 
-    #endregion
+#endregion
 
-    #region List Content Types
+#region List Content Types
 
     public static void ResolveContentTypeId(this List list, Hashtable fieldValues, WebContextManager contextManager = null, ITrace trace = null) {
       if (!fieldValues.ContainsKey("ContentType"))
@@ -877,8 +953,14 @@
         // load the Id but only if we've never done so before
         targetContentType.EnsureProperty(trace, "Id");
         ContentTypeId ctId = targetContentType.Id;
+#if !DOTNET_V35
         if (ctId.StringValue.StartsWith("0x0120D520"))
           isDocSetCT = true;
+#else
+        // TODO test to make sure this produces the value we'd expect
+        if (ctId.ToString().StartsWith("0x0120D520"))
+          isDocSetCT = true;
+#endif
       }
       trace.TraceVerbose("Is Document Set = {0}", isDocSetCT);
       string DOCSET_NAME = "Document Set";
@@ -946,9 +1028,9 @@
       return list.ContentTypes.AddContentType(properties, ctxMgr);
     }
 
-    #endregion
+#endregion
 
-    #region Folders and DocSets
+#region Folders and DocSets
 
     public static Folder CreateFolderOrDocumentSet(this List list, string folderContentTypeName, string folderName, string localFilePath, string localFilPathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
@@ -1036,9 +1118,9 @@
     }
     
 
-    #endregion
+#endregion
 
-    #region Fields
+#region Fields
 
     public static Field EnsureField(this List list, string fieldName, string fieldTypeAsString) {
       if (string.IsNullOrEmpty(fieldName))
@@ -1110,9 +1192,9 @@
       return field;
     }
 
-    #endregion
+#endregion
 
-    #region Views
+#region Views
 
     public static bool TryGetView(this List list, string title, out View view, bool ignoreCase = true) {
       try {
@@ -1159,7 +1241,16 @@
       string viewTitle = string.Empty;
       trace.TraceVerbose(string.Format("Attempting to retrieve View '{1}' from List '{0}'.", list.Title, viewName));
       Guid viewId;
+#if !DOTNET_V35
       if (Guid.TryParse(viewName, out viewId)) {
+#else
+      bool isGuid = false; viewId = Guid.Empty;
+      try {
+        viewId = new Guid(viewName);
+        isGuid = true;
+      } catch {}
+      if (isGuid) {
+#endif
         view = list.GetView(viewId);
       } else {
         view = list.Views.GetByTitle(viewName);
@@ -1190,9 +1281,9 @@
       return result;
     }
 
-    #endregion
+#endregion
 
-    #region Custom Properties
+#region Custom Properties
     public static ClientObjectData GetObjectData(this List list) {
       //protected internal
       Type type = typeof(ClientObject);
@@ -1212,7 +1303,7 @@
       if (listNode == null) {
         listNode = XDocument.Parse(list.SchemaXml).Root;
         if (contextManager != null) {
-          Cloud.SharePointConnection conn = contextManager.CreateLegacyConnection(true, false);
+          kcloud.SharePointConnection conn = contextManager.CreateLegacyConnection(true, false);
           XElement listNode2 = conn.ListsManager.GetListSchema(list.Id);
         }
         // TODO test the list schema by web svc and make sure the value matches what we have in CSOM
@@ -1287,7 +1378,7 @@
         listNode = XDocument.Parse(string.Format("<List Flags=\"{0}\" />", value.ToString())).Root;
 
         // overcome CSOM limits by using a legacy connection to the SharePoint server
-        Cloud.SharePointConnection conn = contextManager.CreateLegacyConnection(true, false);
+        kcloud.SharePointConnection conn = contextManager.CreateLegacyConnection(true, false);
         conn.ListsManager.UpdateListSchema(list.Id.ToString(), listNode, false);
         // does not work, because in CSOM (even server-side) SchemaXml does not exist as a writable property
         //list.SchemaXml_SetCustom();
@@ -1367,7 +1458,10 @@
 
     #endregion
 
-    #region Remote Event Receivers
+#region Remote Event Receivers
+
+/* Sorry, but event receivers are a new thing in CSOM */
+#if !DOTNET_V35
 
     // with thanks to https://blogs.msdn.microsoft.com/kaevans/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web/
     public static bool EnsureRemoteEvent(this List list, string receiverName, Uri receiverUrl, EventReceiverSynchronization sync, int seq, ITrace trace) {
@@ -1395,7 +1489,8 @@
       return true;
     }
 
-    #endregion
+#endif
+#endregion
 
   }
 

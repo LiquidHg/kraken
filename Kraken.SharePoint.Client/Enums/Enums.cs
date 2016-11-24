@@ -1,8 +1,47 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
 
-		public enum ModerationStatusType {
+  public enum ListItemUrlType {
+    FileRefUrl,
+    DocIdUrl,
+    DisplayFormUrl,
+    EditFormUrl
+  }
+
+  [Flags]
+  public enum WorkflowEvents {
+    ItemAdded,
+    ItemUpdated,
+    WorkflowStart
+  }
+
+  [Flags]
+  public enum FindMethod {
+    None,
+    InternalName,
+    DisplayName,
+    Id,
+    Any = InternalName | DisplayName | Id
+    //AutoInternalDisplay,
+    //AutoDisplayInternal
+  }
+
+  [Flags]
+  public enum SiteColumnFindMethod {
+    None,
+    InternalName,
+    DisplayName,
+    StaticName,
+    Id,
+    Any = InternalName | DisplayName | StaticName | Id
+    //AutoStaticInternal,
+    //AutoInternalStatic,
+    //AutoStaticInternalDisplay,
+    //AutoDisplayInternalStatic
+  }
+
+  public enum ModerationStatusType {
 			Approved = 0,
 			Denied = 1,
 			Pending = 2,

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿namespace Microsoft.SharePoint.Client {
 
-using Microsoft.SharePoint.Client;
-using System.Reflection;
-using Kraken.SharePoint.Client.Helpers;
-using Kraken.Tracing;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Linq.Expressions;
+  using System.Reflection;
+  using System.Text;
 
-namespace Kraken.SharePoint.Client {
-	public static class ClientObjectExtensions {
+  using Kraken.SharePoint.Client;
+  using Kraken.Tracing;
+
+  public static class KrakenClientObjectExtensions {
 
     /// <summary>
     /// Load one or more properties of a client object and call execute query
@@ -75,7 +75,7 @@ namespace Kraken.SharePoint.Client {
 
     public static bool LoadFromProperty(this ClientRuntimeContext context, ClientObject clientObject, PropertyInfo property, bool force = false, ITrace trace = null) {
       Type genericType = clientObject.GetType();
-      MethodInfo method = typeof(ClientObjectExtensions).GetMethod("Load", BindingFlags.Public | BindingFlags.Static); //, null, new Type[] { typeof(PropertyInfo) }, null);
+      MethodInfo method = typeof(KrakenClientObjectExtensions).GetMethod("Load", BindingFlags.Public | BindingFlags.Static); //, null, new Type[] { typeof(PropertyInfo) }, null);
       method = method.MakeGenericMethod(genericType);
       object result = method.Invoke(null, new object[] { context, clientObject, property, force, trace });
       return (bool)result;

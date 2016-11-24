@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.2</version>
+    <version>0.2.11</version>
     <title>Kraken SharePoint Client Library</title>
     <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.2: With apologies to all, v0.2-0.2.1 had incorrect .net framework references in the build; this version includes corrections for 4.0/4.5 and also recompiles the older 3.5 version for the first time in a while.</releaseNotes>
+    <releaseNotes>v0.2.11: Correct a disconnected trace parameter in GetAllItemsWithPaging that buried some of the diagnostic informaiton in list queries.</releaseNotes>
     <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
@@ -48,8 +48,6 @@
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\NuGet.config" target="" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\NuGet.exe" target="" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\Readme.txt" target="" exclude="" />
   </files>
 </package>

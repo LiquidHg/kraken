@@ -1,0 +1,8 @@
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\Kraken.Core.SandboxTrust.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\Kraken.Core.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\Newtonsoft.Json.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\RestSharp.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\Newtonsoft.Json.xml
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug35\RestSharp.xml
+R:\Repos\kraken\Kraken.Core.SandboxTrust\obj\Debug35\Kraken.Core.SandboxTrust.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\obj\Debug35\Kraken.Core.SandboxTrust.pdb

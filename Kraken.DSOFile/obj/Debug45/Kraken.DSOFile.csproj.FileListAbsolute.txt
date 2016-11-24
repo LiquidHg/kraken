@@ -1,10 +1,5 @@
-R:\Kraken\Kraken.DSOFile\bin\Debug\Kraken.DSOFile.dll
-R:\Kraken\Kraken.DSOFile\bin\Debug\Kraken.DSOFile.pdb
-R:\Kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csprojResolveAssemblyReference.cache
-R:\Kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.dll
-R:\Kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.pdb
-R:\Kraken.GitHub\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.dll
-R:\Kraken.GitHub\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.pdb
-R:\Kraken.GitHub\kraken\Kraken.DSOFile\bin\Debug\Kraken.DSOFile.dll
-R:\Kraken.GitHub\kraken\Kraken.DSOFile\bin\Debug\Kraken.DSOFile.pdb
-R:\Kraken.GitHub\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.DSOFile\bin\Debug45\Kraken.DSOFile.dll
+R:\Repos\kraken\Kraken.DSOFile\bin\Debug45\Kraken.DSOFile.pdb
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.dll
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.pdb
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csprojResolveAssemblyReference.cache

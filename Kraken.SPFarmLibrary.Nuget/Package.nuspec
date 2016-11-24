@@ -3,11 +3,12 @@
   <metadata>
     <title>Kraken SharePoint Farm Solution Library</title>
     <id>Kraken.SPFarmLibrary</id>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing farm WSP solutions that require full trust. Includes the sandbox library as a sub-set.</description>
     <releaseNotes>
+      0.1.2 Certificate utility updates; some improvements to handling of user profile manager; fixed flase-flag errors on install of Logging Categories to registry for machines that are not actually SharePoint servers (SMTP/SQL).
       0.1.1 Updates to nuget packages to keep pace with consumer libs.
       0.1.0 Initial release.</releaseNotes>
     <summary>Developer library for creating SharePoint farm WSP solution projects.</summary>

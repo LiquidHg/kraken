@@ -1,84 +1,26 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Text;
   using System.Net;
-  using System.Security;
-  using System.Xml.Linq;
   using System.IO;
   using System.Text.RegularExpressions;
 
-  using Microsoft.SharePoint.Client;
 #if !DOTNET_V35
   using Microsoft.SharePoint.Client.Taxonomy;
   //using Microsoft.SharePoint.Client.DocumentSet;
 #endif
 
+  using Kraken.SharePoint.Client;
   using Kraken.SharePoint.Client.Caching;
   using Kraken.SharePoint.Client.Connections;
   using Kraken.Net;
   using Kraken.SharePoint.Client.Helpers;
   using Kraken.Tracing;
 
-	public static class ListCollectionExtensions {
-
-		/// <summary>
-		/// Case insensitive search for a list/library by a given name.
-		/// The following commonly used properties are initialized: Id, Title, ItemCount, RootFolder, RootFolder.ServerRelativeUrl
-		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="listTitleOrName"></param>
-		/// <param name="ignoreCase"></param>
-		/// <returns>A list object with Title, Id, and RootFolder.ServerRelativeUrl loaded</returns>
-		public static List GetByTitleOrName(this ListCollection lists, string listTitleOrName, bool ignoreCase = true) {
-			//StringComparison compareType = (ignoreCase) ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
-			//return lists.GetByTitleOrName(listTitleOrName, compareType);
-			ClientContext context = (ClientContext)lists.Context;
-			//web.Lists.GetByTitle(listTitle);
-			//context.Load(context, lists);
-			if (ignoreCase) {
-				listTitleOrName = listTitleOrName.ToLower();
-				// when case insensitive, we need to load the entire list-of-lists locally
-				context.Load(context.Web, w => w.Lists);
-				context.Load(lists, ListExpressions.IncludeBasicProperties());
-				// TODO is this smart enough not to travel across the wire multiple times?
-				context.ExecuteQueryIfNeeded();
-				foreach (List l in lists) {
-					if (listTitleOrName == l.RootFolder.Name.ToLower() || listTitleOrName == l.Title.ToLower())
-						return l;
-				}
-				return null;
-			} else {
-				IEnumerable<List> foundLists = context.LoadQuery(
-					lists
-						.Where(l => listTitleOrName == l.RootFolder.Name || listTitleOrName == l.Title)
-						.IncludeBasicProperties()
-				);
-				context.ExecuteQueryIfNeeded();
-				return foundLists.FirstOrDefault();
-			}
-		}
-
-		/*
-		public static List GetByTitleOrName(this ListCollection lists, string listTitleOrName, StringComparison comp) {
-			ClientRuntimeContext context = lists.Context;
-			//ListCollection  = web.Lists;
-			//web.Lists.GetByTitle(listTitle);
-			IEnumerable<List> foundLists = context.LoadQuery(
-				lists
-					.Where(l => listTitleOrName.Equals(l.RootFolder.Name, comp) || listTitleOrName.Equals(l.Title, comp))
-					.IncludeBasicProperties()
-			);
-			context.ExecuteQuery();
-			return foundLists.FirstOrDefault();
-		}
-		*/
-
-	}
-
-  public static class WebExtensions {
+  public static class KrakenWebExtensions {
 
 		#region Basic
 
@@ -299,9 +241,20 @@
 			var ctx = web.Context;
 			try {
         Guid listId;
+#if !DOTNET_V35
         if (Guid.TryParse(listUrlTitleOrName, out listId)) {
+#else
+        bool isGuid = false; listId = Guid.Empty;
+        try {
+          listId = new Guid(listUrlTitleOrName);
+          isGuid = true;
+        } catch { }
+        if (isGuid) {
+#endif
           // TODO but a list by ID can come from anywhere in the site collection
           list = web.Lists.GetById(listId);
+/* older versions of CSOM didn't implement web.GetList */
+#if !DOTNET_V35
         } else if (listUrlTitleOrName.Contains("/")) {
 					list = web.GetList(listUrlTitleOrName);
 					/*
@@ -309,7 +262,8 @@
 							list => list.IncludeBasicProperties()
 					);
 					 */
-				} else {
+#endif
+        } else {
 					list = web.Lists.GetByTitleOrName(listUrlTitleOrName, ignoreCase);
 					// the query in GetByTitleOrName should work to perform same thing as 
 					//string tryByUrl = web.ServerRelativeUrl + "/" + listUrlTitleOrName;
@@ -360,7 +314,7 @@
 			context.ExecuteQuery();
 			ListTemplate listTemplate = web.ListTemplates.FirstOrDefault(lt => lt.Name == customTemplateName);
 			if (listTemplate == null)
-				throw new ArgumentOutOfRangeException("customTemplateName", string.Format("List template with name '{0}' does not exist in web '{1}'.", customTemplateName, web.Url));
+				throw new ArgumentOutOfRangeException("customTemplateName", string.Format("List template with name '{0}' does not exist in web '{1}'.", customTemplateName, web.UrlSafeFor2010()));
 			ListCreationInformation lci = new ListCreationInformation() {
 				Title = listTitle,
 				Description = description,
@@ -373,9 +327,9 @@
 			return list;
 		}
 
-		#endregion
+#endregion
 
-		#region Content Types
+#region Content Types
 
 		/// <summary>
     /// 
@@ -551,9 +505,9 @@
       return web.ContentTypes.AddContentType(properties, ctxMgr);
     }
 
-    #endregion
+#endregion
 
-    #region Site Columns
+#region Site Columns
 
     /// <summary>
     /// Gets a site column from the web site, using one of several methods.
@@ -752,9 +706,9 @@
       return web.Fields.AddField(properties, trace, execute);
     }
 
-    #endregion
+#endregion
 
-    #region Sandbox Solutions
+#region Sandbox Solutions
 
     /// <summary>
     /// 
@@ -849,33 +803,8 @@
       return true;
     }
 
-    #endregion
+#endregion
 
   } // class
-
-  [Flags]
-  public enum FindMethod {
-    None,
-    InternalName,
-    DisplayName,
-    Id,
-    Any = InternalName | DisplayName | Id
-    //AutoInternalDisplay,
-    //AutoDisplayInternal
-  }
-
-  [Flags]
-  public enum SiteColumnFindMethod {
-    None,
-    InternalName,
-    DisplayName,
-    StaticName,
-    Id,
-    Any = InternalName | DisplayName | StaticName | Id
-    //AutoStaticInternal,
-    //AutoInternalStatic,
-    //AutoStaticInternalDisplay,
-    //AutoDisplayInternalStatic
-  }
 
 }

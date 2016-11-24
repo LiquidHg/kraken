@@ -1,21 +1,18 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
   using System.Linq;
   using System.Text;
   using System.Net;
-  using System.Security;
-  using System.Xml.Linq;
 
-  using Microsoft.SharePoint.Client;
-  using System.Diagnostics;
-  //using Microsoft.SharePoint.Client.DocumentSet;
   using Kraken.Security.Cryptography;
-  using Kraken.SharePoint.Client.Helpers;
+  using Kraken.SharePoint.Client;
   using Kraken.Tracing;
+  using Kraken.SharePoint.Client.Caml;
 
-  public static class FolderExtensions {
+  public static class KrakenFolderExtensions {
 
     private const int maxSize = 1600000; // really 2097152 but let's give it some margin;
     private const int maxRetries = 2;
@@ -44,8 +41,8 @@
         ? folder.Folders.Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount)
         : folder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount)
 #else
-        ? folder.Folders.Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified)
-        : folder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified)
+        ? folder.Folders.Include(f => f.ServerRelativeUrl) // TimeCreated and TimeLastModified not supported in older CSOM
+        : folder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl)
 #endif
 );
       context.ExecuteQuery();
@@ -227,8 +224,14 @@
       if (trace == null) trace = NullTrace.Default;
       var ctx = folder.Context;
 			try {
-				ListItem listitem = folder.ListItemAllFields;
-				listitem["FileLeafRef"] = newTitle;
+#if !DOTNET_V35
+        ListItem listitem = folder.ListItemAllFields;
+#else
+        throw new NotImplementedException("Can't convert folder to list item in older versions of CSOM.");
+        ListItem listitem = null;
+        // TODO implement SP14 CSOM convert from folder to item
+#endif
+        listitem["FileLeafRef"] = newTitle;
 				listitem.Update();
 				ctx.ExecuteQuery();
         return true;
@@ -277,7 +280,7 @@
         if (0 < (hashMethod & HashAlgorithmType.CRC32)) {
           crcHash = fstream.ComputeCrc32(true); // resets stream to 0 when done
         }
-        if (0 < (hashMethod & HashAlgorithmType.MD5Hash)) {
+        if (0 < (hashMethod & HashAlgorithmType.MD5)) {
           md5Hash = fstream.ComputeMD5Hash(true); // resets stream to 0 when done
         }
 #endif
@@ -390,7 +393,7 @@
       return newFile;
     }
 
-    #region VERY large file support
+#region VERY large file support
 
     private enum SaveBinaryCheckMode {
       ETag,
@@ -499,12 +502,12 @@
       // TODO get the folder's server realtive URL
       CamlQuery query = new CamlQuery();
       query.FolderServerRelativeUrl = folder.ServerRelativeUrl;
-      query.ViewXml = Caml.CAML.View(
-        Caml.CAML.ViewScope.All, // not RecursiveAll, because we just want this subfolder
-        Caml.CAML.Query(
-          Caml.CAML.Where(Caml.CAML.And(
-            Caml.CAML.Eq(Caml.CAML.FieldRef("ContentType"), Caml.CAML.Value("Folder")),
-            Caml.CAML.Eq(Caml.CAML.FieldRef("FileLeafRef"), Caml.CAML.Value(folder.Name))
+      query.ViewXml = CAML.View(
+        CAML.ViewScope.All, // not RecursiveAll, because we just want this subfolder
+        CAML.Query(
+          CAML.Where(CAML.And(
+            CAML.Eq(CAML.FieldRef("ContentType"), CAML.Value("Folder")),
+            CAML.Eq(CAML.FieldRef("FileLeafRef"), CAML.Value(folder.Name))
           )),
           "" /* order by */
         )
@@ -517,7 +520,7 @@
       return items.FirstOrDefault();
     }
 
-    #endregion
+#endregion
 
   }
 }

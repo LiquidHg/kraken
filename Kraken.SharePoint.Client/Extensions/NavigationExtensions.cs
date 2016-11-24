@@ -1,15 +1,21 @@
-﻿using Kraken.Tracing;
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Publishing;
-using Microsoft.SharePoint.Client.Publishing.Navigation;
-using Microsoft.SharePoint.Client.Taxonomy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/* Older versions of CSOM did not include this API */
+#if !DOTNET_V35
 
-namespace Kraken.SharePoint.Client {
-  public static class NavigationExtensions {
+namespace Microsoft.SharePoint.Client {
+
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
+
+  using Kraken.Tracing;
+  using Kraken.SharePoint.Client;
+
+  using Microsoft.SharePoint.Client.Publishing;
+  using Microsoft.SharePoint.Client.Publishing.Navigation;
+  using Microsoft.SharePoint.Client.Taxonomy;
+
+  public static class KrakenNavigationExtensions {
 
     // credits to:
     // http://johnjayaseelan.blogspot.com/2013_03_01_archive.html
@@ -295,3 +301,4 @@ namespace Kraken.SharePoint.Client {
 
   }
 }
+#endif

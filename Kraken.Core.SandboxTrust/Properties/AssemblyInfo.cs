@@ -51,4 +51,7 @@ using System.Security;
 [assembly: AllowPartiallyTrustedCallers()]
 [assembly: SecurityTransparent]
 // done to preven issues with the json serializer
+/* SecurityRules were new in .NET Framework 4.0 */
+#if DOTNET_V4
 [assembly: SecurityRules(System.Security.SecurityRuleSet.Level1)]
+#endif

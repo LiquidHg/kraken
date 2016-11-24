@@ -1,31 +1,42 @@
-﻿using Kraken.SharePoint.Client.Connections;
-using Kraken.SharePoint.Client.Helpers;
-using Kraken.Tracing;
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
-using Microsoft.SharePoint.Client.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace Microsoft.SharePoint.Client {
 
-namespace Kraken.SharePoint.Client {
-  public static class FieldExtensions {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
+
+  /* Older versions of CSOM did not include this API */
+#if !DOTNET_V35
+  using Microsoft.SharePoint.Client.Taxonomy;
+#endif
+  using Microsoft.SharePoint.Client.Utilities;
+
+  using Kraken.SharePoint.Client;
+  using Kraken.SharePoint.Client.Connections;
+  using Kraken.SharePoint.Client.Helpers;
+  using Kraken.Tracing;
+
+  public static class KrakenFieldExtensions {
 
     public static object EncodeTextValue(this Field field, object fieldValue, WebContextManager contextManager = null, ITrace trace = null) {
       if (field.FieldTypeKind != FieldType.Text && field.FieldTypeKind == FieldType.Note)
         return fieldValue;
 
+// TODO this method of type checking only works in nwer versions of CSOM
+#if !DOTNET_V35
       FieldText t1 = field.TypedObject as FieldText;
       FieldMultiLineText t = field.TypedObject as FieldMultiLineText;
 
       if (t1 != null || (t != null && !t.RichText))
+#endif
         fieldValue = HttpUtility.HtmlEncode(fieldValue.ToString());
       return fieldValue;
     }
 
+    /* Older versions of CSOM did not include field.TypedObject in API */
+#if !DOTNET_V35
     public static object ResolveLookupValue(this Field field, object fieldValue, WebContextManager contextManager = null, ITrace trace = null) {
-      FieldLookup fl = field.TypedObject as FieldLookup;
+      FieldLookup fl = field as FieldLookup;
       if (fl == null || fieldValue == null || string.IsNullOrEmpty(fieldValue.ToString()))
         return null; //fieldValue;
 
@@ -54,8 +65,9 @@ namespace Kraken.SharePoint.Client {
       }
       return fieldValue;
     }
+#endif
 
-    #region FieldCollection extensions
+#region FieldCollection extensions
 
     public static List<Field> GetByGroup(this FieldCollection fields, string groupName) {
       ClientContext context = (ClientContext)fields.Context;
@@ -138,7 +150,7 @@ namespace Kraken.SharePoint.Client {
     }
 #endif
 
-    #endregion
+#endregion
 
   }
 

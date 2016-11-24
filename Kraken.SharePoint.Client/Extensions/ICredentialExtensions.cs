@@ -1,13 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿namespace Microsoft.SharePoint.Client {
 
-namespace Kraken.SharePoint.Client {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Net;
+  using System.Text;
 
-  public static class ICredentialExtensions {
+  public static class KrakenICredentialExtensions {
 
     public static string GetUserName(this ICredentials cred) {
       if (cred == null)

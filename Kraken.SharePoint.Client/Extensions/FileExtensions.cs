@@ -1,19 +1,12 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
+
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
+  using System.Diagnostics;
+  using System.Linq;
 	using System.Text;
-	using System.Net;
-	using System.Security;
-	using System.Xml.Linq;
 
-	using Microsoft.SharePoint.Client;
-	using System.Diagnostics;
-	//using Microsoft.SharePoint.Client.DocumentSet;
-	using Kraken.SharePoint.Client;
-	using Kraken.Security.Cryptography;
-
-	public static class FileExtensions {
+	public static class KrakenFileExtensions {
 
 		public static void Rename(this File file, string newTitle) {
 			var ctx = file.Context;

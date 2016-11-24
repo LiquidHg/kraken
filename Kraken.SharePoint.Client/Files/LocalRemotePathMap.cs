@@ -111,7 +111,11 @@ namespace Kraken.SharePoint.Client.Files {
       if (f.IsFolder) {
         // This sort of depends on the fact that the folder exists
         System.IO.SearchOption option = recurse ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
+#if !DOTNET_V35
         List<string> entries = System.IO.Directory.EnumerateFileSystemEntries(f.EntryPath, "*", option).ToList();
+#else
+        List<string> entries = System.IO.Directory.GetDirectories(f.EntryPath, "*", option).ToList();
+#endif
         foreach (string entry in entries) {
           string url = ConvertLocalFolderToRelativeUrl(entry);
           this.Add(entry, url);

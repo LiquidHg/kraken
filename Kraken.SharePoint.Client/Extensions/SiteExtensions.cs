@@ -1,12 +1,16 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+namespace Microsoft.SharePoint.Client {
 
-namespace Kraken.SharePoint.Client {
-  public static class SiteExtensions {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
+  using Kraken.SharePoint.Client;
 
+  public static class KrakenSiteExtensions {
+
+    // site.GetWebTemplates not implemented in older versions of CSOM
+#if !DOTNET_V35
     /// <summary>
     /// Get the web templates available for the site collection
     /// </summary>
@@ -27,6 +31,7 @@ namespace Kraken.SharePoint.Client {
       else
         return templates.Where(t => !t.Name.Contains("{")).ToList();
     }
-  }
+#endif
 
+  }
 }

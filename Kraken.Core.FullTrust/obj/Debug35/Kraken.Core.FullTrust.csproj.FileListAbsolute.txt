@@ -1,0 +1,15 @@
+R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug35\Kraken.Core.FullTrust.csproj.App.config
+R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug35\Kraken.Core.FullTrust.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Kraken.Core.FullTrust.dll.config
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Kraken.Core.FullTrust.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Kraken.Core.FullTrust.pdb
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Kraken.Core.SandboxTrust.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\log4net.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Newtonsoft.Json.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\RestSharp.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Kraken.Core.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\log4net.xml
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\Newtonsoft.Json.xml
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug35\RestSharp.xml
+R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug35\Kraken.Core.FullTrust.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug35\Kraken.Core.FullTrust.pdb

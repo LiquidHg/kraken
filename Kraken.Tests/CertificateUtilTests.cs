@@ -12,18 +12,10 @@ namespace Kraken.Tests
         [TestMethod]
         public void GetCertificate_ReturnsTrue()
         {
-        }
-
-        [TestMethod]
-        public void GetCertificate2_ReturnsTrue()
-        {
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "cn=daf"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "CN=DAF"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "CN=DaF"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "a5 f3 ac c3 1f e5 eb 59 b1 4a be c1 38 ad 8b 00 51 00 b5 85"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "A5F3ACC31FE5EB59B14ABEC138AD8B005100B585"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "CN=127.0.0.1, O=TESTING ONLY, OU=Windows Azure DevFabric"));
-            Assert.IsNotNull(CertificateUtil.GetCertificate2(StoreName.My, StoreLocation.LocalMachine, "CN=colossusconsulting-GUARDIAN-CA, DC=colossusconsulting, DC=com"));
+            Assert.IsNotNull(CertificateUtil.GetCertificate(StoreName.My, StoreLocation.LocalMachine, "a5 f3 ac c3 1f e5 eb 59 b1 4a be c1 38 ad 8b 00 51 00 b5 85"));
+            Assert.IsNotNull(CertificateUtil.GetCertificate(StoreName.My, StoreLocation.LocalMachine, "A5F3ACC31FE5EB59B14ABEC138AD8B005100B585"));
+            Assert.IsNotNull(CertificateUtil.GetCertificate(StoreName.My, StoreLocation.LocalMachine, "CN=127.0.0.1, O=TESTING ONLY, OU=Windows Azure DevFabric"));
+            Assert.IsNotNull(CertificateUtil.GetCertificate(StoreName.My, StoreLocation.LocalMachine, "CN=colossusconsulting-GUARDIAN-CA, DC=colossusconsulting, DC=com"));
         }
 
         [TestMethod]

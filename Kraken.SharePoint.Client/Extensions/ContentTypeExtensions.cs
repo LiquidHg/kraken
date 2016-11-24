@@ -1,23 +1,19 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
   using System.Linq;
   using System.Text;
-  using System.Net;
-  using System.Security;
-  using System.Xml.Linq;
+  using System.Text.RegularExpressions;
 
-  using Microsoft.SharePoint.Client;
-  using System.Diagnostics;
   //using Microsoft.SharePoint.Client.DocumentSet;
 
   using Kraken.SharePoint.Client.Connections;
-  using System.Text.RegularExpressions;
-  using Kraken.SharePoint.Client.Helpers;
+  using Kraken.SharePoint.Client;
   using Kraken.Tracing;
 
-  public static class ContentTypeExtensions {
+  public static class KrakenContentTypeExtensions {
 
     public static bool IsContentTypeIdValid(string contentTypeId, string parentId, bool throwOnError = true) {
       bool valid = true;
@@ -220,7 +216,7 @@
 
       //trace.Trace(TraceLevel.Verbose, "{0}", properties.Field.SchemaXml); // prevent problems with string.Format when xml has {0} etc in it
 
-      FieldLink fl = ct.FieldLinks.Add(properties); // this should set HasPendingRequest = true
+      FieldLink fl = ct.FieldLinks.Add(properties.ConvertSP14Safe()); // this should set HasPendingRequest = true
       fl.Update(properties, updateChildTypes, trace);
       if (context.HasPendingRequest) {
         trace.Trace(TraceLevel.Verbose, "Calling Update on content type");
@@ -323,6 +319,7 @@
           ct.EditFormTemplateName = properties.EditFormTemplateName;
         if (!string.IsNullOrEmpty(properties.EditFormUrl))
           ct.EditFormUrl = properties.EditFormUrl;
+#if !DOTNET_V35
         if (!string.IsNullOrEmpty(properties.JSLink))
           ct.JSLink = properties.JSLink;
         if (!string.IsNullOrEmpty(properties.MobileDisplayFormUrl))
@@ -331,6 +328,7 @@
           ct.MobileEditFormUrl = properties.MobileEditFormUrl;
         if (!string.IsNullOrEmpty(properties.MobileNewFormUrl))
           ct.MobileNewFormUrl = properties.MobileNewFormUrl;
+#endif
         if (!string.IsNullOrEmpty(properties.NewFormTemplateName))
           ct.NewFormTemplateName = properties.NewFormTemplateName;
         if (!string.IsNullOrEmpty(properties.NewFormUrl))
@@ -342,7 +340,7 @@
       return ct;
     }
 
-    #region Extensions for ContentTypeCollection
+#region Extensions for ContentTypeCollection
 
     /// <summary>
     /// Creates a new content type
@@ -364,12 +362,18 @@
 #endif
         throw new ArgumentNullException("Id required when ParentContentType is null. Provide one or the other.");
       bool spVersionOld = false;
+#if !DOTNET_V35
       if (spVersionOld && !string.IsNullOrWhiteSpace(properties.Id))
         throw new NotSupportedException("You can't specify ID in older versions of SharePoint.");
-      string parentId = (properties.ParentContentType == null) ? string.Empty : properties.ParentContentType.Id.StringValue; // .ToString()
+      string parentId = (properties.ParentContentType == null) ? string.Empty : properties.ParentContentType.Id.StringValue;
+#else
+      if (spVersionOld && !string.IsNullOrEmpty(properties.Id))
+        throw new NotSupportedException("You can't specify ID in older versions of SharePoint.");
+      string parentId = (properties.ParentContentType == null) ? string.Empty : properties.ParentContentType.Id.ToString();
+#endif
       // if you provide both it is still wise to check that ctid is valid
-      ContentTypeExtensions.IsContentTypeIdValid(properties.Id, parentId);
-      ContentType ct = ctc.Add(properties);
+      KrakenContentTypeExtensions.IsContentTypeIdValid(properties.Id, parentId);
+      ContentType ct = ctc.Add(properties.ConvertSP14Safe());
       context.ExecuteQuery();
       context.Load(ct, t => t.Id, t => t.Group, t => t.Name, t => t.SchemaXml);
       ct.Update(properties, false, true); // It's just a baby, so I sure hope it doesn't have any kids!
@@ -389,14 +393,14 @@
 #if !DOTNET_V35
       var result = context.LoadQuery(ctc.Where(c => c.Name == contentTypeNameOrId || c.Id.StringValue == contentTypeNameOrId).GetDefaultProperties());
 #else
-      var result = context.LoadQuery(ctc.Where(c => c.Name == contentTypeName || c.Id.ToString() == contentTypeName).GetDefaultProperties());
+      var result = context.LoadQuery(ctc.Where(c => c.Name == contentTypeNameOrId || c.Id.ToString() == contentTypeNameOrId).GetDefaultProperties());
 #endif
       context.ExecuteQuery();
       ContentType targetContentType = result.FirstOrDefault();
       return targetContentType;
     }
 
-    #endregion
+#endregion
 
   }
 

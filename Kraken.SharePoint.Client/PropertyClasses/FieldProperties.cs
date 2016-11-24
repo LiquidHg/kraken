@@ -16,6 +16,14 @@ using Kraken.Xml;
 
 namespace Kraken.SharePoint.Client {
 
+/* Stub enum for older versions of CSOM */
+#if DOTNET_V35
+  public enum DateTimeFieldFriendlyFormatType {
+    Unspecified,
+    Relative
+  }
+#endif
+
   /// <summary>
   /// This is a POCO style clas used for passing large numbers of field properties 
   /// when creating or editing field definitions.
@@ -256,7 +264,16 @@ namespace Kraken.SharePoint.Client {
     public Guid? ListId {
       get {
         Guid listId;
+#if !DOTNET_V35
         if (Guid.TryParse(ListRaw, out listId))
+#else
+          bool isGuid = false; listId = Guid.Empty;
+        try {
+          listId = new Guid(ListRaw);
+          isGuid = true;
+        } catch { }
+        if (isGuid)
+#endif
           return listId;
         return null;
       }
@@ -450,10 +467,14 @@ namespace Kraken.SharePoint.Client {
 
     [XmlAttribute]
     public int? CalType { get; set; }
+
 #if !DOTNET_V35
+    /// <summary>
+    /// In SP14, it is a black hole that does nothing, but included here to allow code that works with it to function
+    /// </summary>
+#endif
     [XmlAttribute]
     public DateTimeFieldFriendlyFormatType? FriendlyDisplayFormat { get; set; }
-#endif
 
     // to be implemented for future support
     [XmlAttribute]
@@ -539,7 +560,11 @@ namespace Kraken.SharePoint.Client {
             this.RichText = true;
           break;
         case FieldTypeAlias.Date:
+#if !DOTNET_V35
           if (string.IsNullOrWhiteSpace(this.Format))
+#else
+          if (string.IsNullOrEmpty(this.Format))
+#endif
             this.Format = DateTimeFieldFormatType.DateOnly.ToString();
           break;
         case FieldTypeAlias.FriendlyDate:
@@ -1182,7 +1207,7 @@ namespace Kraken.SharePoint.Client {
       return props;
     }
 
-    #region IXmlSerializable members
+#region IXmlSerializable members
 
     public void WriteXml(XmlWriter writer) {
       //if (SomeInt != null) { writer.WriteValue(writer); }
@@ -1344,7 +1369,7 @@ namespace Kraken.SharePoint.Client {
       return (null);
     }
 
-    #endregion
+#endregion
 
   }
 

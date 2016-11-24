@@ -1,0 +1,8 @@
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\obj\DebugSP14_35\Kraken.SharePoint.Client.Test.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\bin\DebugSP14_35\Kraken.SharePoint.Client.Test.exe.config
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\bin\DebugSP14_35\Kraken.SharePoint.Client.Test.exe
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\bin\DebugSP14_35\Kraken.SharePoint.Client.Test.pdb
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\bin\DebugSP14_35\Microsoft.SharePoint.Client.dll
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\bin\DebugSP14_35\Microsoft.SharePoint.Client.Runtime.dll
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\obj\DebugSP14_35\Kraken.SharePoint.Client.Test.exe
+R:\Repos\kraken\Kraken.SharePoint.Client.Test\obj\DebugSP14_35\Kraken.SharePoint.Client.Test.pdb

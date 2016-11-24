@@ -83,6 +83,15 @@ join the team.
 
 Update History:
 
+v0.2.11: Correct a disconnected trace parameter in GetAllItemsWithPaging that buried some of the diagnostic informaiton in list queries.
+v0.2.10: Added CamlHelpers.ConvertToOrderBy to convert Hashtable to strong type for CAML query order by clause.
+v0.2.9: Added params to GetItemsWithPaging to support orderBy in queries.
+v0.2.8: Call ctx.Site.EnsureProperty for site.Url in GetUrl added in v0.2.7.
+v0.2.7: Implement GetUrl method for ListItem extension to simplify collection and display of various URL types for both items and documents.
+v0.2.6: Refinements to CamlHelper's GetDefaultQueryFields and ResolveQueryFields that will allow more control when you need to add your own fields into the collection.
+v0.2.5: Added "URL" to fields queried by default; use built-in fields class constants instead of hard coded string sin CamlHelper class.
+v0.2.4: Added GetDefaultQueryFields helper to CamlHelper to auto-determine default fields based on list or doclib.
+v0.2.3: All extension classes have been moved to Microsoft.SharePoint.Client namespace and prefixed with Kraken so they do not conflict with extension classes in OfficeDevPnp libraries. Added a couple handy constants to CamlHelper for populating default fields in queries.
 v0.2.2: With apologies to all, v0.2-0.2.1 had incorrect .net framework references in the build; this version includes corrections for 4.0/4.5 and also recompiles the older 3.5 version for the first time in a while.
 v0.2.1: Release to nuget to fix an issue caused when we pushed using API v2
 v0.2.0: Introduces additional overloads for getting all items from a list with pagination. Updated code projects to VS2015 Update 3. See project web site for for information about past updates.

@@ -1,4 +1,6 @@
-﻿using Microsoft.SharePoint.Client.Publishing.Navigation;
+﻿/* Older versions of CSOM did not include this API */
+#if !DOTNET_V35
+using Microsoft.SharePoint.Client.Publishing.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,3 +59,4 @@ namespace Kraken.SharePoint.Client {
    */
 
 }
+#endif

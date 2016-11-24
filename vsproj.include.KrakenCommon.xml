@@ -11,9 +11,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug45</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<Prefer32Bit>false</Prefer32Bit>
-	<NoWarn>1685</NoWarn>
-	<OutputPath>bin\$(Configuration)\</OutputPath>
+	  <Prefer32Bit>false</Prefer32Bit>
+	  <NoWarn>1685</NoWarn>
+	  <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCPU</PlatformTarget>

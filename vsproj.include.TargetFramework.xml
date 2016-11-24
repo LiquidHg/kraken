@@ -10,26 +10,44 @@
 		 Include this file in the .vsproj and comment out the 
 		 same properties as created by visual studio.
 		 -->
+  <PropertyGroup>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
   <!-- framework differences -->
-  <PropertyGroup Condition="$(Configuration.Contains('35'))">
-    <DefineConstants>$(DefineConstants);DOTNET_V35</DefineConstants>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('40'))">
-    <DefineConstants>$(DefineConstants);DOTNET_V4</DefineConstants>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.Contains('45'))">
-    <DefineConstants>$(DefineConstants);DOTNET_V4;DOTNET_V45</DefineConstants>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
+  <Choose>
+    <When Condition="$(Configuration.Contains('35'))">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);DOTNET_V35</DefineConstants>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(Configuration.Contains('40'))">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);DOTNET_V4</DefineConstants>
+        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(Configuration.Contains('45'))">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);DOTNET_V4;DOTNET_V45</DefineConstants>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+      </PropertyGroup>
+    </When>
+    <!-- Normally there is no "otherwise", default is picked out by the $(Configuration)
+         name. However, Nuget package manager apparently runs in a state where it can't
+         read $(Configuration) properly and will always fall back on this value. 
+         This would not affect a build server, where each build is managed seperately.
+         But if you are hand-rolling a Nuget package with multi-framework, you would have
+         to come into this file and change the value each time you want to change framework
+         and rebuild bin outputs, then run Update-Package -Reinstall -IgnoreDependencies
+         IMPORTANT: for your changes to take, you'll have to unload and reload the solution. -->
+    <Otherwise>
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);DOTNET_V4;DOTNET_V45</DefineConstants>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
 </Project>

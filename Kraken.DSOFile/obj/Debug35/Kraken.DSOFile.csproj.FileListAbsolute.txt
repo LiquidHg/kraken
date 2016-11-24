@@ -1,0 +1,6 @@
+R:\Repos\kraken\Kraken.DSOFile\bin\Debug35\Kraken.DSOFile.dll
+R:\Repos\kraken\Kraken.DSOFile\bin\Debug35\Kraken.DSOFile.pdb
+R:\Repos\kraken\Kraken.DSOFile\bin\Debug35\Interop.Dsofile.dll
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug35\Kraken.DSOFile.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug35\Kraken.DSOFile.dll
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug35\Kraken.DSOFile.pdb

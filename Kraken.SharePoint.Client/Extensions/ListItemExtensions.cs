@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace Microsoft.SharePoint.Client {
 
-using Microsoft.SharePoint.Client;
-using System.Diagnostics;
-using Kraken.SharePoint.Client.Helpers;
-using System.Collections;
-using Kraken.SharePoint.Client.Connections;
-using Kraken.Tracing;
-using Microsoft.SharePoint.Client.EventReceivers;
+  using System;
+  using System.Collections;
+  using System.Collections.Generic;
+  using System.Diagnostics;
+  using System.Linq;
+  using System.Text;
 
-namespace Kraken.SharePoint.Client {
+  using Kraken.SharePoint.Client;
+  using Kraken.SharePoint.Client.Connections;
+  using Kraken.Tracing;
+#if !DOTNET_V35
+  using Microsoft.SharePoint.Client.EventReceivers;
+#endif
 
-  public static class ListItemExtensions {
+  public static class KrakenListItemExtensions {
 
     /// <summary>
     /// Useful when rendering screen output for a list item
@@ -184,6 +185,27 @@ namespace Kraken.SharePoint.Client {
 		}
 
     private static int _updateItemCounter = 0;
+
+    public static Uri GetUrl(this ListItem item, List parentList = null, ListItemUrlType urlType = ListItemUrlType.FileRefUrl, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      ClientContext ctx = ((parentList != null) ? parentList.Context : item.Context) as ClientContext;
+      switch(urlType) {
+        case ListItemUrlType.FileRefUrl:
+          string fileRef = BuiltInFieldId.GetName(BuiltInFieldId.FileRef);
+          string url = string.Empty;
+          ctx.Site.EnsureProperty(trace, s => s.Url);
+          url = ctx.Site.Url;
+          try {
+            url += item[BuiltInFieldId.GetName(BuiltInFieldId.FileRef)];
+          } catch (KeyNotFoundException) {
+            trace.TraceWarning("Field '{0}' was not present in the list of returned fields. ", fileRef);
+            return null;
+          }
+          return new Uri(url);
+        default:
+          throw new NotImplementedException(string.Format("Provided ListItemUrlType '{0}' has not been implemented. ", urlType));
+      }
+    }
 
     /// <summary>
     /// Get a name or title to help identify a list item.
@@ -419,7 +441,9 @@ namespace Kraken.SharePoint.Client {
         return defaultValue;
     }
 
-    #region Remote Item Event
+#region Remote Item Event
+/* Older versions of CSOM did not include this API */
+#if !DOTNET_V35
 
     public static bool IsFieldChanged(
       this SPRemoteItemEventProperties itemEventProperties,
@@ -437,7 +461,8 @@ namespace Kraken.SharePoint.Client {
       return afterProperties[fieldName].ToString() != beforeProperties[fieldName].ToString();
     }
 
-    #endregion
+#endif
+#endregion
 
   }
 }

@@ -11,10 +11,14 @@ namespace Kraken {
 			if (fileSystemInfo == null)
 				return false;
 
-			if ((int)fileSystemInfo.Attributes != -1)
+      if ((int)fileSystemInfo.Attributes != -1)
+#if DOTNET_V35
+        return ((fileSystemInfo.Attributes | FileAttributes.Directory) > 0);
+#else
 				return fileSystemInfo.Attributes.HasFlag(FileAttributes.Directory);
+#endif
 
-			return fileSystemInfo is DirectoryInfo;
+      return fileSystemInfo is DirectoryInfo;
 		}
 
 		public static bool IsFile(this FileSystemInfo fileSystemInfo) {
@@ -44,7 +48,11 @@ namespace Kraken {
 				// Attempt to get a list of security permissions from the folder. 
 				// This will raise an exception if the path is read only or do not have access to view the permissions. 
 				Directory.GetAccessControl(path);
-				var list = Directory.EnumerateFileSystemEntries(path, "*", SearchOption.AllDirectories).ToList();
+#if DOTNET_V35
+        var list = Directory.GetDirectories(path).ToList();
+#else
+        var list = Directory.EnumerateFileSystemEntries(path, "*", SearchOption.AllDirectories).ToList();
+#endif
 				return true;
 			} catch (UnauthorizedAccessException) {
 				return false;

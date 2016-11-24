@@ -1,18 +1,13 @@
-﻿namespace Kraken.SharePoint.Client {
+﻿namespace Microsoft.SharePoint.Client {
 
   using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Text;
-  using System.Net;
-  using System.Security;
-  using System.Xml.Linq;
 
-  using Microsoft.SharePoint.Client;
-  //using Microsoft.SharePoint.Client.DocumentSet;
+  using Kraken.SharePoint.Client;
 
-  public static class ViewExtensions {
-
+  public static class KrakenViewExtensions {
 
     /// <summary>
     /// Compare the fields in newViewFields and perform

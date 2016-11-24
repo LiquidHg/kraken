@@ -257,10 +257,13 @@ namespace Kraken.Security.ActiveDirectory {
 #else
       List<string> domainNames = null;
 #endif
-      if (domainNames == null) {
-        domainNames = new List<string>();
+      if (domainNames != null)
+        return domainNames;
 
-        using (DirectoryEntry root = new DirectoryEntry(ldapRootPath.Insert("LDAP://".Length, "CN=Partitions,CN=Configuration,DC=").Replace(".", ",DC=")))
+      domainNames = new List<string>();
+
+      string path = ldapRootPath.Insert("LDAP://".Length, "CN=Partitions,CN=Configuration,DC=").Replace(".", ",DC=");
+      using (DirectoryEntry root = new DirectoryEntry(path)) {
         using (DirectorySearcher searcher = new DirectorySearcher(root)) {
           searcher.Filter = "nETBIOSName=*";
           searcher.PropertiesToLoad.Add("cn");
@@ -273,10 +276,10 @@ namespace Kraken.Security.ActiveDirectory {
         }
 
 #if !DOTNET_V35
-        cache.Set(cashKey, domainNames, policy);
+          cache.Set(cashKey, domainNames, policy);
 #endif //!DOTNET_V35
-      }
 
+      } // if
       return domainNames;
     }
 

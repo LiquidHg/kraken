@@ -163,20 +163,26 @@ namespace Kraken.SharePoint.UserProfiles {
     public static UserProfileManager GetUserProfileManager() {
       return GetUserProfileManager(null, false);
     }
-    public static UserProfileManager GetUserProfileManager(SPSite site, bool fakeHttpContext) {
+    public static UserProfileManager GetUserProfileManager(SPSite site, bool useFakeHttpContext) {
       KrakenLoggingService.Default.WriteStack(typeof(UserProfileUtilities), MethodBase.GetCurrentMethod().Name, false);
-      if (site == null && SPContext.Current == null) {
-        KrakenLoggingService.Default.Write(string.Format("Abandoned attempt to get user profile manager because SPContext.Current is NULL."), TraceSeverity.Monitorable, EventSeverity.Information, LoggingCategories.KrakenProfiles);
-        return null;
+      bool siteWasNullSetFromContext = false;
+      if (site == null) {
+        if (SPContext.Current == null) {
+          KrakenLoggingService.Default.Write(string.Format("Abandoned attempt to get user profile manager because SPContext.Current is NULL."), TraceSeverity.Monitorable, EventSeverity.Information, LoggingCategories.KrakenProfiles);
+          return null;
+        }
+        siteWasNullSetFromContext = true;
+        site = SPContext.Current.Site;
       }
+
       UserProfileManager upm = null;
       try {
         SPServiceContext sc = null;
-        if (fakeHttpContext) {
+        if (useFakeHttpContext) {
           HttpContext context = CreateHttpContext(site, true);
           sc = SPServiceContext.GetContext(context);
         } else {
-          sc = (site == null) ? SPServiceContext.Current : SPServiceContext.GetContext(site);
+          sc = (siteWasNullSetFromContext) ? SPServiceContext.Current : SPServiceContext.GetContext(site);
         }
         if (sc == null) {
           KrakenLoggingService.Default.Write("Could not create SPServiceContext.", TraceSeverity.Unexpected, EventSeverity.Error, LoggingCategories.KrakenProfiles);
@@ -190,6 +196,18 @@ namespace Kraken.SharePoint.UserProfiles {
         }
         if (upm == null)
           return null;
+      } catch (UserProfileApplicationNotAvailableException upaEx) {
+        KrakenLoggingService.Default.Write(upaEx, LoggingCategories.KrakenProfiles);
+        List<string> msgs = new List<string>();
+        msgs.Add(string.Format("Diagnostic for the above exception: fakeHttpContext='{0}'; siteWasNullSetFromContext={1}; site.Url='{2}'", useFakeHttpContext, siteWasNullSetFromContext, site.Url));
+        msgs.Add("The following ULS log entries contain information and URLs that may help you fix this issue.");
+        msgs.Add("Tip 1: Check that the provided site context above is valid.");
+        msgs.Add("Tip 2: Ensure the specified account has Full Control permissions to UPA in Service Applications. You should see the identity in an error a few lines further down in the ULS logs.");
+        msgs.Add("Tip 3: Verify that my site host is created and working. See: http://www.harbar.net/articles/sp2010ups.aspx for instructions.");
+        msgs.Add("Tip 4: For other causes of UserProfileApplicationNotAvailableException see: https://blogs.msdn.microsoft.com/sambetts/2016/01/26/user-profile-application-unavailable-with-userprofileapplicationnotavailableexception/");
+        foreach (string msg in msgs) {
+          KrakenLoggingService.Default.Write(msg, TraceSeverity.Monitorable, EventSeverity.Warning, LoggingCategories.KrakenProfiles);
+        }
       } catch (Exception ex) {
         KrakenLoggingService.Default.Write("Unexpected error creating UserProfileManager.", TraceSeverity.Unexpected, EventSeverity.Error, LoggingCategories.KrakenProfiles);
         KrakenLoggingService.Default.Write(ex, LoggingCategories.KrakenProfiles);

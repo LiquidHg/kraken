@@ -1,0 +1,9 @@
+R:\Repos\kraken\Kraken.Tests\obj\Debug35\Kraken.Tests.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\Kraken.Tests.dll
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\Kraken.Tests.pdb
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\Kraken.Security.dll
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\log4net.dll
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\Kraken.Security.pdb
+R:\Repos\kraken\Kraken.Tests\bin\Debug35\log4net.xml
+R:\Repos\kraken\Kraken.Tests\obj\Debug35\Kraken.Tests.dll
+R:\Repos\kraken\Kraken.Tests\obj\Debug35\Kraken.Tests.pdb

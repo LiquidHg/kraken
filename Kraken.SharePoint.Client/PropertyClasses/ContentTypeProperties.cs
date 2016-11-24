@@ -8,7 +8,30 @@ namespace Kraken.SharePoint.Client {
   /// <summary>
   /// Extends ContentTypeCreationInformation to include additional properties that must be set after creation
   /// </summary>
+  /* In older versions of CSOM some classes are sealed
+   * which makes life difficult for us, but we'll have to make-do.
+   */
+#if !DOTNET_V35
   public class ContentTypeProperties : ContentTypeCreationInformation {
+#else
+  public class ContentTypeProperties {
+
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Group { get; set; }
+    public ContentType ParentContentType { get; set; }
+
+#endif
+
+    public ContentTypeCreationInformation ConvertSP14Safe() {
+      return new ContentTypeCreationInformation() {
+        Description = this.Description,
+        Group = this.Group,
+        Name = this.Name,
+        ParentContentType = this.ParentContentType
+      };
+    }
 
     public bool? Hidden { get; set; }
     public bool? ReadOnly { get; set; }

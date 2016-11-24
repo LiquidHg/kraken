@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security;
+﻿/* Older versions of CSOM did not include this API */
+#if !DOTNET_V35
 
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.WorkflowServices;
+namespace Microsoft.SharePoint.Client {
 
-namespace Kraken.SharePoint.Client {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
 
-    [Flags]
-    public enum WorkflowEvents {
-      ItemAdded,
-      ItemUpdated,
-      WorkflowStart
-    }
+  using Microsoft.SharePoint.Client.WorkflowServices;
 
-  public static class WorkflowExtensions {
+  public static class KrakenWorkflowExtensions {
 
     /// <summary>
     /// 
@@ -92,3 +86,4 @@ namespace Kraken.SharePoint.Client {
 
   }
 }
+#endif
