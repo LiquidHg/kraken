@@ -37,15 +37,15 @@ using System.Security;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 #if DOTNET_V45
-[assembly: AssemblyVersion("4.5.0.0")]
-[assembly: AssemblyFileVersion("4.5.0.0")]
+[assembly: AssemblyVersion("4.5.*")]
+[assembly: AssemblyFileVersion("4.5.1611.0")]
 #else
 #if DOTNET_V4
-    [assembly: AssemblyVersion("4.0.0.0")]
-    [assembly: AssemblyFileVersion("4.0.0.0")]
+    [assembly: AssemblyVersion("4.0.*")]
+    [assembly: AssemblyFileVersion("4.0.1611.0")]
 #else
-    [assembly: AssemblyVersion("3.5.0.0")]
-    [assembly: AssemblyFileVersion("3.5.0.0")]
+    [assembly: AssemblyVersion("3.5.*")]
+    [assembly: AssemblyFileVersion("3.5.1611.0")]
 #endif
 #endif
 

@@ -13,7 +13,7 @@
   <PropertyGroup>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <LangVersion>5</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <!-- framework differences -->
   <Choose>

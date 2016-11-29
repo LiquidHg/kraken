@@ -60,6 +60,8 @@ namespace Kraken.SharePoint.Client.Caml {
             BuiltInFieldId.GetName(BuiltInFieldId.File_x0020_Size),
             BuiltInFieldId.GetName(BuiltInFieldId.FileLeafRef),
             BuiltInFieldId.GetName(BuiltInFieldId.HTML_x0020_File_x0020_Type),
+            // needed by sync manager
+            BuiltInFieldId.GetName(BuiltInFieldId.ServerRelativeUrl),
           });
         }
         return _defaultDocLibViewFields;
@@ -73,10 +75,16 @@ namespace Kraken.SharePoint.Client.Caml {
       viewFields.Add(isDocLib ? ViewFieldShorthandConstants.DefaultDocLib : ViewFieldShorthandConstants.DefaultLists);
       return viewFields;
     }
-    public static List<string> ResolveQueryFields(List<string> viewFields, List list = null, ITrace trace = null) {
+    public static List<string> ResolveQueryFields(string[] viewFields, string[] ensureFields, List list = null, ITrace trace = null) {
+      return ResolveQueryFields(viewFields.ToList(), ensureFields, list, trace);
+    }
+    public static List<string> ResolveQueryFields(List<string> viewFields, string[] ensureFields, List list = null, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
       if (viewFields == null)
         viewFields = GetDefaultQueryFields(list, trace);
       if (viewFields.Count == 1) {
+        if (string.Equals(viewFields[0], CamlHelpers.ViewFieldShorthandConstants.All, StringComparison.InvariantCultureIgnoreCase))
+          return viewFields;
         if (string.Equals(viewFields[0], ViewFieldShorthandConstants.Default, StringComparison.InvariantCultureIgnoreCase))
           viewFields = DefaultDocLibViewFields;
         else if (string.Equals(viewFields[0], ViewFieldShorthandConstants.DefaultDocLib, StringComparison.InvariantCultureIgnoreCase))
@@ -84,15 +92,28 @@ namespace Kraken.SharePoint.Client.Caml {
         else if (string.Equals(viewFields[0], ViewFieldShorthandConstants.DefaultLists, StringComparison.InvariantCultureIgnoreCase))
           viewFields = DefaultDocLibViewFields;
       }
+      if (ensureFields != null) {
+        foreach (string f in ensureFields) {
+          if (!viewFields.Contains(f))
+            viewFields.Add(f);
+        }
+      }
       return viewFields;
     }
 
     public static string GetCamlViewFieldsXml(this List<string> viewFields, List list = null, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
       if (viewFields == null)
         viewFields = GetDefaultQueryFields(list, trace);
-      else if (viewFields.Count == 1 && string.Equals(viewFields[0], ViewFieldShorthandConstants.All, StringComparison.InvariantCultureIgnoreCase))
+      else if (viewFields.Count == 1 && string.Equals(viewFields[0], ViewFieldShorthandConstants.All, StringComparison.InvariantCultureIgnoreCase)) {
+        trace.TraceVerbose("View fields requested: all fields");
         return string.Empty;
-      viewFields = ResolveQueryFields(viewFields, list, trace);
+      }
+      viewFields = ResolveQueryFields(viewFields, null, list, trace);
+      trace.TraceVerbose("ResolveQueryFields - View fields requested:");
+      foreach (string field in viewFields) {
+        trace.TraceVerbose("  " + field);
+      }
       string viewFieldsXml = Caml.CAML.ViewFields(viewFields);
       return viewFieldsXml;
     }

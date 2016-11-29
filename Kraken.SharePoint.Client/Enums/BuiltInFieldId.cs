@@ -449,6 +449,9 @@ namespace Kraken.SharePoint.Client {
     public static readonly Guid XSLStyleIconUrl = new Guid("{3dfb3e11-9ccd-4404-b44a-a71f6399ea56}");
     public static readonly Guid XSLStyleRequiredFields = new Guid("{acb9088a-a171-4b99-aa7a-10388586bc74}");
     public static readonly Guid XSLStyleWPType = new Guid("{4499086f-9ac1-41df-86c3-d8c1f8fc769a}");
+    // a bit of a hack but helpful
+    public static readonly Guid ServerRelativeUrl = new Guid("{105f76ce-724a-4bba-aece-f81f2fce58f5}");
+    
 
     private BuiltInFieldId() {
     }

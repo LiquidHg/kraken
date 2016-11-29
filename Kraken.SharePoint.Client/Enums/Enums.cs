@@ -2,6 +2,50 @@
 
   using System;
 
+  public enum UpdateItemResult {
+    NoResult = 0,
+    UpdateOK = 1,
+    UpdatePartialFail = 2,
+    UpdateFail = 3
+  }
+
+  /// <summary>
+  /// Used to specify methodolgy to use for item searches
+  /// such as queries queries against a list.
+  /// </summary>
+  [System.Reflection.Obfuscation(Exclude = true, ApplyToMembers = false)]
+  public enum ListItemFindMethod {
+
+    /// <summary>
+    /// Perform a master query, then use simple in-memory 
+    /// logic to filter items based on the individual rules.
+    /// </summary>
+    OneQuerySimpleMatch,
+
+    /// <summary>
+    /// Ignores any provided master query and uses only the rules
+    /// of a rule set to to find matches. Results should be a union 
+    /// of multiple queries.
+    /// </summary>
+    MultiQueryMatch,
+
+    // TODO best not to reveal until actually used
+    /*
+    /// <summary>
+    /// Experimental: leverage SharePoint search service to find
+    /// items across multiple lists, libraries, webs, and sites.
+    /// </summary>
+    SearchService,
+
+    /// <summary>
+    /// Experimental: leverage SharePoint content query service to find
+    /// items across multiple lists, libraries, webs.
+    /// </summary>
+    ContentQueryService
+    */
+
+  }
+
   public enum ListItemUrlType {
     FileRefUrl,
     DocIdUrl,

@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="AppSettingsExtensions.cs" />
     <Compile Include="Collections\AutoSortArrayList.cs" />
+    <Compile Include="Collections\HashtableExtensions.cs" />
+    <Compile Include="Collections\ParsableOptions.cs" />
     <Compile Include="IO\FileSystemExtensions.cs" />
     <Compile Include="IO\StreamUtilities.cs" />
     <Compile Include="IO\TextMemoryStream.cs" />

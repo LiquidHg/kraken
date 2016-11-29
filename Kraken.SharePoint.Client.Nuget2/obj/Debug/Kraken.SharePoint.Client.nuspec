@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.11</version>
+    <version>0.2.44</version>
     <title>Kraken SharePoint Client Library</title>
     <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,16 +12,16 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.11: Correct a disconnected trace parameter in GetAllItemsWithPaging that buried some of the diagnostic informaiton in list queries.</releaseNotes>
+    <releaseNotes>v0.2.44: Fix - SecureStringMarshaller would crash on Decrypt if the secure string length was zero. Added "ServerRelativeUrl" as an alias to "ServerUrl" in built-in fields; added ServerUrl to the default document view fields to return. Added additional null checking to EnsureContentTypes.</releaseNotes>
     <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5026.1200" />
+        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5903.1200" />
       </group>
       <group>
-        <dependency id="Newtonsoft.Json" version="8.0.3" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="RestSharpSigned" version="105.2.3" />
         <dependency id="log4net" version="2.0.5" />
       </group>

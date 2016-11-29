@@ -97,6 +97,7 @@
     <Compile Include="ActiveDirectory\LdapLoginResult.cs" />
     <Compile Include="ActiveDirectory\LdapSearchOptions.cs" />
     <Compile Include="Certificates\CertificateUtil.cs" />
+    <Compile Include="Credentials\CredUtils.cs" />
     <Compile Include="Crypto\CRC32.cs" />
     <Compile Include="Crypto\HashExtensions.cs" />
     <Compile Include="LoggingReflectionCopies\Log4NetExtensions.cs" />

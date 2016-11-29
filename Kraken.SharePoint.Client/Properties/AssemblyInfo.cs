@@ -40,8 +40,8 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 #if DOTNET_V45
   [assembly: AssemblyVersion("15.0.*")]
-  //[assembly: AssemblyFileVersion("15.0.0.0")]
+  [assembly: AssemblyFileVersion("15.0.1611.0")]
 #else
     [assembly: AssemblyVersion("14.0.*")]
-    //[assembly: AssemblyFileVersion("14.0.0.0")]
+    //[assembly: AssemblyFileVersion("14.0.1611.0")]
 #endif

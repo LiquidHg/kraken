@@ -83,6 +83,39 @@ join the team.
 
 Update History:
 
+v0.2.44: Fix - SecureStringMarshaller would crash on Decrypt if the secure string length was zero. Added "ServerRelativeUrl" as an alias to "ServerUrl" in built-in fields; added ServerUrl to the default document view fields to return. Added additional null checking to EnsureContentTypes.
+v0.2.43: Fix - CAML.Where() for field-op-value in GetItems/GetItemsNoPaging/GetItemsPage/GetLookupItem were all flawed, resulting in queries which always return 0 items. Value was used for field name instead of FieldRef; now using correct syntax.
+v0.2.42: Packaging glitch; version++ bump.
+v0.2.41: Fix - GetItemNoPaging now uses the same query execution logic and exception handling as GetItemsPage, so they should be more consistent.
+v0.2.40: Fix - GetItemNoPaging "value does not fall within the expected range" on attempt to call EnsureProperty, which does ExecuteQuery. testing...
+v0.2.39: Fix - GetLookupItem would not return a match if the item was in a folder, because scope was All instead of RecursiveAll. Changed logic for underlying call to GetItems/GetItemsNoPaging.
+v0.2.38: Added property validation to CamlFieldToValueMatchOptions.
+v0.2.37: Fix - additional boolean logic + nullable types related to v0.2.34 with setting of Id and ListItemIdentifier.SimpleMatch
+v0.2.36: Moved QueryItemOptions to library and implemented it in GetItems list extensions; refactored several methods to make pagination the default option when querying list items.
+v0.2.35: Fix - additional issue related to v0.2.34 with setting of Id and ListItemIdentifier.HasIdentiyingProperty
+v0.2.34: Fix - corrected boolean logic + nullable types bug in ListItemIdentifier.HasIdentiyingProperty which caused it to return true even when values were not present
+v0.2.33: Fix - not providing an operator for CAML query (empty string) causing error; now defaults to "Eq"
+v0.2.32: Fix - adjusted some of the trace logs in CamlHelpers so that view field conversion is not logged more times than necessary.
+v0.2.31: After issues with stuck DLLs in the GAC, AssemblyVersion is now 4.5.* where 4.5 matches the terget framework; AssemblyFileVersion will be 4.5.YYMM.rev as needed (but is updated maually); this change effects only Kraken.Core, Kraken.Core.FullTrust, and Kraken.Security. CredUtils methods now default to throwOnError = true.
+v0.2.30: Reordered some params and improve parameter checking on CredWrite
+v0.2.29: Added CredUtil managed overloads to CredRead and CredWrite which are ports from PowerShell with better error checking and usability.
+v0.2.28: Added embedded c# code from CredMan.ps1 to Kraken.Core.Security so that we can call it directly from WebContextManager to save creds for future use.
+v0.2.27: Added class ParsableOptions with collection for reporting parse errors; made classes that have Hashtable constructors derive from it. Added logging to report fields returned from GetItemsWithPaging. Refactored named of GetAllItems and GetItemsWith... extension methods.
+v0.2.26: Fix - Disconnected trace params in some overloads of GetAllItemsWithPaging; CamlFieldToValueMatchOptions hashtable constructor had invalid foreach loops that would cause type conversion errors if used.
+v0.2.25: Fix - CamlHelper had a couple places where ITrace trace was null and shoul dhave defaulted to NullTrace.Default to prevent NullReferenceException.
+v0.2.24: Extended ListItemIdentifier to include a multi-purpose item finder with intent to leverage this is pipe binders and other find utilities downstream.
+v0.2.23: Moved SimpleTarget/SimpleMatch to ListItemIdentifier from CamlMatchOptions.
+v0.2.22: Added IListItemIdentifier and methods to support uniform retrieval of items by their identifying characateristics to CamlMatchOptions (not sure if this is the best perma-home; maybe it belongs in ListExtensions).
+v0.2.21: Added KrakenHashtableExtensions class to simplify some conversions needed for converting field keys to string arrays.
+v0.2.20: Extended CamlFieldToValueMatchOptions to all properties to be parsed and set one at a time use SetProperty instead of only from entire Hashtable.
+v0.2.19: Support "MatchOptions." prefix in hash table imports for CamlFieldToValueMatchOptions
+v0.2.18: Implemented [KEEP_VALUE] token for UpdateItem; Removed unused context manager parameter from one overload. Implemented update options for do not overwrite any existing metadata and ignoring whitespace that would wipe out data.
+v0.2.17: Version bump.
+v0.2.16: SimpleMatch added to CamlFieldToValueMatchOptions to assist with memory based queries using Linq.
+v0.2.15: Adjusted UpdateItem and TrySetFieldValue to accept UpdateItemOptions in all cases and work with both Dictionary and Hastable. Marked some methods obsolete.
+v0.2.14: CamlHelpers.ResolveViewFields has been extended to allow a list of fields to ensure are added to those requested by the caller.
+v0.2.13: Add additional setting to UpdateItemOptions to allow us to disable overwrite existing data.
+v0.2.12: Added classes to convert json-style hash tables into CAML where clause for querying lists.
 v0.2.11: Correct a disconnected trace parameter in GetAllItemsWithPaging that buried some of the diagnostic informaiton in list queries.
 v0.2.10: Added CamlHelpers.ConvertToOrderBy to convert Hashtable to strong type for CAML query order by clause.
 v0.2.9: Added params to GetItemsWithPaging to support orderBy in queries.

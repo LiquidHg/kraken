@@ -236,7 +236,7 @@
       return isDocLib;
     }
 
-#region Item Reteival
+    #region Item Reteival
 
     /*
     private string GetSimpleCamlWhere(string fieldName, CAML.Operator op, string fieldType, string fieldValue) {
@@ -250,115 +250,201 @@
     }
      */
 
-    public static ListItemCollection GetItemsWithPaging(
-      this List list, 
-      string fieldName, 
-      string fieldValue, 
-      CAML.Operator op = CAML.Operator.Eq, 
-      string fieldType = "TEXT", 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="matchOptions"></param>
+    /// <param name="options"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="trace"></param>
+    /// <returns>Collection of CSOM list items</returns>
+    public static ListItemCollection GetItemsPage(
+      this List list,
+      CamlFieldToValueMatchOptions match = null,
+      QueryItemOptions options = null,
+      /*
       CAML.ViewScope scope = CAML.ViewScope.RecursiveAll,
       Dictionary<string, CAML.SortType> orderBy = null,
       List<string> viewFields = null, 
-      int pageIndex = 0, 
       int pageSize = -1, 
+      */
+      int pageIndex = 0,
       ITrace trace = null
     ) {
-      if (trace == null) trace = NullTrace.Default;
-      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
-        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
-      string where = CAML.Where(CAML.GetOperator(op, CAML.Value(fieldName), CAML.Value(fieldType, fieldValue)));
-      return list.GetItemsWithPaging(scope, where, orderBy, viewFields, pageIndex, pageSize, trace);
-    }
-
-    public static ListItemCollection GetItemsWithPaging(
-      this List list, 
-      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
-      string whereXml = "",
-      Dictionary<string, CAML.SortType> orderBy = null,
-      List<string> viewFields = null, 
-      int pageIndex = 0, 
-      int pageSize = -1, 
-      ITrace trace = null
-    ) {
-      if (trace == null) trace = NullTrace.Default;
-      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
-        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
-      // note that in this case null is different than an empty collection
-      string viewFieldsXml = viewFields.GetCamlViewFieldsXml();
-      string orderXml = string.Empty; 
-      if (orderBy != null) {
-        List<string> fields = new List<string>();
-        foreach (string fieldName in orderBy.Keys) {
-          fields.Add(CAML.FieldRef(fieldName, orderBy[fieldName]));
-        }
-        orderXml = CAML.OrderBy(fields.ToArray());
-      }
-      return list.GetItemsWithPaging(scope, whereXml, orderXml, viewFieldsXml, pageIndex, pageSize, trace);
+      // TODO match needs testing to see if properties are missing
+      string where = match.ToCamlWhere();
+      return list.GetItemsPage(
+        where,
+        /*
+        match.FieldName,
+        match.FieldValue,
+        match.Operator,
+        match.FieldType,
+        */
+        options,
+        pageIndex,
+        trace);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="list">CSOM SharePoint list object</param>
-    /// <param name="whereXml">CAML XML for the where filter</param>
-    /// <param name="viewFieldsXml">CAML XML set of FieldRef elements</param>
-    /// <param name="pageIndex">Zero-based page index for query</param>
-    /// <param name="pageSize">Page item size</param>
+    /// <param name="list"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="fieldValue"></param>
+    /// <param name="op"></param>
+    /// <param name="fieldType"></param>
+    /// <param name="options"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="trace"></param>
     /// <returns>Collection of CSOM list items</returns>
-    public static ListItemCollection GetItemsWithPaging(
+    public static ListItemCollection GetItemsPage(
       this List list, 
+      string fieldName, 
+      string fieldValue, 
+      CAML.Operator op = CAML.Operator.Eq, 
+      string fieldType = "TEXT",
+      QueryItemOptions options = null,
+      /*
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll,
+      Dictionary<string, CAML.SortType> orderBy = null,
+      List<string> viewFields = null, 
+      int pageSize = -1, 
+      */
+      int pageIndex = 0, 
+      ITrace trace = null
+    ) {
+      string where = CAML.Where(op, fieldName, fieldType, fieldValue);
+      return list.GetItemsPage(where, options, /* scope, orderBy, viewFields, pageSize, */ pageIndex, trace);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="whereXml"></param>
+    /// <param name="options"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="trace"></param>
+    /// <returns>Collection of CSOM list items</returns>
+    public static ListItemCollection GetItemsPage(
+      this List list, 
+      string whereXml = "",
+      QueryItemOptions options = null,
+      /*
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll,
+      Dictionary<string, CAML.SortType> orderBy = null,
+      List<string> viewFields = null,
+      int pageSize = -1,
+      */
+      int pageIndex = 0, 
+      ITrace trace = null
+    ) {
+      if (trace == null) trace = NullTrace.Default;
+      // note that in both viewFields and orderBy cases below,
+      // null behaves differently than an empty collection.
+      string viewFieldsXml = options.ViewFields.GetCamlViewFieldsXml(list, trace);
+      string orderXml = GetOrderXml(options);
+      return list.GetItemsPage(
+        whereXml, pageIndex, trace,
+        options.Scope, viewFieldsXml, orderXml, options.PageSize
+      );
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="whereXml"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="trace"></param>
+    /// <param name="scope"></param>
+    /// <param name="viewFieldsXml"></param>
+    /// <param name="orderXml"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>Collection of CSOM list items</returns>
+    public static ListItemCollection GetItemsPage(
+      this List list,
+      string whereXml = "",
+      int pageIndex = 0,
+      ITrace trace = null,
+      // query options long form
       CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
-      string whereXml = "", 
       string viewFieldsXml = "",
       string orderXml = "",
-      int pageIndex = 0, 
-      int pageSize = -1, 
-      ITrace trace = null
+      int pageSize = -1
     ) {
       if (trace == null) trace = NullTrace.Default;
       if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
         pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
       // TODO eliminate options that require hard CAML string encoding
-      /*
-      if (string.IsNullOrEmpty(viewFieldsXml)) {
-        viewFieldsXml = CAML.ViewFields(DefaultViewFields); // string.Empty;
-      }
-       */
       ClientContext context = (ClientContext)list.Context;
       // TODO make sure there are no other basetype that will throw an error with the default setting
       if (!list.IsDocumentLibrary() && (scope == CAML.ViewScope.RecursiveAll || scope == CAML.ViewScope.Recursive)) {
         scope = CAML.ViewScope.All;
+        trace.TraceWarning("GetItemsPage: CAML scope of RecursiveAll or Recursive was used on a List. Reverting to All.");
       }
-
       CamlQuery camlQuery = new CamlQuery();
       int skipHowMany = (pageIndex * pageSize); // " - pageSize " removed because our index is zero based
-
       if (skipHowMany > 0) {
         ListItemCollectionPosition itemPosition = new ListItemCollectionPosition();
         trace.TraceVerbose(string.Format("skipHowMany = {0}", skipHowMany));
         itemPosition.PagingInfo = string.Format("Paged=TRUE&p_ID={0}", skipHowMany);
         camlQuery.ListItemCollectionPosition = itemPosition;
       }
-
-      //string whereXml = CAML.Where(CAML.Eq(CAML.FieldRef("ContentType"), CAML.Value(currentCT.Name)));
-      string viewXml = CAML.View(scope, CAML.Query(whereXml, orderXml), viewFieldsXml, CAML.RowLimit(pageSize));
+      string viewXml = CAML.View(
+        scope, 
+        CAML.Query(whereXml, orderXml), 
+        viewFieldsXml, 
+        CAML.RowLimit(pageSize)
+      );
       if (!string.IsNullOrEmpty(viewXml)) {
         trace.TraceVerbose("Generated CAML query: ");
         trace.TraceVerbose(viewXml);
         camlQuery.ViewXml = viewXml;
       }
       // diagnostic string
-      string camlDiag = camlQuery.DatesInUtc.ToString() + "|" + (camlQuery.FolderServerRelativeUrl ?? string.Empty) + "|" + ((camlQuery.ListItemCollectionPosition == null) ? string.Empty : camlQuery.ListItemCollectionPosition.PagingInfo);
-      trace.TraceVerbose(camlDiag);
-
+      trace.TraceVerbose(
+        "DatesInUtc={0};FolderServerRelativeUrl={1};ListItemCollectionPosition={2}",
+        camlQuery.DatesInUtc,
+        camlQuery.FolderServerRelativeUrl ?? string.Empty,
+        (camlQuery.ListItemCollectionPosition == null) ? string.Empty : camlQuery.ListItemCollectionPosition.PagingInfo
+      );
       ListItemCollection items = list.GetItems(camlQuery);
       context.Load(items);
       try {
         context.ExecuteQuery();
       } catch (Exception ex) {
-        throw new Exception(string.Format("Error in CAML query: '{0}'. InnerException='{1}'", camlDiag, ex.Message), ex);
+        throw new Exception(string.Format("Error in CAML query: '{0}'. InnerException='{1}'", viewXml, ex.Message), ex);
+      }
+      // report to the user what fields were brought back
+      // TODO this currently seems to list them all
+      if (pageIndex == 0 && items.Count > 0) {
+        trace.TraceVerbose("Fields available (those not requested may not actually be loaded):");
+        // Fields Values may not be what we need or all we need
+        Dictionary<string, object> fv = items[0].FieldValues;
+        foreach (string field in fv.Keys) {
+          //if (fv[field] != null) // this didn't make sense
+            trace.TraceVerbose("  " + field);
+        }
       }
       return items;
+    }
+
+    // TODO move to CamlHelpers
+    private static string GetOrderXml(QueryItemOptions options) {
+      string orderXml = string.Empty;
+      if (options.Order != null) {
+        List<string> fields = new List<string>();
+        // TODO ht convert - why is it not strongly types in the options class?
+        var orderBy = CamlHelpers.ConvertToOrderBy(options.Order);
+        foreach (string fieldName in orderBy.Keys) {
+          fields.Add(CAML.FieldRef(fieldName, orderBy[fieldName]));
+        }
+        orderXml = CAML.OrderBy(fields.ToArray());
+      }
+      return orderXml;
     }
 
     // this can take a long time to run a query
@@ -366,39 +452,66 @@
     public const int LISTITEM_LIMIT_USEDEFAULT = -1;
     public const int LISTITEM_LIMIT_NOLIMIT = -2;
 
+
     /// <summary>
     /// Gets all items matching a query, using pagination
     /// to ensure that no returned data structure is too large.
     /// Loops through all results pages to get the entire set.
     /// </summary>
     /// <param name="list"></param>
-    /// <param name="writeProgress"></param>
     /// <param name="whereXml"></param>
-    /// <param name="viewFields"></param>
-    /// <param name="pageSize"></param>
+    /// <param name="options"></param>
+    /// <param name="trace"></param>
     /// <returns></returns>
-    public static List<ListItem> GetAllItemsWithPaging(
-      this List list, ITrace trace, 
-      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+    public static List<ListItem> GetItems(
+      this List list,
       string whereXml = "",
-      Dictionary<string, CAML.SortType> orderBy = null,
-      List<string> viewFields = null, 
-      int pageSize = -1) {
+      QueryItemOptions options = null,
+      ITrace trace = null
+      /*
+      , CAML.ViewScope scope = CAML.ViewScope.RecursiveAll
+      , Dictionary<string, CAML.SortType> orderBy = null
+      , List<string> viewFields = null
+      , int pageSize = -1
+      */
+    ) {
       if (trace == null) trace = NullTrace.Default;
-      if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
-        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
+      if (options == null) options = new QueryItemOptions();
+      if (!options.UsePagination) {
+        trace.TraceWarning("Call being made without pagination support; if the list is over 5,000 items (or configured throttle limit) the operation will fail.");
+#pragma warning disable 618
+        ListItemCollection getItems = list.GetItemsNoPaging( whereXml, options, trace );
+#pragma warning restore 618
+        List<ListItem> getItemsAsList = new List<ListItem>(getItems.Count);
+        getItemsAsList.AddRange(getItems);
+        return getItemsAsList;
+      }
+      if (options.PageSize == LISTITEM_LIMIT_USEDEFAULT)
+        options.PageSize = DEFAULT_LISTITEM_PAGE_SIZE;
       ClientContext context = (ClientContext)list.Context;
-      int numPages = (list.ItemCount / pageSize) + 1;
+      int numPages = (list.ItemCount / options.PageSize) + 1;
       // pre-allocate the list to hold the number of references we'll need
       int sizeOfList = list.ItemCount * 8; // hope this is not too big!
       List < ListItem> allItems = new List<ListItem>(sizeOfList);
-      trace.Trace(TraceLevel.Info, "{0} total items; page size {1}; iterating through {2} pages.", list.ItemCount, pageSize, numPages);
+      TraceLevel level = (numPages > 1) ? TraceLevel.Info : TraceLevel.Verbose;
+      trace.Trace(level, "{0} total items; page size {1}; iterating through {2} pages.", list.ItemCount, options.PageSize, numPages);
       int itemNumber = 0;
       for (int pageNum = 0; pageNum < numPages; pageNum++) {
-        trace.Trace(TraceLevel.Info, "Processing page number {0}.", pageNum);
+        trace.Trace(level, "Processing page number {0}.", pageNum);
         trace.Trace(TraceLevel.Verbose, "Getting SharePoint List data...");
-        ListItemCollection items = list.GetItemsWithPaging(scope, whereXml, orderBy, viewFields, pageNum, pageSize, trace); // TODO dissappearing default param 'string.Empty', what was it?
-        trace.Trace(TraceLevel.Info, "Returned {0} items.", items.Count);
+        ListItemCollection items = list.GetItemsPage(
+          whereXml,
+          options,
+          /*
+          scope, 
+          orderBy, 
+          viewFields, 
+          pageSize, 
+          */
+          pageNum,
+          trace
+        ); // TODO dissappearing default param 'string.Empty', what was it?
+        trace.Trace(level, "Returned {0} items.", items.Count);
 
         string listUrl = list.RootFolder.ServerRelativeUrl;
         trace.Trace(TraceLevel.Verbose, "Copying relevant information to collection...");
@@ -417,44 +530,93 @@
     /// Useful in cases where page/throlle protection is not needed.
     /// </summary>
     /// <param name="list"></param>
-    /// <param name="rowLimit"></param>
-    /// <remarks>
-    /// Recommended to use GetAllItemsWithPaging when querying large lists.
-    /// </remarks>
+    /// <param name="whereXml"></param>
+    /// <param name="options"></param>
+    /// <param name="trace"></param>
     /// <returns></returns>
-    public static ListItemCollection GetAllItems(this List list, CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, string whereXml = "", string orderByXml = "", List<string> viewFields = null, int rowLimit = -1) {
-      string viewFieldsXml = viewFields.GetCamlViewFieldsXml();
+    [Obsolete("Recommended to use GetItems (with pagination enabled in options) when querying large lists.")]
+    public static ListItemCollection GetItemsNoPaging(
+      this List list,
+      string whereXml = "",
+      QueryItemOptions options = null,
+      ITrace trace = null
+    ) {
+      if (trace == null) trace = NullTrace.Default;
+      int rowLimit = options.PageSize;
       if (rowLimit == LISTITEM_LIMIT_USEDEFAULT)
         rowLimit = DEFAULT_LISTITEM_PAGE_SIZE;
+      string viewFieldsXml = options.ViewFields.GetCamlViewFieldsXml(list, trace);
+      string orderByXml = GetOrderXml(options);
       CamlQuery camlQuery = new CamlQuery();
       camlQuery.ViewXml = CAML.View(
-        scope, 
+        options.Scope, 
         CAML.Query(whereXml, orderByXml),
         viewFieldsXml,
         (rowLimit == LISTITEM_LIMIT_NOLIMIT) ? string.Empty : CAML.RowLimit(rowLimit)
       );
       ListItemCollection items = list.GetItems(camlQuery);
-      items.EnsureProperty(null);
+      // this didn't make sense, since no property expressions were passed in
+      // items.EnsureProperty(trace);
+      ClientContext context = list.Context as ClientContext;
+      context.Load(items);
+      try {
+        context.ExecuteQuery();
+      } catch (Exception ex) {
+        throw new Exception(string.Format("Error in CAML query: '{0}'. InnerException='{1}'", camlQuery.ViewXml, ex.Message), ex);
+      }
       return items;
     }
-    public static ListItemCollection GetAllItems(
+
+    /// <summary>
+    /// Query a list and get a certain limited number of items back.
+    /// Useful in cases where page/throlle protection is not needed.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="fieldValue"></param>
+    /// <param name="op"></param>
+    /// <param name="fieldType"></param>
+    /// <param name="options"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    [Obsolete("Recommended to use GetItems (with pagination enabled in options) when querying large lists.")]
+    public static ListItemCollection GetItemsNoPaging(
       this List list,
       string fieldName,
       string fieldValue,
       CAML.Operator op = CAML.Operator.Eq,
       string fieldType = "TEXT",
-      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
-      string orderByXml = "", 
-      List<string> viewFields = null, 
-      int rowLimit = -1
+      QueryItemOptions options = null,
+      ITrace trace = null
     ) {
-      if (rowLimit == LISTITEM_LIMIT_USEDEFAULT)
-        rowLimit = DEFAULT_LISTITEM_PAGE_SIZE;
-      string where = CAML.Where(CAML.GetOperator(op, CAML.Value(fieldName), CAML.Value(fieldType, fieldValue)));
-      return list.GetAllItems(scope, where, orderByXml, viewFields, rowLimit);
+      string where = CAML.Where(op, fieldName, fieldType, fieldValue);
+      return list.GetItemsNoPaging(where, options, trace);
     }
 
+    /// <summary>
+    /// Query a list and get a certain limited number of items back.
+    /// Useful in cases where page/throlle protection is not needed.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="fieldValue"></param>
+    /// <param name="op"></param>
+    /// <param name="fieldType"></param>
+    /// <param name="options"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    [Obsolete("Recommended to use GetItems (with pagination enabled in options) when querying large lists.")]
+    public static ListItemCollection GetItemsNoPaging(
+      this List list,
+      CamlFieldToValueMatchOptions match = null,
+      QueryItemOptions options = null,
+      ITrace trace = null
+    ) {
+      string where = match.ToCamlWhere();
+      return list.GetItemsNoPaging(where, options, trace);
+    }
 
+    // TODO implement a lookup-caching scheme
     public static IEnumerable<ListItem> GetLookupItem(this List list, string value,
       ResolveLookupOptions options = null, ITrace trace = null) {
       /*
@@ -477,10 +639,26 @@
       try {
         // TODO don't we have lib function someplace that makes this more effecient??
         CamlQuery camlQueryForItem = new CamlQuery();
-        List<string> fields = new List<string>();
         string idFieldName = BuiltInFieldId.GetName(BuiltInFieldId.ID);
+        List<string> fields = new List<string>();
         fields.Add(idFieldName);
         fields.Add(options.LookupFieldName);
+
+        CamlFieldToValueMatchOptions match = new CamlFieldToValueMatchOptions() {
+          FieldName = options.LookupFieldName,
+          FieldType = options.LookupFieldType,
+          FieldValue = value
+          // defaults to Eq
+        };
+        QueryItemOptions qo = new QueryItemOptions() {
+          ViewFields = fields,
+          PageSize = options.AllowMultipleResults ? 100 : 5 // limit to 5 results, 2 is one too many
+        };
+#pragma warning disable 618
+        ListItemCollection listItems = list.GetItemsNoPaging(match, qo, trace);
+#pragma warning restore 618
+        // commented because scope = all does not produce results in folders
+        /*
         camlQueryForItem.ViewXml = CAML.View(CAML.ViewScope.All, 
           CAML.Query(
             CAML.Where(CAML.Operator.Eq, options.LookupFieldName, options.LookupFieldType, value),
@@ -494,15 +672,14 @@
                                           (listItem => listItem[idFieldName],
                                            listItem => listItem[options.LookupFieldName]));
         clientContext.ExecuteQuery();
+        */
 
         if (listItems != null) {
           if (listItems.Count > 1 && !options.AllowMultipleResults) {
-            trace.TraceWarning("Lookup query returned multiple items. Make sure your display values are unique.");
+            trace.TraceWarning("Lookup query returned multiple items. Provide a different value or modify the list data so it's unique. value: {0}", value);
             return null;
-            //InvalidOperationException
           }
-          // It's going to return whatever record is first, based on ID.
-          return listItems; //.FirstOrDefault();
+          return listItems; 
         }
       } catch (Exception ex) {
         trace.TraceVerbose("Could not find lookup value '{0}' for field '{1}'(type={2}) in list '{3}' at web '{4}'. ", value, options.LookupFieldName, options.LookupFieldType, list.Title, list.ParentWebUrl);
@@ -819,7 +996,7 @@
 
       trace.Trace(TraceLevel.Verbose, "Calling ListItem Update...");
       // called execute query and handles its own scope
-      UpdateItemResult result = item.UpdateItem(ht, options, contextManager, trace);
+      UpdateItemResult result = item.UpdateItem(ht, options, trace); //, contextManage
 
       return result;
     }
@@ -988,6 +1165,10 @@
       if (trace == null) trace = NullTrace.Default;
       ClientRuntimeContext context = list.Context;
       List<ContentType> newCts = new List<ContentType>();
+      if (cm == null)
+        trace.TraceWarning("EnsureContentTypes called without a WebContextManager; Content type cache can't be leveraged which may significantly impact performance.");
+      if (contentTypes == null)
+        trace.TraceVerbose("contentTypes was null; nothing to do.");
       foreach (string ctName in contentTypes) { 
         trace.TraceVerbose(string.Format("Adding content type name '{0}' to list.", ctName));
         ContentType newCt = null;

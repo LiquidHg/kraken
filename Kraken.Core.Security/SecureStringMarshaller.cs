@@ -43,6 +43,10 @@ namespace Kraken.Core.Security {
     internal SafeBuffer() : base(IntPtr.Zero, true) { }
 
     public void Decrypt(SecureString secureData) {
+      if (secureData == null)
+        throw new ArgumentNullException("secureData");
+      if (secureData.Length == 0)
+        return;
       if (this.IsInvalid) {
         if (this.EnableUnicode) {
           this.SetHandle(Marshal.SecureStringToGlobalAllocUnicode(secureData));
@@ -325,7 +329,8 @@ namespace Kraken.Core.Security {
     public void Decrypt() { // char*
       EnsurePermissions(); // also covered by the attribute above
       this.BufferClear(); // ensure any previouis buffer is erased
-      bufferPointer.Decrypt(this.SecureData);
+      if (this.SecureData != null && this.SecureData.Length > 0)
+        bufferPointer.Decrypt(this.SecureData);
       //return Buffer;
     }
 

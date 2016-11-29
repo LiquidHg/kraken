@@ -33,7 +33,11 @@
     public static void EnsureProperty<T>(this T clientObject, ITrace trace, params Expression<Func<T, object>>[] propertyExpressions) where T : ClientObject {
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)clientObject.Context;
-      context.Load(clientObject, propertyExpressions);
+      // fix for value does not fall within the expected range
+      if (propertyExpressions != null)
+        context.Load(clientObject, propertyExpressions);
+      else
+        context.Load(clientObject);
       context.ExecuteQueryIfNeeded();
     }
 
