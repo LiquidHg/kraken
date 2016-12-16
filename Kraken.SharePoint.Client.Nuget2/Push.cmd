@@ -1,9 +1,8 @@
 ﻿REM For developers with rights to publish packages to Nuget...
 REM TODO on new release, update the function below to match the package file name with version
-SET NUGET_PUSH_FN=".\bin\Debug\Kraken.SharePoint.Client.0.2.44.symbols.nupkg"
+SET NUGET_PUSH_FN=".\bin\Debug\Kraken.SharePoint.Client.0.2.74.symbols.nupkg"
 nuget push %NUGET_PUSH_FN% -Source "Misc (private)" -ApiKey VSTS
 nuget push %NUGET_PUSH_FN% -Source https://api.nuget.org/v3/index.json -ApiKey %NUGET_APIKEY_KRAKEN%
-pause
 
 REM TODO To push to private VSTS feed, you need get your own upload credentials.
 REM The command to add them to Visual Studio will look like this...

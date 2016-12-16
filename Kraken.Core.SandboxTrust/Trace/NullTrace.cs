@@ -34,7 +34,10 @@ namespace Kraken.Tracing {
 
     public TraceLevel Level { get; set; }
 
+    public int Depth { get; set; } = 0;
+
     public bool SilenceErrors { get; set; }
+
     public bool SilenceWarnings { get; set; }
 
   }

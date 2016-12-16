@@ -20,12 +20,16 @@
     private Dictionary<string, ContentTypeCacheItem> cache = new Dictionary<string, ContentTypeCacheItem>();
 
     private ContentTypeCacheItem Find(List list, string ctName) {
+      ClientContext ctx = (ClientContext)list.Context;
+      // TODO need trace and context manager here
+      list.EnsureProperty(null, l => l.Id);
       KeyValuePair<string, ContentTypeCacheItem> item = (from c in cache
                                                           where c.Value.ListId == list.Id && c.Value.Name.Equals(ctName, StringComparison.InvariantCultureIgnoreCase)
                                                           select c).FirstOrDefault();
       return (item.Key == default(KeyValuePair<string, ContentTypeCacheItem>).Key) ? null : item.Value;
     }
     private ContentTypeCacheItem Find(Web web, string ctName) {
+      web.LoadBasicProperties();
       KeyValuePair<string, ContentTypeCacheItem> item = (from c in cache
                                    where c.Value.WebId == web.Id && c.Value.Name.Equals(ctName, StringComparison.InvariantCultureIgnoreCase)
                                    select c).FirstOrDefault();

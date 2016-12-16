@@ -19,13 +19,13 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.2.44</Version>
+    <Version>0.2.74</Version>
     <Title>Kraken SharePoint Client Library</Title>
     <Authors>Thomas Carpe and Liquid Mercury Solutions</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
     <Summary>Developer library for creating SharePoint client (CSOM) projects and apps.</Summary>
     <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</Description>
-    <ReleaseNotes>v0.2.44: Fix - SecureStringMarshaller would crash on Decrypt if the secure string length was zero. Added "ServerRelativeUrl" as an alias to "ServerUrl" in built-in fields; added ServerUrl to the default document view fields to return. Added additional null checking to EnsureContentTypes.</ReleaseNotes>
+    <ReleaseNotes>v0.2.74: Changes to site column "get/find" extensions to allow for recurse parent webs, user fields only, and move core logic to field collection extensions.</ReleaseNotes>
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
     <DefaultLanguage>en-us</DefaultLanguage>

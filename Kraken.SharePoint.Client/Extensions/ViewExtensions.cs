@@ -6,6 +6,7 @@
   using System.Text;
 
   using Kraken.SharePoint.Client;
+  using Kraken.Tracing;
 
   public static class KrakenViewExtensions {
 
@@ -174,6 +175,65 @@
       return newView;
     }
 
+    /// <summary>
+    /// Updates a View based on ViewProperties.
+    /// Includes some property validation.
+    /// </summary>
+    /// <param name="view"></param>
+    /// <param name="props"></param>
+    /// <param name="skipCreateProperties"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    public static bool Update(this View view, ViewProperties props, bool skipCreateProperties, string listTitle, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      if (props.Validate(trace))
+        return false;
+      bool updateNeeded = false;
+
+      if (!skipCreateProperties) {
+        if (updateNeeded |= (!string.IsNullOrEmpty(props.Title) && props.Title != view.Title))
+          view.Title = props.Title;
+        if (updateNeeded |= (!string.IsNullOrEmpty(props.Query) && props.Query != ViewProperties.SKIP_PROPERTY && view.ViewQuery != props.Query))
+          view.ViewQuery = props.Query;
+        if (updateNeeded |= props.Paged != view.Paged)
+          view.Paged = props.Paged;
+        // TODO extend SyncViewFields to return whether it did anything tot eh view
+        if (updateNeeded |= (props.ViewFields != null))
+          view.SyncViewFields(props.ViewFields); // TODO check to make sure this is OK
+        if (updateNeeded |= (view.RowLimit != props.RowLimit && props.RowLimit > 0))
+          view.RowLimit = props.RowLimit;
+        if (props.SetAsDefaultView) {
+          if (view.DefaultView == true)
+            trace.TraceVerbose("View '{0}' is already default in List '{1}'. Operation skipped.", view.Title, listTitle);
+          else {
+            trace.TraceVerbose("View '{0}' set as default from List '{1}'.", view.Title, listTitle);
+            view.DefaultView = true;
+            updateNeeded = true;
+          }
+        }
+      }
+      if (props.HasExtendedSettings) {
+        if (updateNeeded |= props.JSLink != ViewProperties.SKIP_PROPERTY)
+          view.JSLink = props.JSLink;
+        if (updateNeeded |= props.TabularView.HasValue)
+          view.TabularView = props.TabularView.Value;
+        //Toolbar
+        //ToolbarTemplateName
+        //view.VisualizationInfo
+      }
+      if (updateNeeded) {
+        try {
+          view.Update();
+          view.Context.ExecuteQueryIfNeeded();
+          return true;
+        } catch (Exception ex) {
+          trace.TraceWarning("Unable to update view.");
+          trace.TraceError(ex);
+          return false;
+        }
+      } else
+        return false;
+    }
   }
 
 }

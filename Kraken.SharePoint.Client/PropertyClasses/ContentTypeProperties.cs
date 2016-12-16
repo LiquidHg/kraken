@@ -29,9 +29,13 @@ namespace Kraken.SharePoint.Client {
         Description = this.Description,
         Group = this.Group,
         Name = this.Name,
+        Id = this.Id,
         ParentContentType = this.ParentContentType
       };
     }
+
+    // TODO put this to work when updating content types
+    public const string SKIP_PROPERTY = "[SKIP_PROPERTY]";
 
     public bool? Hidden { get; set; }
     public bool? ReadOnly { get; set; }
@@ -48,34 +52,55 @@ namespace Kraken.SharePoint.Client {
     public string MobileNewFormUrl { get; set; }
     public string NewFormTemplateName { get; set; }
     public string NewFormUrl { get; set; }
+    public string Scope { get; set; }
 
+    public void CopyForm(ContentType ct) {
+      this.Description = ct.Description;
+      this.DisplayFormTemplateName = ct.DisplayFormTemplateName;
+      this.DisplayFormUrl = ct.DisplayFormUrl;
+      this.DocumentTemplate = ct.DocumentTemplate;
+      this.EditFormTemplateName = ct.EditFormTemplateName;
+      this.EditFormUrl = ct.EditFormUrl;
+      this.Group = ct.Group;
+      this.Hidden = ct.Hidden;
+      this.Id = ct.Id.StringValue;
+      this.JSLink = ct.JSLink;
+      this.MobileDisplayFormUrl = ct.MobileDisplayFormUrl;
+      this.MobileEditFormUrl = ct.MobileEditFormUrl;
+      this.MobileNewFormUrl = ct.MobileNewFormUrl;
+      this.Name = ct.Name;
+      this.NewFormTemplateName = ct.NewFormTemplateName;
+      this.NewFormUrl = ct.NewFormUrl;
+      this.ParentContentType = ct.Parent;
+      this.ReadOnly = ct.ReadOnly;
+      this.Scope = ct.Scope;
+      this.Sealed = ct.Sealed;
+    }
+
+    /// <summary>
+    /// Returns true if one of props properties will
+    /// have to be set after content type creation because
+    /// it is not supported in ContentTypeCreationInformation
+    /// </summary>
     public bool HasExtendedSettings {
       get {
-        if (!string.IsNullOrEmpty(this.DisplayFormTemplateName))
-          return true;
-        if (!string.IsNullOrEmpty(this.DisplayFormUrl))
-          return true;
-        if (!string.IsNullOrEmpty(this.DocumentTemplate))
-          return true;
-        if (!string.IsNullOrEmpty(this.EditFormTemplateName))
-          return true;
-        if (!string.IsNullOrEmpty(this.EditFormUrl))
-          return true;
-        if (!string.IsNullOrEmpty(this.JSLink))
-          return true;
-        if (!string.IsNullOrEmpty(this.MobileDisplayFormUrl))
-          return true;
-        if (!string.IsNullOrEmpty(this.MobileEditFormUrl))
-          return true;
-        if (!string.IsNullOrEmpty(this.MobileNewFormUrl))
-          return true;
-        if (!string.IsNullOrEmpty(this.NewFormTemplateName))
-          return true;
-        if (!string.IsNullOrEmpty(this.NewFormUrl))
-          return true;
-        return (Hidden.HasValue || ReadOnly.HasValue || Sealed.HasValue);
+        ContentTypeProperties props = this;
+        return (Hidden.HasValue || ReadOnly.HasValue || Sealed.HasValue
+        || !string.IsNullOrWhiteSpace(props.JSLink)
+        || !string.IsNullOrWhiteSpace(props.Scope)
+        || !string.IsNullOrWhiteSpace(props.DocumentTemplate)
+        || !string.IsNullOrWhiteSpace(props.DisplayFormTemplateName)
+        || !string.IsNullOrWhiteSpace(props.DisplayFormUrl)
+        || !string.IsNullOrWhiteSpace(props.MobileDisplayFormUrl)
+        || !string.IsNullOrWhiteSpace(props.EditFormTemplateName)
+        || !string.IsNullOrWhiteSpace(props.EditFormUrl)
+        || !string.IsNullOrWhiteSpace(props.MobileEditFormUrl)
+        || !string.IsNullOrWhiteSpace(props.NewFormTemplateName)
+        || !string.IsNullOrWhiteSpace(props.NewFormUrl)
+        || !string.IsNullOrWhiteSpace(props.MobileNewFormUrl)
+       );
       }
     }
 
-  }
+  } // class
 }

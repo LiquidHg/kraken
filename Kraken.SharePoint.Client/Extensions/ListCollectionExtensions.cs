@@ -39,14 +39,24 @@
         // TODO is this smart enough not to travel across the wire multiple times?
         context.ExecuteQueryIfNeeded();
         foreach (List l in lists) {
-          if (listTitleOrName == l.RootFolder.Name.ToLower() || listTitleOrName == l.Title.ToLower())
+          if (listTitleOrName == l.RootFolder.Name.ToLower() || listTitleOrName == l.Title.ToLower()) {
+            // load root folder propery
+            /*
+            l => l.RootFolder,
+            l => l.RootFolder.Name,
+            l => l.RootFolder.ServerRelativeUrl);
+            */
             return l;
+          }
         }
         return null;
       } else {
+        // TODO comment the above as its not needed
+        StringComparison compare = ignoreCase? StringComparison.InvariantCultureIgnoreCase: StringComparison.InvariantCulture;
         IEnumerable<List> foundLists = context.LoadQuery(
           lists
-            .Where(l => listTitleOrName == l.RootFolder.Name || listTitleOrName == l.Title)
+            .Where(l => listTitleOrName.Equals(l.RootFolder.Name, compare)
+            || listTitleOrName.Equals(l.Title, compare))
             .IncludeBasicProperties()
         );
         context.ExecuteQueryIfNeeded();

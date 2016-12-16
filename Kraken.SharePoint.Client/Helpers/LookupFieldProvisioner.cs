@@ -5,227 +5,238 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kraken.SharePoint.Client.Helpers
-{
-    public class LookupFieldProvisioner
-    {
-        private readonly ClientContext Context;
-        private readonly ITrace Trace;
+namespace Kraken.SharePoint.Client.Helpers {
+  public class LookupFieldProvisioner {
+    private readonly ClientContext Context;
+    private readonly ITrace Trace;
 
-        public LookupFieldProvisioner(ClientContext context, ITrace trace)
-        {
-            Context = context;
-            Trace = trace;
-        }
-
-        public Field CreateField(FieldProperties properties)
-        {
-            var web = Context.Web;
-
-            var lookupClientContext = GetLookupClientContext(properties);
-            var lookupList = GetLookupList(lookupClientContext, properties);
-            if (lookupList != null)
-            {
-                properties.ListId = lookupList.Id;
-                if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/")))
-                {
-                  lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
-                  properties.WebId = lookupClientContext.Web.Id;
-                }
-            }
-
-            Field newField = AddSiteColumn(properties);
-
-            AddAdditionalFields(newField, lookupClientContext, lookupList, properties);
-
-            return newField;
-        }
-
-        public List<FieldProperties> CreateFieldPropertiesList(List<Field> fields)
-        {
-            var lookupAddFieldDict = new Dictionary<Guid, List<FieldProperties>>();
-
-            var ret = new List<FieldProperties>();
-            foreach (var field in fields)
-            {
-                bool needAdd = true;
-                try
-                {
-                    var fp = FieldProperties.Deserialize(field.SchemaXml);
-                    if (fp.Type.Equals("Lookup"))
-                    {
-                        if (fp.ListId != null)
-                        {
-                            var list = Context.Web.Lists.GetById(fp.ListId.GetValueOrDefault());
-                            list.RootFolder.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
-                            var url = list.RootFolder.ServerRelativeUrl;
-                            fp.LookupListUrl = url.TrimStart(Context.Web.ServerRelativeUrl).TrimStart("/");
-                            if(fp.FieldRef != null)
-                            {
-                                lookupAddFieldDict.UpsertElementList(fp.FieldRef.GetValueOrDefault(), fp);
-                                needAdd = false;
-                            }
-                        }
-                    }
-
-                    if (needAdd)
-                    {
-                        ret.Add(fp);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //Trace.TraceError(ex);
-                }
-            }
-
-            foreach(var kvp in lookupAddFieldDict)
-            {
-                var parent = ret.FirstOrDefault(e => e.Id.Equals(kvp.Key));
-                if(parent != null)
-                {
-                    parent.LookupAdditionalFields = kvp.Value.Select(e => e.DisplayName).ToArray(); 
-                }
-            }
-
-            return ret;
-        }
-
-        private Field AddSiteColumn(FieldProperties properties)
-        {
-            try
-            {
-                string schemaXml = properties.GenerateSchemaXml();
-                return Context.Web.AddSiteColumn(schemaXml);
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError(ex);
-                return null;
-            }
-        }
-
-        private ClientContext GetLookupClientContext(FieldProperties properties)
-        {
-            var lookupListFullUrl = "";
-            try
-            {
-              if (string.IsNullOrEmpty(properties.LookupListUrl)
-                && properties.ListId.HasValue) {
-                List list = Context.Web.Lists.GetById(properties.ListId.Value);
-                list.RootFolder.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
-                properties.LookupListUrl = list.RootFolder.ServerRelativeUrl;
-                lookupListFullUrl = list.GetServerRelativeUrl();
-              } else {
-                lookupListFullUrl = Utils.CombineUrl(Context.Web.UrlSafeFor2010(), properties.LookupListUrl);
-              }
-                Uri u = new Uri(lookupListFullUrl);
-                ClientContext ctx;
-                if (Utils.TryResolveClientContext(u, out ctx, Context.Credentials))
-                {
-                    return ctx;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceWarning("Unsuccessful attempt to get the client context for web: '{0}'.", lookupListFullUrl);
-                Trace.TraceWarning(ex.Message);
-                return null;
-            }
-        }
-
-        private List GetLookupList(ClientContext context, FieldProperties properties)
-        {
-            if (context == null)
-                return null;
-
-            if (string.IsNullOrEmpty(properties.LookupListUrl))
-            {
-                Trace.TraceWarning("Lookup List Url is null or empty.");
-                return null;
-            }
-
-						// TODO seems to me this would be useful utility function elsewhere
-						var listUrl = properties.LookupListUrl.Substring(properties.LookupListUrl.LastIndexOf("/") + 1);
-            context.Web.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
-						listUrl = Utils.CombineUrl(context.Web.ServerRelativeUrl, listUrl);
-						
-						List list;
-						if (context.Web.TryGetList(listUrl, out list)) {
-                list.EnsureProperty(this.Trace, e => e.Id, e => e.Title, e => e.ParentWeb, e => e.Fields);
-                return list;
-						} else {
-                Trace.TraceWarning("Lookup List Url: '{0}' not found in web: '{1}'.", listUrl, context.Web.UrlSafeFor2010());
-                return null;
-						}
-        }
-
-        private void AddAdditionalFields(Field newField, ClientContext lookupClientContext, List lookupList, FieldProperties properties)
-        {
-            if (lookupList == null)
-                return;
-
-            List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
-            if (addFields != null && addFields.Count > 0)
-            {
-                newField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
-                foreach (Field field in addFields)
-                {
-                    properties.InternalName = string.Format("{0}{1}", newField.InternalName, field.InternalName);
-                    properties.DisplayName = field.Title;
-                    properties.ShowField = field.Title;
-                    properties.FieldRef = newField.Id;
-                    try
-                    {
-                        Trace.TraceVerbose("Creating additional field {0} from properties.", properties.InternalName);
-                        AddSiteColumn(properties);
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.TraceError(ex);
-                    }
-                }
-            }
-        }
-
-        private List<Field> GetAdditionalFields(ClientContext context, List list, FieldProperties properties)
-        {
-            if (properties.LookupAdditionalFields == null)
-                return null;
-            var addFieldDisplayNames = properties.LookupAdditionalFields;
-            if (addFieldDisplayNames.Length == 0)
-                return null;
-
-            var ret = new List<Field>();
-
-            foreach (Field field in list.Fields)
-            {
-                if (field.Hidden)
-                    continue;
-
-                if (field.FieldTypeKind.Equals(FieldType.Counter) ||
-                    field.FieldTypeKind.Equals(FieldType.Text) ||
-                    field.FieldTypeKind.Equals(FieldType.Number) ||
-                    field.FieldTypeKind.Equals(FieldType.DateTime) ||
-                    (field.FieldTypeKind.Equals(FieldType.Computed) && ((FieldComputed)field).EnableLookup) ||
-                    (field.FieldTypeKind.Equals(FieldType.Calculated) && ((FieldCalculated)field).OutputType.Equals(FieldType.Text)))
-                {
-                    if (addFieldDisplayNames.Contains(field.Title))
-                    {
-                        field.EnsureProperty(this.Trace, e => e.InternalName, e => e.Title);
-                        ret.Add(field);
-                    }
-                }
-            }
-
-            foreach (var item in addFieldDisplayNames)
-            {
-                if (!ret.Exists(e => e.Title.Equals(item)))
-                  Trace.TraceWarning("Field Ref '{0}' is not exists into Lookup List '{1}' on web: '{2}'.", item, list.Title, list.ParentWeb.UrlSafeFor2010());
-            }
-
-            return ret;
-        }
+    public LookupFieldProvisioner(ClientContext context, ITrace trace) {
+      Context = context;
+      Trace = trace;
     }
+
+    public void UpdateField(Field existingField, FieldProperties properties) {
+      var web = Context.Web;
+
+      ClientContext lookupClientContext = GetLookupClientContext(properties);
+      List lookupList = GetLookupList(lookupClientContext, properties);
+      if (lookupList != null) {
+        properties.ListId = lookupList.Id;
+        if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/"))) {
+          lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
+          properties.WebId = lookupClientContext.Web.Id;
+        }
+      }
+      string xml = properties.GenerateSchemaXml();
+      // do not call the properties overload here; that'd create a infinite loop / stack overflow 
+      existingField.Update(xml, true, true, this.Trace);
+      AddAdditionalFields(existingField, lookupClientContext, lookupList, properties);
+    }
+
+    public Field CreateField(FieldProperties properties) {
+      var web = Context.Web;
+
+      var lookupClientContext = GetLookupClientContext(properties);
+      var lookupList = GetLookupList(lookupClientContext, properties);
+      if (lookupList != null) {
+        properties.ListId = lookupList.Id;
+        if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/"))) {
+          lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
+          properties.WebId = lookupClientContext.Web.Id;
+        }
+      }
+      string xml = properties.GenerateSchemaXml();
+      // do not call the properties overload here; that'd create a infinite loop / stack overflow 
+      Field newField = web.Fields.Add(xml, true, this.Trace);
+      AddAdditionalFields(newField, lookupClientContext, lookupList, properties);
+      return newField;
+    }
+
+    public IEnumerable<FieldProperties> CreateFieldPropertiesList(IEnumerable<Field> fields) {
+      Dictionary<Guid, List<FieldProperties>> lookupAddFieldDict = new Dictionary<Guid, List<FieldProperties>>();
+      List<FieldProperties> ret = new List<FieldProperties>();
+      foreach (Field field in fields) {
+        bool needAdd = true;
+        try {
+          var fp = FieldProperties.Deserialize(field.SchemaXml);
+          if (fp.IsLookup) {
+            if (fp.ListId != null) {
+              var list = Context.Web.Lists.GetById(fp.ListId.GetValueOrDefault());
+              list.RootFolder.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
+              var url = list.RootFolder.ServerRelativeUrl;
+              fp.LookupListUrl = url.TrimStart(Context.Web.ServerRelativeUrl).TrimStart("/");
+              if (fp.FieldRef != null) {
+                lookupAddFieldDict.UpsertElementList(fp.FieldRef.GetValueOrDefault(), fp);
+                needAdd = false;
+              }
+            }
+          }
+          if (needAdd) {
+            ret.Add(fp);
+          }
+        } catch (Exception ex) {
+          Trace.TraceError(ex);
+        }
+      }
+      foreach (KeyValuePair<Guid, List<FieldProperties>> kvp in lookupAddFieldDict) {
+        var parent = ret.FirstOrDefault(e => e.Id.Equals(kvp.Key));
+        if (parent != null) {
+          parent.LookupAdditionalFields = kvp.Value.Select(e => e.DisplayName).ToArray();
+        }
+      }
+      return ret;
+    }
+
+    /*
+    private Field AddSiteColumn(FieldProperties properties) {
+      try {
+        string schemaXml = properties.GenerateSchemaXml();
+        return Context.Web.AddSiteColumn(schemaXml);
+      } catch (Exception ex) {
+        Trace.TraceError(ex);
+        return null;
+      }
+    }
+    private void UpdateSiteColumn(Field field, FieldProperties properties) {
+      try {
+        string schemaXml = properties.GenerateSchemaXml();
+        field.SchemaXml = schemaXml;
+      } catch (Exception ex) {
+        Trace.TraceError(ex);
+      }
+    }
+    */
+
+    private ClientContext GetLookupClientContext(FieldProperties properties) {
+      var lookupListFullUrl = "";
+      try {
+        if (string.IsNullOrEmpty(properties.LookupListUrl)
+          && properties.ListId.HasValue) {
+          List list = Context.Web.Lists.GetById(properties.ListId.Value);
+          list.RootFolder.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
+          properties.LookupListUrl = list.RootFolder.ServerRelativeUrl;
+          lookupListFullUrl = list.GetServerRelativeUrl();
+        } else {
+          lookupListFullUrl = Utils.CombineUrl(Context.Web.UrlSafeFor2010(), properties.LookupListUrl);
+        }
+        Uri u = new Uri(lookupListFullUrl);
+        ClientContext ctx;
+        if (Utils.TryResolveClientContext(u, out ctx, Context.Credentials)) {
+          return ctx;
+        }
+        return null;
+      } catch (Exception ex) {
+        Trace.TraceWarning("Unsuccessful attempt to get the client context for web: '{0}'.", lookupListFullUrl);
+        Trace.TraceWarning(ex.Message);
+        return null;
+      }
+    }
+
+    private List GetLookupList(ClientContext context, FieldProperties properties) {
+      if (context == null)
+        return null;
+
+      if (string.IsNullOrEmpty(properties.LookupListUrl)) {
+        Trace.TraceWarning("Lookup List Url is null or empty.");
+        return null;
+      }
+
+      // TODO seems to me this would be useful utility function elsewhere
+      // This is getting only the list name / title and not Lists/name
+      var listName = properties.LookupListUrl.Substring(properties.LookupListUrl.LastIndexOf("/") + 1);
+      // Preserves Lists in urls as needed
+      // This is not needed; underlying function will combine title
+      // with ServerRelativeUrl if necessary
+      var fullUrl = (properties.LookupListUrl.Contains("Lists")) ? "Lists/" + listName : listName;
+      context.Web.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
+      fullUrl = Utils.CombineUrl(context.Web.UrlSafeFor2010(), fullUrl);
+      // TODO test how this interacts when Url and Title don't match
+
+      List list;
+      if (context.Web.TryGetList(listName, out list)) {
+        list.EnsureProperty(this.Trace, e => e.Id, e => e.Title, e => e.ParentWeb);
+        // broken into multiple commands for troubleshooting purpises to figure out which property causes 'cannot complete theis action'
+        try {
+          list.EnsureProperty(this.Trace, e => e.Fields);
+        } catch (Exception ex) {
+          throw new Exception(string.Format("One or more fields in list {0} are corrupted in a way that prevents us from loading the Fields collection. Fix the list and try this operatioion again.", listName), ex);
+        }
+        return list;
+      } else {
+        Trace.TraceWarning("Can't get Lookup List Name: '{0}' Url: '{1}'", listName, fullUrl);
+        return null;
+      }
+    }
+
+    private void AddAdditionalFields(Field newField, ClientContext lookupClientContext, List lookupList, FieldProperties properties) {
+      if (lookupList == null)
+        return;
+      Web web = ((ClientContext)newField.Context).Web;
+      List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
+      if (addFields != null && addFields.Count > 0) {
+        newField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
+        foreach (Field field in addFields) {
+          string newLookupFieldName = string.Format("{0}{1}", newField.InternalName, field.InternalName);
+          if (web.Fields.FindAny(newLookupFieldName) != null) {
+            Trace.TraceVerbose("Auxiliary lookup field {0} already exists and will be skipped.", newLookupFieldName);
+            continue;
+          }
+          properties.InternalName = newLookupFieldName;
+          properties.DisplayName = field.Title;
+          properties.ShowField = field.Title;
+          properties.FieldRef = newField.Id;
+          try {
+            Trace.TraceVerbose("Creating additional field {0} from properties.", properties.InternalName);
+            string xml = properties.GenerateSchemaXml();
+            // do not call the properties overload here; that'd create a infinite loop / stack overflow 
+            /* Field newField2 = */ web.Fields.Add(xml, true, this.Trace);
+          } catch (Exception ex) {
+            Trace.TraceError(string.Format("Error addition additional lookup field {0}", newLookupFieldName), ex);
+          }
+        }
+      }
+    }
+
+    private List<Field> GetAdditionalFields(ClientContext context, List list, FieldProperties properties) {
+      if (properties.LookupAdditionalFields == null)
+        return null;
+      var addFields = properties.LookupAdditionalFields;
+      if (addFields.Length == 0)
+        return null;
+
+      // Do a pre-check to make sure what the end-user provided
+      // actually exists in SharePoint, because it might not!
+      List<Field> existingFields = list.Fields.FindAny(addFields);
+      //List<string> nonExisting = new List<string>();
+      foreach (string fieldNameOrId in addFields) {
+        // basically the opposite of the above when we calculated matchedFields
+        // TODO is there a more performant way to do this??
+        if (existingFields.FindAny(fieldNameOrId) == null) {
+          //nonExisting.Add(fieldNameOrId);
+          Trace.TraceWarning("FieldRef with internal name, id, or title '{0}' does not exist in Lookup List '{1}' at web: '{2}'.", fieldNameOrId, list.Title, list.ParentWeb.UrlSafeFor2010());
+        }
+      }
+
+      // This will automatically return only existing fields, so the 
+      // above test is only to inform the caller what they did wrong.
+      List<Field> supportedFields = list.Fields.GetLookupSupportedFields(Trace);
+
+      // check type support now that we've narrowed it down.
+      foreach (Field field in existingFields) { // addFields
+        // basically the opposite of the above when we calculated matchedFields
+        // TODO is there a more performant way to do this??
+        if (supportedFields.FindAny(field.InternalName) == null) // fieldNameOrId
+          Trace.TraceWarning("FieldRef with internal name '{0}' is a type '{1}' that is not supported in lookups. web='{2}'", field.InternalName, field.TypeAsString, list.ParentWeb.UrlSafeFor2010()); // fieldNameOrId
+      }
+      // Warn the user they are trying to indirectly show a hidden field
+      List<Field> matchedFields = supportedFields.FindAny(addFields);
+      foreach (Field f in matchedFields) {
+        //moved "if (field.Hidden) continue;" from GetLookupSupportedFields
+        if (f.Hidden)
+          Trace.TraceWarning("Field {0} is hidden, and nornally not suitable for addition to Lookup fields, but ya-kno-watt? Fuk-da-man! We're gonna try it anyhow.", f.InternalName);
+      }
+      return supportedFields;
+    }
+
+  }
 }

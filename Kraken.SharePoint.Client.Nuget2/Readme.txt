@@ -83,6 +83,36 @@ join the team.
 
 Update History:
 
+v0.2.74: Changes to site column "get/find" extensions to allow for recurse parent webs, user fields only, and move core logic to field collection extensions.
+v0.2.73: Added method to detect user-created vs. built-in fields/site columns.
+v0.2.72: Added support for dynamic indentation to the ITrace interface and implementation.
+v0.2.71: Skip fields that already exist when creating auxiliary lookup fields in LookupFieldProvisioner.
+v0.2.70: Fix: Logic in FieldCollection::CanonicalizeFormula was causing it to be executed twice.
+v0.2.69: Very minor edits to verbose trace output in order to try and make things a bit cleaner to read.
+v0.2.68: Experimental: Code added to add/update column by properties that will canonicalize the formulas provided and add FieldRefs as needed to prevent errors down the road.
+v0.2.67: Fix: Eliminate redundant warnings in LookupFieldProvisioner when a field doesn't exist that erroneously says it isn't supported type either.
+v0.2.66: Experimental: Trying to isolate issues in ContentTypeExtensions causing a rare NullReferenceException that only occurs in certain cases.
+v0.2.65: Very minor improvements to the way fields are created/updated, meant to improve the provisioning process.
+v0.2.64: Fix: This improves the way that LookupFieldProvisioner tells the difference betweena field that does not exist in a List and a field that isn't supported; attempts to tell the user what's-what. Permits more field types than before including Integer, Boolean, Currency, and Choice.
+v0.2.63: Fix: First attempt to fix issue in LookupFieldProvisioner where getting the target list comes back with 'cannot complete this action' after the List has a content type added to it. This is really more of a diagnostic build with process broken out so we can isolate the problem.
+v0.2.62: Fix: Minor bug in ContentTypeCache causes webs or lists which have not had their Id property explicityly loaded to throw an exception. We now check for this before runnning linq queries.
+v0.2.61: Fix: Third try to fix issue from v0.2.58.
+v0.2.60: Fix: bug in Web.CreateList from ListProperties that stopped it from running List.Update which meant that any extended properties and content types were not handled on add.
+v0.2.59: Fix: Build v0.2.58 had some shortcomings; attempting a different methodlogy for filtering support and provided lookup in fieldsLookupFieldProvisioner.
+v0.2.58: Fix: LookupFieldProvisioner had issue finding additional lookup fields because it was only searching by Title; added InternalName to the query.
+v0.2.57: Fix: LookupFieldProvisioner was not equipped to handle updates to existing lookup fields, not was it attached to extension methods for update of fields/site columns.
+v0.2.56: Fix: LookupFieldProvisioner would fail to find the list if it wasn't a doclib, most likely due to presence of 'Lists/' in the URL.
+v0.2.55: Fix: ListProperties and List::Update extension were not respecting [SKIP_PROPERTY] for setting the default view, resulting in errors when adding or updating list.
+v0.2.54: Added smart property DefaultValueOrFormula to FieldProperties, which will set Formula, DefaultFormula, or DefaultValue automagically.
+v0.2.53: Fix: Left Id out of ContentTypeProperties copy method, resulting in creation of content types with randomly generated Ids.
+v0.2.52: Trap and rethrow exception where trying to create a content type with same ID in a different Web will cause an InvalidOperationException without good explanation why.
+v0.2.51: Added support for props.EnsureContentType[] to List.Update() extension method.
+v0.2.50: Added ListOptions to allow for a broader array of properties when creating/updating Lists + Web.CreateList() and List.Update() extensions.
+v0.2.49: Fix - Remove "URL" from the default set of standard view fields, because creation of Views blew up where List queries dsomehow allowed it.
+v0.2.48: Fix - stupid boolean flipflop in null detection of AddEnsureFieldsToOrderBy
+v0.2.47: Multiple functions added to CamlHelpers to systematize the creation of View CAML for use across multiple consumers.
+v0.2.46: View.Update extended to include setting as the default view, provie a list name for debugging purposes.
+v0.2.45: Added additional properties to ViewProperties and ContentTypeProperties; added Update extension method for View.
 v0.2.44: Fix - SecureStringMarshaller would crash on Decrypt if the secure string length was zero. Added "ServerRelativeUrl" as an alias to "ServerUrl" in built-in fields; added ServerUrl to the default document view fields to return. Added additional null checking to EnsureContentTypes.
 v0.2.43: Fix - CAML.Where() for field-op-value in GetItems/GetItemsNoPaging/GetItemsPage/GetLookupItem were all flawed, resulting in queries which always return 0 items. Value was used for field name instead of FieldRef; now using correct syntax.
 v0.2.42: Packaging glitch; version++ bump.

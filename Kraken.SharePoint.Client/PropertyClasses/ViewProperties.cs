@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using Kraken.Tracing;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,65 @@ namespace Kraken.SharePoint.Client {
 
 #endif
 
+    /// <summary>
+    /// The InnerXml of a CAML Query tag
+    /// </summary>
+    /// <remarks>
+    /// Query property should be in the following format:
+    ///   <WHERE></WHERE><ORDERBY></ORDERBY>
+    /// Not this:
+    ///   <VIEW><QUERY><WHERE></WHERE><ORDERBY></ORDERBY></QUERY></VIEW>
+    /// </remarks>
+    new public string Query {
+      get {
+        return base.Query;
+      }
+      set {
+        base.Query = value;
+      }
+    }
+
+    public const string SKIP_PROPERTY = "[SKIP_PROPERTY]";
+
+    public string JSLink { get; set; }
+    public bool? TabularView { get; set; }
+
+    public bool HasExtendedSettings {
+      get {
+        return (TabularView.HasValue
+          || JSLink != SKIP_PROPERTY);
+      }
+    }
+
+    public bool Validate(ITrace trace = null) {
+      bool isValid = true;
+      if (this.RowLimit < 0 && this.RowLimit >= 5000) {
+        trace.TraceWarning("Invalid RowLimit = {0}; must be between 0 and 5000 (exclusive)", this.RowLimit);
+        isValid = false;
+      }
+      if (string.IsNullOrWhiteSpace(this.Title)) {
+        trace.TraceWarning("Title must have a value");
+        isValid = false;
+      }
+      if (string.IsNullOrWhiteSpace(this.Query)) {
+        trace.TraceWarning("Query must have a value");
+        isValid = false;
+      }
+      return isValid;
+    }
+
+    public void CopyFrom(View view) {
+      this.RowLimit = view.RowLimit;
+      this.Paged = view.Paged;
+      // This one can't be set, but we can hold it as a property
+      this.PersonalView = view.PersonalView;
+      this.Query = view.ViewQuery;
+      this.Title = view.Title;
+      // this is left as null unless provided
+      //this.ViewFields = view.ViewFields;
+      //this.ViewTypeKind
+    }
+
     public ViewCreationInformation ConvertSP14Safe() {
       return new ViewCreationInformation() {
         Paged = this.Paged,
@@ -36,5 +96,6 @@ namespace Kraken.SharePoint.Client {
         ViewTypeKind = this.ViewTypeKind
       };
     }
-  }
+
+  } // class
 }

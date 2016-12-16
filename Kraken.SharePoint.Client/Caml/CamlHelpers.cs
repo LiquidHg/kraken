@@ -23,7 +23,8 @@ namespace Kraken.SharePoint.Client.Caml {
         if (_defaultListViewFields == null) {
           _defaultListViewFields = new List<string>() {
             BuiltInFieldId.GetName(BuiltInFieldId.ID),
-            BuiltInFieldId.GetName(BuiltInFieldId.URL),
+            // Removed because creating views on a standard DocLib blew up sinc ethis field didn't exist
+            //BuiltInFieldId.GetName(BuiltInFieldId.URL),
             BuiltInFieldId.GetName(BuiltInFieldId.EncodedAbsUrl),
             BuiltInFieldId.GetName(BuiltInFieldId.Title),
             BuiltInFieldId.GetName(BuiltInFieldId.Created),
@@ -66,6 +67,44 @@ namespace Kraken.SharePoint.Client.Caml {
         }
         return _defaultDocLibViewFields;
       }
+    }
+
+    /// <summary>
+    /// Creates a field array or append to one
+    /// provided by ensureFields. Adds all fields
+    /// in order.
+    /// </summary>
+    /// <param name="order"></param>
+    /// <param name="ensureFields"></param>
+    /// <returns></returns>
+    public static string[] AddEnsureFieldsToOrderBy(Hashtable order, string[] ensureFields = null) {
+      if (order == null)
+        return null;
+      ensureFields = new string[order.Keys.Count];
+      int i = 0;
+      foreach (string f in order.Keys) {
+        ensureFields[i] = f; i++;
+      }
+      return ensureFields;
+    }
+
+    /// <summary>
+    /// Creates the XML collection of field references.
+    /// </summary>
+    /// <param name="order"></param>
+    /// <returns></returns>
+    public static string GetOrderXml(Hashtable order) {
+      string orderXml = string.Empty;
+      if (order != null) {
+        Dictionary<string, CAML.SortType> orderBy = CamlHelpers.ConvertToOrderBy(order);
+        List<string> fields = new List<string>();
+        // TODO ht convert - why is it not strongly types in the options class?
+        foreach (string fieldName in orderBy.Keys) {
+          fields.Add(CAML.FieldRef(fieldName, orderBy[fieldName]));
+        }
+        orderXml = CAML.OrderBy(fields.ToArray());
+      }
+      return orderXml;
     }
 
     public static List<string> GetDefaultQueryFields(this List list, ITrace trace = null) {

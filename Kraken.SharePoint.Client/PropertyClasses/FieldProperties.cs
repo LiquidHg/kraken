@@ -41,6 +41,8 @@ namespace Kraken.SharePoint.Client {
     public FieldProperties() {
     }
 
+    #region Properties
+
     /// <summary>
     /// Unique ID of the field. This property can only be set when creating 
     /// site column from XML elements and feature definitions.
@@ -102,9 +104,27 @@ namespace Kraken.SharePoint.Client {
     public string Type {
       get { return type; }
       set {
-        if (!string.IsNullOrEmpty(value) && !IsSupportedFieldType(value))
-          throw new NotSupportedException(string.Format("The field type '{0}' is not a supported field type.", value));
-        type = value;
+        FieldTypeAlias typeAlias;
+        if (Enum.TryParse(value, out typeAlias) && typeAlias != FieldTypeAlias.InvalidFieldType)
+          this.TypeAlias = typeAlias; // automatically sets fieldProps.Type
+        else {
+          // TODO what about custom types???
+          if (!string.IsNullOrEmpty(value) && !IsSupportedFieldType(value))
+            throw new NotSupportedException(string.Format("The field type '{0}' is not a supported field type.", value));
+          type = value;
+        }
+      }
+    }
+
+    public FieldType? TypeKind {
+      get {
+        FieldType t;
+        if (Enum.TryParse(this.Type, out t))
+          return t;
+        return null;
+      }
+      set {
+        this.Type = value.ToString();
       }
     }
 
@@ -125,6 +145,12 @@ namespace Kraken.SharePoint.Client {
         this.ConfigureFromAlias(value); 
       }
     }
+
+    /// <summary>
+    /// For calculated fields and others, you should add one 
+    /// one or more field references as needed.
+    /// </summary>
+    public List<Field> FieldRefs { get; set; } = new List<Field>();
 
     [XmlElement("Default")]
     public object DefaultValue { get; set; }
@@ -498,6 +524,54 @@ namespace Kraken.SharePoint.Client {
     [XmlIgnore]
     public string[] LookupAdditionalFields { get; set; }
 
+    /// <summary>
+    /// Type aware property that will set
+    /// the correct properties based on Type
+    /// and presence of = in the value
+    /// </summary>
+    public object DefaultValueOrFormula {
+      get {
+        if (this.TypeKind == FieldType.Calculated) {
+          return Formula;
+        } else if (!string.IsNullOrEmpty(this.DefaultFormula)) {
+          return DefaultFormula;
+        } else {
+          return DefaultValue;
+        }
+      }
+      set {
+        string defaultValueOrFormula = value.ToString();
+        if (this.TypeKind == FieldType.Calculated) {
+          if (!string.IsNullOrWhiteSpace(defaultValueOrFormula)) {
+            // fixup the missing = when people forget
+            if (!defaultValueOrFormula.StartsWith("="))
+              defaultValueOrFormula = "=" + defaultValueOrFormula;
+            this.Formula = defaultValueOrFormula;
+            this.DefaultFormula = null;
+            this.DefaultValue = null;
+          }
+        } else if (defaultValueOrFormula.StartsWith("=")) {
+          this.DefaultFormula = defaultValueOrFormula;
+          this.DefaultValue = null;
+          this.Formula = null;
+        } else {
+          this.DefaultValue = value;
+          this.DefaultFormula = null;
+          this.Formula = null;
+        }
+      }
+      // TODO lifted from FieldPropertiesExtensions
+    }
+
+    public bool IsLookup {
+      get {
+        return (this.TypeAlias == FieldTypeAlias.Lookup
+          || this.TypeAlias == FieldTypeAlias.LookupMulti);
+        }
+      }
+
+    #endregion
+
     public bool IsSupportedFieldType() {
       return IsSupportedFieldType(this.Type);
     }
@@ -535,6 +609,7 @@ namespace Kraken.SharePoint.Client {
       }
       return false;
     }
+
 
     public void ConfigureFromAlias(FieldTypeAlias alias) {
       type = FieldUtility.Convert(alias);
@@ -812,7 +887,7 @@ namespace Kraken.SharePoint.Client {
           // TODO these properties haven't been exposed in the PowerShell calling routine
           sb.AppendAttribute("LinkToItem", LinkToItem);
           sb.AppendAttribute("LinkToItemAllowed", LinkToItemAllowed);
-          if (Type == FieldType.User.ToString()) {
+          if (TypeKind == FieldType.User) {
             sb.AppendAttribute("List", "UserInfo");
           } else {
             if (ListId.HasValue)
@@ -839,8 +914,8 @@ namespace Kraken.SharePoint.Client {
           // somewhat unrelated but kinda fun  
           // http://stevemannspath.blogspot.com/2013/10/sharepoint-2013-adding-rich-text-column.html
           sb.AppendAttribute("RestrictedMode", RestrictedMode);
-          if (Type == FieldType.Calculated.ToString()
-            || Type == FieldType.Computed.ToString()) {
+          if (TypeKind == FieldType.Calculated
+            || TypeKind == FieldType.Computed) {
             sb.AppendAttribute("ResultType", ResultType);
           }
           sb.AppendAttribute("RichText", RichText);
@@ -965,6 +1040,14 @@ namespace Kraken.SharePoint.Client {
               scriptAttrib = string.Format(" Script=\"{0}\"", this.ValidationEcmaScript);
             // TODO HtmlFormat the value of the formula
             sb.AppendFormat("<Validation Message=\"{0}\" {1}>{2}</Validation>", this.ValidationMessage, scriptAttrib, this.ValidationFormula);
+          }
+          if (this.FieldRefs != null && this.FieldRefs.Count > 0) {
+            sb.Append("<FieldRefs>");
+            foreach (Field f in this.FieldRefs) {
+              // TODO sb.Append(Caml.CAML.FieldRef());
+              sb.AppendFormat("<FieldRefs Name=\"{0}\" ID=\"{1}\" />", f.InternalName, f.Id);
+            }
+            sb.Append("</FieldRefs>");
           }
           // TODO to properly support calculated fields, we need FormulaDispolayNames and FieldRefs
           // TODO DisplayPattern and DisplayBidiPattern are needed for computed fields

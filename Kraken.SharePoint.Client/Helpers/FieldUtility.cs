@@ -86,6 +86,9 @@ namespace Kraken.SharePoint.Client {
       return (type.Equals(testType.ToString(), StringComparison.InvariantCultureIgnoreCase));
     }
 
+    public static bool IsLookupFieldType(string type) {
+      return (type.StartsWith(FieldType.Lookup.ToString(), StringComparison.InvariantCultureIgnoreCase));
+    }
     public static bool IsChoiceFieldType(string type) {
       return (type.EndsWith(FieldType.Choice.ToString(), StringComparison.InvariantCultureIgnoreCase));
     }

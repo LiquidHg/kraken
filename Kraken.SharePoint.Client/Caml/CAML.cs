@@ -548,6 +548,41 @@ namespace Kraken.SharePoint.Client.Caml {
     }
 
     /// <summary>
+    /// Returns the inner XML of the <Query></Query>
+    /// needed to create a View.
+    /// </summary>
+    /// <returns></returns>
+    public static string ListViewQuery(
+      IHasCamlViewParameters parameters,
+      Microsoft.SharePoint.Client.List list,
+      Tracing.ITrace trace = null) {
+      if (trace == null) trace = Tracing.NullTrace.Default;
+      string orderByXml = CamlHelpers.GetOrderXml(parameters.OrderBy);
+      return parameters.WhereXml + orderByXml;
+    }
+
+    // TODO make an extension method to keep customizations seperated
+    public static string View(
+      IHasCamlViewParameters parameters, 
+      Microsoft.SharePoint.Client.List list, 
+      Tracing.ITrace trace = null) {
+      if (trace == null) trace = Tracing.NullTrace.Default;
+      string[] ensureFields = CamlHelpers.AddEnsureFieldsToOrderBy(parameters.OrderBy);
+      List<string> vf = CamlHelpers.ResolveQueryFields(parameters.ViewFields, ensureFields, list, trace);
+      string viewFieldsXml = vf.GetCamlViewFieldsXml(list, trace);
+      string orderByXml = CamlHelpers.GetOrderXml(parameters.OrderBy);
+      string viewXml = CAML.View(
+        parameters.Scope,
+        CAML.Query(parameters.WhereXml, orderByXml),
+        viewFieldsXml,
+        (parameters.RowLimit == Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT)
+        ? string.Empty
+        : CAML.RowLimit(parameters.RowLimit)
+      );
+      return viewXml;
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="scope">e.g. "RecursiveAll"</param>

@@ -18,6 +18,7 @@ namespace Kraken.Tracing {
     Action<TraceLevel, string> Handler { get; set; }
 
     TraceLevel Level { get; set; }
+    int Depth { get; set; }
 
     bool SilenceErrors { get; set; }
     bool SilenceWarnings { get; set; }

@@ -22,19 +22,19 @@
 
   public static class KrakenWebExtensions {
 
-		#region Basic
+    #region Basic
 
-		/// <summary>
+    /// <summary>
     /// Get the URL property whether it exists or not
     /// </summary>
     /// <param name="web"></param>
     /// <returns></returns>
     public static string UrlSafeFor2010(this Web web) {
       string url = string.Empty;
-			try {
+      try {
         ClientContext context = (ClientContext)web.Context;
 #if !DOTNET_V35
-				web.EnsureProperty(null, e => e.Url);
+        web.EnsureProperty(null, e => e.Url);
 #else
 				web.EnsureProperty(null, e => e.ServerRelativeUrl);
 #endif
@@ -92,15 +92,15 @@
       }
 #endif
       if (execute) {
-        context.ExecuteQuery();
+        context.ExecuteQueryIfNeeded();
         trace.TraceVerbose("LoadBasicProperties: web ID = '{0}'", web.Id);
         trace.TraceVerbose("LoadBasicProperties: web.Url = '{0}'", web.UrlSafeFor2010());
       }
     }
 
-		#endregion
+    #endregion
 
-		#region Folders
+    #region Folders
 
     public static IEnumerable<Folder> GetFoldersAtTopLevel(this Web web) {
       ClientContext context = (ClientContext)web.Context;
@@ -123,7 +123,7 @@
     /// <returns></returns>
 		public static Folder GetFolder(this Web web, string listTitle, string folderName, bool ignoreCase) {
       List list;
-			if (!web.TryGetList(listTitle, out list, ignoreCase) || list == null)
+      if (!web.TryGetList(listTitle, out list, ignoreCase) || list == null)
         return null;
       return list.GetFolder(folderName, ignoreCase);
     }
@@ -159,7 +159,7 @@
         }
       } catch (ServerException ex) {
         //if (ex.Message.Equals("File Not Found.", StringComparison.InvariantCultureIgnoreCase))
-				if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
+        if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
           return null;
         if (ex.Message == "Unknown Error") {
           // did you mean to get a file and got a folder instead?
@@ -179,67 +179,67 @@
     /// <param name="folder"></param>
     /// <returns></returns>
 		public static bool TryGetFolder(this Web web, string serverRelativeUrl, out Folder folder) {
-			var ctx = web.Context;
-			try {
-				folder = web.GetFolder(serverRelativeUrl);
-				return true;
-			} catch (Microsoft.SharePoint.Client.ServerException ex) {
-				if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
-					folder = null;
-					return false;
-				} else
-					throw;
-			}
-		}
+      var ctx = web.Context;
+      try {
+        folder = web.GetFolder(serverRelativeUrl);
+        return true;
+      } catch (Microsoft.SharePoint.Client.ServerException ex) {
+        if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
+          folder = null;
+          return false;
+        } else
+          throw;
+      }
+    }
     public static bool TryGetFolder(this Web web, Uri serverRelativeUrl, out Folder folder) {
       if (serverRelativeUrl.IsAbsoluteUri)
         throw new ArgumentException("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. ", "serverRelativeUrl");
       return web.TryGetFolder(serverRelativeUrl.ToString(), out folder);
     }
 
-		#endregion
+    #endregion
 
-		#region Files
+    #region Files
 
-		public static bool TryGetFile(this Web web, string serverRelativeUrl, out Microsoft.SharePoint.Client.File file) {
-			var ctx = web.Context;
-			try {
-				file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-				file.EnsureProperty(null);
-				return true;
-			} catch (Microsoft.SharePoint.Client.ServerException ex) {
-				if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
-					file = null;
-					return false;
-				} else
-					throw;
-			}
-		}
-
-		#endregion
-
-		#region DocLibs
-
-		public static List CreateDocumentLibrary(this Web web, string listTitle) {
-			return web.CreateList(listTitle, string.Empty, true, ListTemplateType.DocumentLibrary);
+    public static bool TryGetFile(this Web web, string serverRelativeUrl, out Microsoft.SharePoint.Client.File file) {
+      var ctx = web.Context;
+      try {
+        file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+        file.EnsureProperty(null);
+        return true;
+      } catch (Microsoft.SharePoint.Client.ServerException ex) {
+        if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
+          file = null;
+          return false;
+        } else
+          throw;
+      }
     }
 
-		#endregion
+    #endregion
 
-		#region Lists
+    #region DocLibs
 
-		/// <summary>
-		/// The ultimate wrapper method. Will attempt to get a list by
-		/// server relative Url, root folder name, or title.
-		/// </summary>
-		/// <param name="web"></param>
-		/// <param name="listUrlTitleOrName"></param>
-		/// <param name="list"></param>
-		/// <param name="ignoreCase"></param>
-		/// <returns></returns>
-		public static bool TryGetList(this Web web, string listUrlTitleOrName, out List list, bool ignoreCase = true) {
-			var ctx = web.Context;
-			try {
+    public static List CreateDocumentLibrary(this Web web, string listTitle) {
+      return web.CreateList(listTitle, string.Empty, true, ListTemplateType.DocumentLibrary);
+    }
+
+    #endregion
+
+    #region Lists
+
+    /// <summary>
+    /// The ultimate wrapper method. Will attempt to get a list by
+    /// server relative Url, root folder name, or title.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="listUrlTitleOrName"></param>
+    /// <param name="list"></param>
+    /// <param name="ignoreCase"></param>
+    /// <returns></returns>
+    public static bool TryGetList(this Web web, string listUrlTitleOrName, out List list, bool ignoreCase = true) {
+      var ctx = web.Context;
+      try {
         Guid listId;
 #if !DOTNET_V35
         if (Guid.TryParse(listUrlTitleOrName, out listId)) {
@@ -253,83 +253,114 @@
 #endif
           // TODO but a list by ID can come from anywhere in the site collection
           list = web.Lists.GetById(listId);
-/* older versions of CSOM didn't implement web.GetList */
+          /* older versions of CSOM didn't implement web.GetList */
 #if !DOTNET_V35
+          /*
+          } else if (listUrlTitleOrName.StartsWith("/")) {
+            // the query in GetByTitleOrName should work to perform same thing as 
+            //string tryByUrl = web.ServerRelativeUrl + "/" + listUrlTitleOrName;
+            */
         } else if (listUrlTitleOrName.Contains("/")) {
-					list = web.GetList(listUrlTitleOrName);
-					/*
+          list = web.GetList(listUrlTitleOrName);
+          /*
 					ctx.Load(
 							list => list.IncludeBasicProperties()
 					);
 					 */
 #endif
         } else {
-					list = web.Lists.GetByTitleOrName(listUrlTitleOrName, ignoreCase);
-					// the query in GetByTitleOrName should work to perform same thing as 
-					//string tryByUrl = web.ServerRelativeUrl + "/" + listUrlTitleOrName;
-				}
+          list = web.Lists.GetByTitleOrName(listUrlTitleOrName, ignoreCase);
+          // the query in GetByTitleOrName should work to perform same thing as 
+          //string tryByUrl = web.ServerRelativeUrl + "/" + listUrlTitleOrName;
+        }
         if (list != null) {
           list.EnsureProperty(null);
           return true;
         } else {
           return false;
         }
-			} catch (Microsoft.SharePoint.Client.ServerException ex) {
+      } catch (Microsoft.SharePoint.Client.ServerException ex) {
         if (ex.Message.Contains("Value does not fall within the expected range")
           || ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
-					list = null;
-					return false;
-				} else
-					throw;
-			}
-		}
+          list = null;
+          return false;
+        } else
+          throw;
+      }
+    }
 
-		public static List CreateList(this Web web, string listTitle, string description, bool isQuickLaunch, ListTemplateType template, bool throwIfExists = true) {
+    public static List CreateList(this Web web, ListOptions props, WebContextManager cm = null, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      if (props == null)
+        throw new ArgumentNullException("props");
+      props.Validate(true, true, trace);
+      if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)web.Context;
       List list = null;
-      if (web.TryGetList(listTitle, out list)) {
-        if (throwIfExists)
-          throw new ArgumentException(string.Format("A list named '{0}' already exists at web '{1}'.", listTitle, web.UrlSafeFor2010()), "listTitle");
+      if (web.TryGetList(props.Title, out list)) {
+        if (props.ThrowOnError)
+          throw new ArgumentException(string.Format("A list named '{0}' already exists at web '{1}'.", props.Title, web.UrlSafeFor2010()), "listTitle");
         return list;
       }
-			ListCreationInformation lci = new ListCreationInformation() {
-				Title = listTitle,
-				Description = description,
-				QuickLaunchOption = isQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off,
-				TemplateType = (Int32)template
-			};
-      list = web.Lists.Add(lci);
-      context.ExecuteQuery();
+      if (props.TemplateTypeDefined.HasValue) {
+        props.TemplateType = (Int32)props.TemplateTypeDefined.Value;
+      } else if (props.HasChangedValue(props.TemplateTypeCustom)) {
+        context.Load(web, w => w.ListTemplates);
+        context.ExecuteQuery();
+        ListTemplate listTemplate = web.ListTemplates.FirstOrDefault(lt => lt.Name == props.TemplateTypeCustom);
+        if (listTemplate == null) {
+          if (props.ThrowOnError)
+            throw new ArgumentOutOfRangeException(string.Format("List template with name '{0}' does not exist in web '{1}'.", props.TemplateTypeCustom, web.UrlSafeFor2010()), "TemplateTypeCustom");
+          return null;
+        }
+        props.TemplateFeatureId = listTemplate.FeatureId;
+        props.TemplateType = listTemplate.ListTemplateTypeKind;
+      } else if (props.TemplateType <= 0) {
+        if (props.ThrowOnError)
+          throw new ArgumentNullException(string.Format("You must specify a pre-defined or custom list template."), "TemplateTypeDefined or TemplateTypeCustom");
+        return null;
+      }
+      try {
+        ListCreationInformation lci = props.ConvertSP14Safe();
+        list = web.Lists.Add(lci);
+        context.ExecuteQuery();
+      } catch (Exception ex) {
+        string msg = string.Format("Couldn't create List '{0}' at '{1}'", props.Title, web.UrlSafeFor2010());
+        trace.TraceWarning(msg);
+        trace.TraceError(ex);
+        if (props.ThrowOnError) {
+          throw new Exception(msg, ex);
+        }
+      }
+      if (list != null)
+        list.Update(props, true, cm, trace);
       return list;
     }
+
+    public static List CreateList(this Web web, string listTitle, string description, bool isQuickLaunch, ListTemplateType template, bool throwIfExists = true) {
+      ListOptions options = new ListOptions() {
+        Title = listTitle,
+        Description = description,
+        OnQuickLaunch = isQuickLaunch,
+        TemplateTypeDefined = template,
+        ThrowOnError = throwIfExists
+      };
+      return CreateList(web, options);
+    }
     public static List CreateList(this Web web, string listTitle, string description, bool isQuickLaunch, string customTemplateName, bool throwIfExists = true) {
-			ClientContext context = (ClientContext)web.Context;
-      List list = null;
-      if (web.TryGetList(listTitle, out list)) {
-        if (throwIfExists)
-          throw new ArgumentException(string.Format("A list named '{0}' already exists at web '{1}'.", listTitle, web.UrlSafeFor2010()), "listTitle");
-        return list;
-      }
-      context.Load(web, w => w.ListTemplates);
-			context.ExecuteQuery();
-			ListTemplate listTemplate = web.ListTemplates.FirstOrDefault(lt => lt.Name == customTemplateName);
-			if (listTemplate == null)
-				throw new ArgumentOutOfRangeException("customTemplateName", string.Format("List template with name '{0}' does not exist in web '{1}'.", customTemplateName, web.UrlSafeFor2010()));
-			ListCreationInformation lci = new ListCreationInformation() {
+      ListOptions options = new ListOptions() {
 				Title = listTitle,
 				Description = description,
-				QuickLaunchOption = isQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off,
-				TemplateFeatureId = listTemplate.FeatureId,
-				TemplateType = listTemplate.ListTemplateTypeKind
+        OnQuickLaunch = isQuickLaunch,
+        TemplateTypeCustom = customTemplateName,
+        ThrowOnError = throwIfExists
 			};
-			list = web.Lists.Add(lci);
-			context.ExecuteQuery();
-			return list;
-		}
+      return CreateList(web, options);
+    }
 
 #endregion
 
-#region Content Types
+    #region Content Types
 
 		/// <summary>
     /// 
@@ -351,7 +382,8 @@
       if (trace == null) trace = NullTrace.Default;
       web.LoadBasicProperties(true, false, trace);
       ContentTypeCache ctc = (cm == null) ? null : cm.ContentTypeCache;
-      trace.TraceVerbose("Getting content type from web cache...");
+      if (ctc != null)
+        trace.TraceVerbose("Getting content type from web cache...");
       // get the web content type from the current web or from web CT cache if it is available
       ContentType webContentType = (ctc != null)
         ? ctc.GetByName(web, contentTypeName, false)
@@ -452,7 +484,7 @@
         }
 #endif
       } else {
-        trace.TraceVerbose("Getting content type from root web cache...");
+        trace.TraceVerbose("Getting content type from ROOT site web cache...");
         ClientContext context = (ClientContext)web.Context;
         webContentType = context.Site.RootWeb.GetContentType(contentTypeName, cm, trace); 
       }
@@ -507,7 +539,7 @@
 
 #endregion
 
-#region Site Columns
+    #region Site Columns
 
     /// <summary>
     /// Gets a site column from the web site, using one of several methods.
@@ -577,25 +609,82 @@
       return targetField;
     }
 
-    public static List<Field> GetSiteColumns(this Web web)
-    {
-        ClientContext context = (ClientContext)web.Context;
-        IEnumerable<Field> result = context.LoadQuery(web.Fields.IncludeSiteColumnDefaults());
-        context.ExecuteQuery();
-        return result.ToList();
+    public static Web GetParentWeb(this Web web, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      ClientContext ctx = (ClientContext)web.Context;
+      if (web != null
+        && web.ParentWeb != null
+        && !web.ParentWeb.ServerObjectIsNull.GetValueOrDefault()) {
+        ctx.Load(web,
+          w => w.ParentWeb.ServerRelativeUrl,
+          w => w.ParentWeb.Id);
+        ctx.ExecuteQueryIfNeeded();
+        trace.TraceVerbose("Searching parent web {0}", web.ParentWeb.ServerRelativeUrl);
+        return ctx.Site.OpenWebById(web.ParentWeb.Id);
+      } else {
+        return null;
+      }
     }
 
-    public static List<Field> GetSiteColumnsInGroup(this Web web, string groupName) {
-      return web.Fields.GetByGroup(groupName);
+    /// <summary>
+    /// Gets the requested site columns, and potentially from
+    /// parent webs as well.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="recursParentWebs"></param>
+    /// <param name="excludeBuiltInFields"></param>
+    /// <param name="trace"></param>
+    /// <returns>A List<Field> object with all the erequested fields</returns>
+    public static IEnumerable<Field> GetSiteColumns(this Web web, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      ClientContext context = (ClientContext)web.Context;
+      web = context.Web;
+      List<Field> allResults = new List<Field>();
+      while (web != null) {
+        IEnumerable<Field> result = web.Fields.GetAllFields(excludeBuiltInFields);
+        allResults.AddRange(result);
+        web = (recursParentWebs) ? web.GetParentWeb(trace) : null;
+      } // end while
+      return allResults;
     }
 
-    public static List<FieldProperties> GetFieldPropertiesList(this Web web, string groupName, ITrace trace)
-    {
-        var ret = new List<FieldProperties>();
-        List<Field> fields = string.IsNullOrEmpty(groupName) ? web.GetSiteColumns() : web.GetSiteColumnsInGroup(groupName);
+    public static IEnumerable<Field> GetSiteColumnsInGroup(this Web web, string groupName, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      ClientContext context = (ClientContext)web.Context;
+      web = context.Web;
+      List<Field> allResults = new List<Field>();
+      while (web != null) {
+        IEnumerable<Field> result = web.Fields.FindByGroup(groupName, excludeBuiltInFields);
+        allResults.AddRange(result);
+        web = (recursParentWebs) ? web.GetParentWeb(trace) : null;
+      } // end while
+      return allResults;
+    }
+
+    /// <summary>
+    /// Creates a collection of FieldProperties
+    /// for many fields, using LookupFieldProvisioner
+    /// to populate additional field info.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="groupName"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    public static IEnumerable<FieldProperties> GetFieldPropertiesList(
+      this Web web, 
+      string groupName = "",
+      bool recursParentWebs = true, 
+      bool excludeBuiltInFields = false,
+      ITrace trace = null)
+      {
+      if (trace == null) trace = NullTrace.Default;
+      IEnumerable<Field> fields = 
+          (string.IsNullOrEmpty(groupName))
+          ? web.GetSiteColumns(recursParentWebs, excludeBuiltInFields, trace) 
+          : web.GetSiteColumnsInGroup(groupName, recursParentWebs, excludeBuiltInFields, trace);
         ClientContext context = (ClientContext)web.Context;
-        var lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
-        ret = lookupFieldProvisioner.CreateFieldPropertiesList(fields);
+        LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
+        IEnumerable<FieldProperties> ret = lookupFieldProvisioner.CreateFieldPropertiesList(fields);
         return ret;
     }
 
@@ -620,17 +709,18 @@
 
     public static Field GetSiteColumn(this Web web, string siteColumnName, SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any, WebContextManager contextManager = null, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
-      object scc = null; // (contextManager == null) ? null : contextManager.SiteColumnCache;
-      trace.TraceVerbose("Getting content type from web cache...");
+      //object scc = (contextManager == null) ? null : contextManager.SiteColumnCache;
+      //trace.TraceVerbose("Getting site column from web cache...");
       web.LoadBasicProperties(true, false, trace);
       // get the web content type from the current web or from web CT cache if it is available
-      Field webField = (scc != null)
-        ? null // scc.GetByName(web, siteColumnName, false)
-        : web.GetSiteColumn(siteColumnName, findMethod);
+      Field webField = /* (scc != null)
+        //? scc.(web, siteColumnName, false)
+        : */ web.GetSiteColumn(siteColumnName, findMethod);
       return webField;
     }
 
     // TODO implement site column caching
+    // TODO recurse parent webs can be simplified here
     public static Field GetSiteColumn(this Web web, string siteColumnName, SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any, bool recurseAllParentWebs = true, WebContextManager contextManager = null, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
       if (recurseAllParentWebs && contextManager == null)
@@ -675,7 +765,7 @@
         }
 #endif
       } else {
-        trace.TraceVerbose("Getting content type from root web cache...");
+        trace.TraceVerbose("Getting site column from ROOT site web cache...");
         ClientContext context = (ClientContext)web.Context;
         webField = context.Site.RootWeb.GetSiteColumn(siteColumnName, findMethod, contextManager, trace);
       }
@@ -683,32 +773,25 @@
     }
 
     public static void UpdateSiteColumn(this Web web, Field existingField, string schemaXml, bool pushToLists = true, bool execute = true) {
-      ClientContext context = (ClientContext)web.Context;
-      existingField.SchemaXml = schemaXml;
-      if (pushToLists)
-        existingField.UpdateAndPushChanges(pushToLists);
-      else
-        existingField.Update();
-      if (execute)
-        context.ExecuteQuery();
+      // TODO make sure field is in web
+      existingField.Update(schemaXml, pushToLists, execute);
     }
-    public static void UpdateSiteColumn(this Web web, Field existingField, FieldProperties properties, bool execute = true) {
-      bool pushToLists = (properties.PushChangesToLists.HasValue) ? properties.PushChangesToLists.Value : true;
-      string schemaXml = properties.GenerateSchemaXml();
-      web.UpdateSiteColumn(existingField, schemaXml, pushToLists, execute);
+    public static void UpdateSiteColumn(this Web web, Field existingField, FieldProperties properties, bool execute = true, ITrace trace = null) {
+      // TODO make sure field is in web
+      existingField.Update(properties, execute, trace);
     }
 
     public static Field AddSiteColumn(this Web web, string schemaXml, bool execute = true) {
-      return web.Fields.AddField(schemaXml, execute);
+      return web.Fields.Add(schemaXml, execute);
     }
 
-    public static Field AddSiteColumn(this Web web, FieldProperties properties, ITrace trace, bool execute = true) {
-      return web.Fields.AddField(properties, trace, execute);
+    public static Field AddSiteColumn(this Web web, FieldProperties properties, bool execute = true, ITrace trace = null) {
+      return web.Fields.Add(properties, execute, trace);
     }
 
 #endregion
 
-#region Sandbox Solutions
+    #region Sandbox Solutions
 
     /// <summary>
     /// 

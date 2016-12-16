@@ -1001,9 +1001,95 @@
       return result;
     }
 
-#endregion
+    #endregion
 
-#region List Content Types
+    public static void Update(this List list, ListOptions props, bool skipCreateProperties = false, WebContextManager cm = null, ITrace trace = null) {
+      if (props == null)
+        throw new ArgumentNullException("props");
+      if (list == null)
+        throw new ArgumentNullException("list");
+      if (!props.HasExtendedSettings) {
+        trace.TraceVerbose("Nothing to update on list '{0}' because !props.HasExtendedSettings", props.Title);
+        return;
+      }
+      Web web = ((ClientContext)list.Context).Web;
+      if (!skipCreateProperties) {
+        if (props.HasChangedValue(props.Title))
+          list.Title = props.Title;
+        if (props.HasChangedValue(props.Description))
+          list.Description = props.Description;
+        if (props.OnQuickLaunch.HasValue)
+          list.OnQuickLaunch = props.OnQuickLaunch.Value;
+      }
+      if (props.ContentTypesEnabled.HasValue)
+        list.ContentTypesEnabled = props.ContentTypesEnabled.Value;
+      if (props.DraftVersionVisibility.HasValue)
+        list.DraftVersionVisibility = props.DraftVersionVisibility.Value;
+      if (props.EnableAttachments.HasValue)
+        list.EnableAttachments = props.EnableAttachments.Value;
+      if (props.EnableFolderCreation.HasValue)
+        list.EnableFolderCreation = props.EnableFolderCreation.Value;
+      if (props.EnableMinorVersions.HasValue)
+        list.EnableMinorVersions = props.EnableMinorVersions.Value;
+      if (props.EnableModeration.HasValue)
+        list.EnableModeration = props.EnableModeration.Value;
+      if (props.EnableVersioning.HasValue)
+        list.EnableVersioning = props.EnableVersioning.Value;
+      if (props.ForceCheckout.HasValue)
+        list.ForceCheckout = props.ForceCheckout.Value;
+      if (props.Hidden.HasValue)
+        list.Hidden = props.Hidden.Value;
+      if (props.NoCrawl.HasValue)
+        list.NoCrawl = props.NoCrawl.Value;
+      if (props.HasChangedValue(props.DefaultDisplayFormUrl))
+        list.DefaultDisplayFormUrl = props.DefaultDisplayFormUrl;
+      if (props.HasChangedValue(props.DefaultEditFormUrl))
+        list.DefaultEditFormUrl = props.DefaultEditFormUrl;
+      if (props.HasChangedValue(props.DefaultNewFormUrl))
+        list.DefaultNewFormUrl = props.DefaultNewFormUrl;
+      if (props.HasChangedValue(props.DocumentTemplateUrl))
+        list.DocumentTemplateUrl = props.DocumentTemplateUrl;
+      if (props.ImageUrl != null)
+        list.ImageUrl = props.ImageUrl.ToString();
+      if (props.HasChangedValue(props.ValidationFormula))
+        list.ValidationFormula = props.ValidationFormula;
+      if (props.HasChangedValue(props.ValidationMessage))
+        list.ValidationMessage = props.ValidationMessage;
+
+      // run the updates
+      try {
+        list.Update();
+        list.Context.ExecuteQueryIfNeeded();
+      } catch (Exception ex) {
+        string msg = string.Format("Couldn't update List '{0}' at '{1}'", props.Title, web.UrlSafeFor2010());
+        trace.TraceWarning(msg);
+        trace.TraceError(ex);
+        if (props.ThrowOnError) {
+          throw new Exception(msg, ex);
+        }
+      }
+      // TODO this might require something special to work correctly
+      //if (props.HasChangedValue(props.DefaultView, list.DefaultView.Title))
+      // actually it'll just skip if there's nothing to do
+      if (props.HasChangedValue(props.DefaultView))
+        list.SetDefaultView(props.DefaultView, trace);
+
+      if (cm == null) {
+        trace.TraceWarning("Had to skip EnsureContentTypes() because a context manager wasn't provided.");
+      } else {
+        string remove = string.Empty;
+        if (props.RemoveContentTypes != null) {
+          remove = props.RemoveContentTypes.FirstOrDefault();
+          if (props.RemoveContentTypes.Count() > 1)
+            trace.TraceWarning("RemoveContentTypes has more than one item, which isn't supported by EnsureContentType(). Only the first content type '{0}' will be removed. ", remove);
+        }
+        // add content types as specified by props.EnsureContentTypes
+        if (props.EnsureContentTypes != null && props.EnsureContentTypes.Length > 0)
+          list.EnsureContentType(props.EnsureContentTypes, remove, cm, trace);
+      }
+    }
+
+    #region List Content Types
 
     public static void ResolveContentTypeId(this List list, Hashtable fieldValues, WebContextManager contextManager = null, ITrace trace = null) {
       if (!fieldValues.ContainsKey("ContentType"))
@@ -1073,8 +1159,10 @@
       if (string.IsNullOrEmpty(contentTypeName))
         throw new ArgumentNullException("contentTypeName");
       ClientContext context = (ClientContext)list.Context;
-      trace.TraceVerbose("Getting content type from list cache...");
-      ContentType targetContentType = (contextManager != null && contextManager.IsCachingEnabled)
+      bool doCaching = (contextManager != null && contextManager.IsCachingEnabled);
+      if (doCaching)
+        trace.TraceVerbose("Getting content type from list cache...");
+      ContentType targetContentType = doCaching
         ? contextManager.ContentTypeCache.GetByName(list, contentTypeName, false)
         : list.GetContentType(contentTypeName);
       if (targetContentType == null) {

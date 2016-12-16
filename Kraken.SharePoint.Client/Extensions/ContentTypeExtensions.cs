@@ -150,10 +150,12 @@
     /// <param name="properties"></param>
     /// <param name="updateChildTypes"></param>
     /// <param name="trace"></param>
-    public static void Update(this FieldLink fl, FieldLinkProperties properties, bool updateChildTypes, ITrace trace = null) {
+    public static void Update(this FieldLink fl, FieldLinkProperties properties, bool updateChildTypes) { // , ITrace trace = null
       // FieldLinkCollection flc, 
       // TODO support for (properties.Hiro.Value == FieldLinkRequireStatus.Inherit)
       // by default neither of these will be true;
+      if (properties == null)
+        throw new ArgumentNullException("properties");
       if (properties.IsHidden.HasValue)
         fl.Hidden = properties.IsHidden.Value;
       if (properties.IsRequired.HasValue)
@@ -216,25 +218,31 @@
 
       //trace.Trace(TraceLevel.Verbose, "{0}", properties.Field.SchemaXml); // prevent problems with string.Format when xml has {0} etc in it
 
-      FieldLink fl = ct.FieldLinks.Add(properties.ConvertSP14Safe()); // this should set HasPendingRequest = true
-      fl.Update(properties, updateChildTypes, trace);
-      if (context.HasPendingRequest) {
-        trace.Trace(TraceLevel.Verbose, "Calling Update on content type");
-        ct.Update(updateChildTypes);
-        trace.Trace(TraceLevel.Verbose, "Executing query.");
-        try {
-          context.ExecuteQuery();
-          //return fl;
-        } catch (Exception ex) {
-          if (ex.Message.ToLower().Contains("unknown")) {
-            // TODO do something with this and figure out why...
+      FieldLinkCreationInformation fci = properties.ConvertSP14Safe();
+      // TODO not sure why, this might have come back as null
+      FieldLink fl = ct.FieldLinks.Add(fci); // this should set HasPendingRequest = true
+      if (fl == null) {
+        trace.TraceWarning("Attempt to add Field Link returned null");
+      } else {
+        fl.Update(properties, updateChildTypes); // , trace
+        if (context.HasPendingRequest) {
+          trace.Trace(TraceLevel.Verbose, "Calling Update on content type");
+          ct.Update(updateChildTypes);
+          trace.Trace(TraceLevel.Verbose, "Executing query.");
+          try {
+            context.ExecuteQuery();
             //return fl;
-          } else {
-            throw ex;
+          } catch (Exception ex) {
+            if (ex.Message.ToLower().Contains("unknown")) {
+              // TODO do something with this and figure out why...
+              //return fl;
+            } else {
+              throw ex;
+            }
+            //return false;
           }
-          //return false;
         }
-      }
+      } // fl null
 
       // needed to get a usable FieldLink object
       trace.TraceVerbose("Getting ContentType FieldLinks");
@@ -373,10 +381,20 @@
 #endif
       // if you provide both it is still wise to check that ctid is valid
       KrakenContentTypeExtensions.IsContentTypeIdValid(properties.Id, parentId);
-      ContentType ct = ctc.Add(properties.ConvertSP14Safe());
+      ContentType ct;
+      try {
+        ct = ctc.Add(properties.ConvertSP14Safe());
+      } catch (InvalidOperationException ex) {
+        //The object is used in the context different from the one associated with the object.
+        if (ex.Message.Contains("context different"))
+          throw new InvalidOperationException(string.Format("The Content Type you are trying to create (Id={0}) appears to exist in a different SharePoint Web within the same Site Collection.", properties.Id), ex);
+        else
+          throw;
+      }
       context.ExecuteQuery();
       context.Load(ct, t => t.Id, t => t.Group, t => t.Name, t => t.SchemaXml);
-      ct.Update(properties, false, true); // It's just a baby, so I sure hope it doesn't have any kids!
+      if (properties.HasExtendedSettings)
+        ct.Update(properties, false, true); // It's just a baby, so I sure hope it doesn't have any kids!
       return ct;
     }
 
