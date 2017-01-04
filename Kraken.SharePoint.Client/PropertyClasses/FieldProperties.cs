@@ -40,6 +40,11 @@ namespace Kraken.SharePoint.Client {
 
     public FieldProperties() {
     }
+    /*
+    public FieldProperties(Field f) {
+      FieldProperties.Deserialize(f.SchemaXml);
+    }
+    */
 
     #region Properties
 
@@ -190,6 +195,36 @@ namespace Kraken.SharePoint.Client {
     [XmlAttribute]
     public bool? Required { get; set; }
     [XmlAttribute]
+
+    public FieldLinkRequireStatus? Hiro {
+      get {
+        FieldLinkRequireStatus hiro = FieldLinkRequireStatus.Optional;
+        if (this.Hidden.GetValueOrDefault())
+          hiro = FieldLinkRequireStatus.Hidden;
+        if (this.Required.GetValueOrDefault())
+          hiro = FieldLinkRequireStatus.Required;
+        return hiro;
+      }
+      set {
+        switch (value) {
+          case FieldLinkRequireStatus.Hidden:
+            Hidden = true;
+            Required = false;
+            break;
+          case FieldLinkRequireStatus.Required:
+            Hidden = false;
+            Required = true;
+            break;
+          case FieldLinkRequireStatus.Optional:
+            Hidden = false;
+            Required = false;
+            break;
+          case FieldLinkRequireStatus.Inherit:
+            throw new NotSupportedException("FieldLinkRequireStatus.Inherit is not allowed for FieldProperties.");
+        }
+      }
+    }
+
     public bool? AllowDeletion { get; set; }
 
     /// <summary>
@@ -239,6 +274,19 @@ namespace Kraken.SharePoint.Client {
     /// </summary>
     [XmlAttribute]
     public bool? AllowDuplicateValues { get; set; }
+    public bool? EnforceUniqueValues {
+      get {
+        if (!AllowDuplicateValues.HasValue)
+          return null;
+        return (!AllowDuplicateValues.Value);
+      }
+      set {
+        if (!value.HasValue)
+          AllowDuplicateValues = null;
+        AllowDuplicateValues = !value.Value;
+      }
+    }
+    //
 
     /// <summary>
     /// Index the field to optimize performance in large lists.
@@ -247,16 +295,68 @@ namespace Kraken.SharePoint.Client {
     public bool? Indexed { get; set; }
 
     /// <summary>
+    /// Flags for unique, indexed, and
+    /// auto-indexed as represented by
+    /// characters 'U', 'I', and 'A'
+    /// </summary>
+    public string UniqueIndexAutoFlags {
+      get {
+        string uniqueIndex = "";
+        if (!this.AllowDuplicateValues.GetValueOrDefault())
+          uniqueIndex += "U";
+        if (this.Indexed.GetValueOrDefault())
+          uniqueIndex += "I";
+        if (this.AutoIndexed.GetValueOrDefault())
+          uniqueIndex += "A";
+        return uniqueIndex;
+      }
+      set {
+        this.AllowDuplicateValues = !value.ToLower().Contains("u");
+        this.Indexed = value.ToLower().Contains("i");
+        this.AutoIndexed = value.ToLower().Contains("a");
+      }
+    }
+
+    // TODO this is new, need to support it in XML
+    public bool? AutoIndexed { get; set; }
+
+    /// <summary>
     /// This field is used when updating site columns.
     /// </summary>
     [XmlAttribute]
     public bool? PushChangesToLists { get; set; }
 
     /// <summary>
-    /// For secondary lookup fields it points to teh primary lookup field
+    /// For secondary lookup fields it points to the primary lookup field
     /// </summary>
     [XmlAttribute]
     public Guid? FieldRef { get; set; }
+
+    /// <summary>
+    /// Returns true if the type is fully
+    /// supported in Site Templates, false
+    /// if support is limited or unsupported.
+    /// </summary>
+    /// <remarks>
+    /// This is currently implemented as a test
+    /// against Taxonomy fields.
+    /// </remarks>
+    public SiteTemplateSupportScope SiteTemplateSupport {
+      get {
+        // TODO also base this on if the field
+        // is a lookup that references something
+        // outside the current web
+        // TODO base on locaton of formula field refs
+        if (this.Type.Contains("Lookup"))
+          return SiteTemplateSupportScope.Unknown;
+        if (this.Type.Contains("TaxonomyFieldType"))
+          return SiteTemplateSupportScope.Unknown;
+        if (this.TypeAlias == FieldTypeAlias.Calculated)
+          return SiteTemplateSupportScope.Unknown;
+        // The rest should be OK
+        return SiteTemplateSupportScope.Full;
+      }
+    }
 
     // TODO FileRefs
 
@@ -367,6 +467,24 @@ namespace Kraken.SharePoint.Client {
 
     [XmlElement("CHOICES")]
     public string[] Choices { get; set; }
+
+    /// <summary>
+    /// Shorthand property allows you to
+    /// quickly get/set Choices using
+    /// a pipe delimited string.
+    /// </summary>
+    public string ChoicesDelimited {
+      get {
+        string choices = (this.Choices != null)
+          ? string.Join("|", this.Choices)
+          : string.Empty;
+          return choices;
+      }
+      set {
+        char[] delim = new char[] { '|' };
+        this.Choices = value.Split(delim, StringSplitOptions.None);
+      }
+    }
 
     [XmlElement("MAPPINGS")]
     public Dictionary<string, string> MappedChoices { get; set; }
@@ -563,12 +681,22 @@ namespace Kraken.SharePoint.Client {
       // TODO lifted from FieldPropertiesExtensions
     }
 
-    public bool IsLookup {
+    public bool IsLookupField {
       get {
-        return (this.TypeAlias == FieldTypeAlias.Lookup
-          || this.TypeAlias == FieldTypeAlias.LookupMulti);
-        }
+        // TODO does User count as a lookup field??
+        return FieldUtility.IsLookupFieldType(this.Type);
       }
+    }
+    public bool IsChoiceField {
+      get {
+        return FieldUtility.IsChoiceFieldType(this.Type);
+      }
+    }
+    public bool IsTaxonomyField {
+      get {
+        return FieldUtility.IsTaxonomyFieldType(this.Type);
+      }
+    }
 
     #endregion
 
@@ -1049,7 +1177,7 @@ namespace Kraken.SharePoint.Client {
             }
             sb.Append("</FieldRefs>");
           }
-          // TODO to properly support calculated fields, we need FormulaDispolayNames and FieldRefs
+          // TODO to properly support calculated fields, we need FormulaDisplayNames and FieldRefs
           // TODO DisplayPattern and DisplayBidiPattern are needed for computed fields
           sb.Append("</Field>");
           schemaXml = sb.ToString();
@@ -1488,6 +1616,15 @@ namespace Kraken.SharePoint.Client {
 
   }
   */
+
+  public enum SiteTemplateSupportScope {
+    None,
+    Unknown,
+    Web,
+    SiteCollection,
+    Tenant,
+    Full
+  }
 
   public enum FieldSchemaGenerationMethod {
     Auto,

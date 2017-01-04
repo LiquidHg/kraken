@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- ensure that we override the default configuration name from Bewoulf Common -->
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug45|AnyCPU">
+      <Configuration>Debug45</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>ce482c00-7a3d-47e2-823b-a2a9bbc6a757</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>Kraken.DotNet.Core</Id>
+    <Version>0.2.4</Version>
+    <Title>Kraken Core .NET Library</Title>
+    <ReleaseNotes>v0.2.4: AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.</ReleaseNotes>
+    <Tags>Kraken SharePoint DotNet Security</Tags>
+    <Authors>Liquid-Hg.com</Authors>
+    <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
+    <Summary>Developer library for creating SharePoint client (CSOM) projects and apps.</Summary>
+    <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for .NET development that fall outside the scope of SharePoint itself. Both partial-trust and full-trust libraries are included; trim references if you need this in a partial trust environment.</Description>
+    <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
+    <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
+    <DefaultLanguage>en-us</DefaultLanguage>
+    <Copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</Copyright>
+    <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <EmbedSourceFiles>true</EmbedSourceFiles>
+    <GenerateSymbolPackage>true</GenerateSymbolPackage>
+    <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
+  </PropertyGroup>
+  <ItemGroup>
+    <Dependency Include="Newtonsoft.Json">
+      <Version>9.0.1</Version>
+    </Dependency>
+    <Dependency Include="RestSharpSigned">
+      <Version>105.2.3</Version>
+    </Dependency>
+    <Dependency Include="log4net">
+      <Version>2.0.6</Version>
+    </Dependency>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Language.nuspec" />
+    <Content Include="push.cmd" />
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj" />
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>

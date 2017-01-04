@@ -65,10 +65,14 @@
       <SpecificVersion>false</SpecificVersion>
       <Name>Kraken.Core.SandboxTrust</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj">
+      <Project>{8340684f-3374-4741-af80-63af161e23df}</Project>
+      <Name>Kraken.Core.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.6.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.6\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -126,7 +130,11 @@
     <Compile Include="Net\Smtp\MailMessageTemplateData.cs" />
     <Compile Include="Net\Smtp\MassMailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflector.cs" />
+    <Compile Include="Reflection\EnumNameAttribute.cs" />
+    <Compile Include="Collections\ParsableOptions.cs" />
+    <Compile Include="Reflection\PropertyMap.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Reflection\ReflectionOperationResult.cs" />
     <Compile Include="Strings\Parser.cs" />
     <Compile Include="StrongTypeConfig\IStrongTypeConfig.cs" />
     <Compile Include="StrongTypeConfig\StrongTypeConfigBase.cs" />

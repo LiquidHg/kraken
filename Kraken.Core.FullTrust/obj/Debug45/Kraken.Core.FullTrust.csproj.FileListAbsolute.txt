@@ -19,3 +19,5 @@ R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug45\Kraken.Core.FullTrust.csproj.A
 R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug45\Kraken.Core.FullTrust.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug45\Kraken.Core.FullTrust.dll
 R:\Repos\kraken\Kraken.Core.FullTrust\obj\Debug45\Kraken.Core.FullTrust.pdb
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Security.dll
+R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Security.pdb

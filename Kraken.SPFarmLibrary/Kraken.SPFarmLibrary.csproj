@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- the following empty conditions are here to force VS.net to recognize the configurations that we want, because we're using Contains almost eveyplkace else -->
   <PropertyGroup Condition=" '$(Configuration)' == 'DebugSP14_35' ">
   </PropertyGroup>
@@ -90,7 +90,156 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Kraken.Core.FullTrust, Version=4.5.6211.39515, Culture=neutral, PublicKeyToken=5e6c79b1689163cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\Kraken.Core.FullTrust.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kraken.Core.SandboxTrust, Version=4.5.6211.39514, Culture=neutral, PublicKeyToken=5e6c79b1689163cb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\Kraken.Core.SandboxTrust.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kraken.Security, Version=4.5.6211.39514, Culture=neutral, PublicKeyToken=6507051e0d5be117, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\Kraken.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kraken.SharePoint.SandboxTrust, Version=15.0.0.0, Culture=neutral, PublicKeyToken=3cf55a8425a3a2ff, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Kraken.SharePoint.SandboxTrust.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.6.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.6\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AnalysisServices.AdomdClient, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.AnalysisServices.AdomdClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.BusinessData, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.BusinessData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.IdentityModel.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.mshtml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.DocumentManagement.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Excel.Server.Udf, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Excel.Server.Udf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Excel.Server.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Excel.Server.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Policy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Policy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.SecureStoreService.Server.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.SecureStoreService.Server.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Server.Search.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Server.Search.Applications.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.Search.Connector, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Server.Search.Connector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Server.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Office.Server.UserProfiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharePoint.15.0.0\lib\Microsoft.SharePoint\Microsoft.SharePoint.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.ApplicationPages.Administration, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.ApplicationPages.Administration.15.0.4420.1017\lib\NET45\Microsoft.SharePoint.ApplicationPages.Administration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Client.Search.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Client.ServerRuntime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Portal, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Portal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Publishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Search.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Search.Extended.Administration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Search.Extended.Administration.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.SharePoint.Taxonomy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.CommandUI, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.SPSandboxLibrary.0.2.4\lib\net45\Microsoft.Web.CommandUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharpSigned.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -98,11 +247,15 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\packages\Kraken.DotNet.Core.0.2.4\lib\net45\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
@@ -140,6 +293,7 @@
     <Compile Include="IdentityModel\LoginSelector.cs" />
     <Compile Include="IdentityModel\SPAuthExtensions.cs" />
     <Compile Include="Logging\KrakenLoggingService.cs" />
+    <Compile Include="Logging\Logging Properties.cs" />
     <Compile Include="Logging\LoggingCategories.cs" />
     <Compile Include="Logging\LoggingCategoryProvider.cs" />
     <Compile Include="Logging\LoggingEventConsumerBase.cs" />
@@ -156,9 +310,7 @@
     <Compile Include="Logging\Unsafe\TraceSeverity.cs" />
     <Compile Include="Mail\KrakenSmtpException.cs" />
     <None Include="app.config" />
-    <None Include="DeployScripts\Deploy_Core_DevRed.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="DeployScripts\Deploy_Core_DevRed.ps1" />
     <None Include="Images\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{bd7a6bf6-6123-4a7b-a3a3-1c0bedf8b8ad}</SharePointProjectItemId>
     </None>
@@ -192,9 +344,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DeployScripts\SPDeployFunctions.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="DeployScripts\SPDeployFunctions.ps1" />
     <None Include="key.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -205,28 +355,10 @@
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon32.png" />
     <Content Include="Images\Kraken.SharePoint\Lightbrown-Kraken-icon64.png" />
     <Content Include="Package\Package.Template.xml" />
-    <Content Include="SPARK Copyleft.txt" />
+    <Content Include="Publishing WSPs for Nuget.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj">
-      <Project>{757c7239-0e1b-41ba-aed5-7a15ac141042}</Project>
-      <Name>Kraken.Core.FullTrust</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
-      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
-      <Name>Kraken.Core.SandboxTrust</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.Core.Security\Kraken.Core.Security.csproj">
-      <Project>{8340684f-3374-4741-af80-63af161e23df}</Project>
-      <Name>Kraken.Core.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.SPSandboxLibrary\Kraken.SPSandboxLibrary.csproj">
-      <Project>{dff9b6ea-5c6e-4079-8506-181220fc7148}</Project>
-      <Name>Kraken.SPSandboxLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>

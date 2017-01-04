@@ -19,20 +19,22 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.2.74</Version>
+    <Version>0.2.78</Version>
     <Title>Kraken SharePoint Client Library</Title>
-    <Authors>Thomas Carpe and Liquid Mercury Solutions</Authors>
+    <ReleaseNotes>v0.2.78: Moved TraceExtensions from Core.FullTrust to Core.SandboxTrust. Add reference in SandboxTrust project to Core.Security.</ReleaseNotes>
+    <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
+
+    <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
     <Summary>Developer library for creating SharePoint client (CSOM) projects and apps.</Summary>
-    <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</Description>
-    <ReleaseNotes>v0.2.74: Changes to site column "get/find" extensions to allow for recurse parent webs, user fields only, and move core logic to field collection extensions.</ReleaseNotes>
+    <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use CSOM that can be referenced from a client or SharePoint provider hosted app.</Description>
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
     <DefaultLanguage>en-us</DefaultLanguage>
     <Copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</Copyright>
-    <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <EmbedSourceFiles>true</EmbedSourceFiles>
     <GenerateSymbolPackage>true</GenerateSymbolPackage>
     <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
   </PropertyGroup>
@@ -48,7 +50,7 @@
       <Version>105.2.3</Version>
     </Dependency>
     <Dependency Include="log4net">
-      <Version>2.0.5</Version>
+      <Version>2.0.6</Version>
     </Dependency>
   </ItemGroup>
   <ItemGroup>

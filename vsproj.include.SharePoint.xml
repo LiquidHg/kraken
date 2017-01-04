@@ -36,7 +36,8 @@
 		</When>
 		<Otherwise>
 			<PropertyGroup>
-				<SharePointDir>XXX</SharePointDir>
+        <TargetOfficeVersion>15.0</TargetOfficeVersion>
+        <SharePointDir>XXX</SharePointDir>
 			</PropertyGroup>
 		</Otherwise>
 	</Choose>
@@ -46,6 +47,7 @@
 	</PropertyGroup>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Core'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.SharePoint, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -53,10 +55,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Security'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.SharePoint.Security, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -64,10 +68,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Moss'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.Office.Server, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -75,10 +81,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Profiles'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.Office.Server.UserProfiles, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -86,6 +94,7 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
@@ -112,6 +121,7 @@
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Portal'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="microsoft.sharepoint.portal, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -119,10 +129,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('Taxonomy'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.SharePoint.Taxonomy, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -130,10 +142,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('AdminPages'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.SharePoint.ApplicationPages.Administration, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -141,10 +155,12 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<Choose>
 		<When Condition="$(SPRef.Contains('ClientRuntime'))">
+      <!--
 			<ItemGroup>
 				<Reference Include="Microsoft.SharePoint.Client.ServerRuntime, Version=$(SharePointDir).0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
 					<SpecificVersion>true</SpecificVersion>
@@ -152,6 +168,7 @@
 					<Private>false</Private>
 				</Reference>
 			</ItemGroup>
+      -->
 		</When>
 	</Choose>
 	<!--Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />

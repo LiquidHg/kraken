@@ -2,6 +2,6 @@ R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.dll
 R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.pdb
 R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\log4net.dll
 R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\log4net.xml
-R:\Repos\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Core.Security.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Security.dll
 R:\Repos\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Security.pdb
+R:\Repos\kraken\Kraken.Core.Security\obj\Debug45\Kraken.Core.Security.csprojResolveAssemblyReference.cache

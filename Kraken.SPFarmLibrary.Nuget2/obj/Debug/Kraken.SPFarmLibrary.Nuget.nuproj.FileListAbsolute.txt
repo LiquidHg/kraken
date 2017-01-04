@@ -1,0 +1,5 @@
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug\Kraken.SPFarmLibrary.nuspec
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug\Kraken.SPFarmLibrary.0.2.14.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug\Kraken.SPFarmLibrary.0.2.14.symbols.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug\Kraken.SPFarmLibrary.0.2.14.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug\Kraken.SPFarmLibrary.0.2.14.symbols.nupkg

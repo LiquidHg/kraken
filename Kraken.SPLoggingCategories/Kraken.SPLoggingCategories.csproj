@@ -90,7 +90,14 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
   <ItemGroup>
-    <Reference Include="Microsoft.SharePoint.WorkflowActions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharePoint.15.0.0\lib\Microsoft.SharePoint\Microsoft.SharePoint.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Security, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharePoint.Security.15.0.0\lib\Microsoft.SharePoint.Security\Microsoft.SharePoint.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -110,24 +117,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj">
-      <Project>{757c7239-0e1b-41ba-aed5-7a15ac141042}</Project>
-      <Name>Kraken.Core.FullTrust</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
-      <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
-      <Name>Kraken.Core.SandboxTrust</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.SPFarmLibrary\Kraken.SPFarmLibrary.csproj">
-      <Project>{ec689a42-1c8e-40cd-8df7-22a015875809}</Project>
-      <Name>Kraken.SPFarmLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kraken.SPSandboxLibrary\Kraken.SPSandboxLibrary.csproj">
-      <Project>{dff9b6ea-5c6e-4079-8506-181220fc7148}</Project>
-      <Name>Kraken.SPSandboxLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.EventReceiver.cs">
       <DependentUpon>KrakenULSLoggingCategories.feature</DependentUpon>
     </Compile>
@@ -135,12 +124,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="DeployScripts\RegisterKrakenLoggingEvents.reg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="DeployScripts\RegisterKrakenLoggingEvents.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="DeployScripts\RegisterKrakenLoggingEvents.reg" />
+    <None Include="DeployScripts\RegisterKrakenLoggingEvents.ps1" />
     <None Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.feature">
       <FeatureId>{20cbf97e-4826-4d65-8c9b-21a38bc50c64}</FeatureId>
     </None>
@@ -157,6 +142,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Publishing WSPs for Nuget.txt" />
     <Content Include="Features\KrakenULSLoggingCategories\KrakenULSLoggingCategories.Template.xml">
       <DependentUpon>KrakenULSLoggingCategories.feature</DependentUpon>
     </Content>
@@ -173,6 +159,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.SPFarmLibrary\Kraken.SPFarmLibrary.csproj">
+      <Project>{ec689a42-1c8e-40cd-8df7-22a015875809}</Project>
+      <Name>Kraken.SPFarmLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">13.0</VisualStudioVersion>

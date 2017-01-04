@@ -1,0 +1,5 @@
+R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\obj\Debug\Kraken.SPSandboxLibrary.nuspec
+R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\bin\Debug\Kraken.SPSandboxLibrary.0.2.4.nupkg
+R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\bin\Debug\Kraken.SPSandboxLibrary.0.2.4.symbols.nupkg
+R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\obj\Debug\Kraken.SPSandboxLibrary.0.2.4.nupkg
+R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\obj\Debug\Kraken.SPSandboxLibrary.0.2.4.symbols.nupkg

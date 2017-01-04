@@ -31,6 +31,7 @@
       // code too cumbersome
       //if (string.Equals(propertyName, "", StringComparison.InvariantCultureIgnoreCase)) {}
       switch (propertyName.ToLower()) {
+        /*
         case "fieldname":
           this.FieldName = value.ToString();
           return true;
@@ -40,6 +41,7 @@
         case "fieldvalue":
           this.FieldValue = value.ToString();
           return true;
+        */
         case "operator":
           if (value is CAML.Operator)
             this.Operator = (CAML.Operator)value;

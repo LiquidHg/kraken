@@ -1,3 +1,4 @@
-nuget push ./bin/Debug45/Kraken.SPFarmLibrary.0.1.2.symbols.nupkg -Source https://liquidhg.pkgs.visualstudio.com/DefaultCollection/_packaging/Misc/nuget/v2 -ApiKey VSTS
-REM Alternative APIKey: yrdvieeozjhl7euk4wnsapqpu3hmnc6gd5jqvbyybvg54qhc7qiq
-pause
+REM TODO on new release, update the function below to match the package file name with version
+SET NUGET_PUSH_FN=".\bin\Debug\Kraken.SPFarmLibrary.0.2.14.symbols.nupkg"
+nuget push %NUGET_PUSH_FN% -Source "Misc (private)" -ApiKey VSTS
+nuget push %NUGET_PUSH_FN% -Source https://api.nuget.org/v3/index.json -ApiKey %NUGET_APIKEY_KRAKEN%

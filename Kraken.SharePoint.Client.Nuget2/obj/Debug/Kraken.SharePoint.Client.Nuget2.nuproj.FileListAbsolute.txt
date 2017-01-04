@@ -1,5 +1,5 @@
 R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\obj\Debug\Kraken.SharePoint.Client.nuspec
-R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\bin\Debug\Kraken.SharePoint.Client.0.2.74.nupkg
-R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\bin\Debug\Kraken.SharePoint.Client.0.2.74.symbols.nupkg
-R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\obj\Debug\Kraken.SharePoint.Client.0.2.74.nupkg
-R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\obj\Debug\Kraken.SharePoint.Client.0.2.74.symbols.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\bin\Debug\Kraken.SharePoint.Client.0.2.78.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\bin\Debug\Kraken.SharePoint.Client.0.2.78.symbols.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\obj\Debug\Kraken.SharePoint.Client.0.2.78.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\obj\Debug\Kraken.SharePoint.Client.0.2.78.symbols.nupkg

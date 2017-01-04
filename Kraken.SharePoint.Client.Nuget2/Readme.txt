@@ -83,6 +83,10 @@ join the team.
 
 Update History:
 
+v0.2.78: Moved TraceExtensions from Core.FullTrust to Core.SandboxTrust. Add reference in SandboxTrust project to Core.Security.
+v0.2.77: Experimental - brought in a bunch of utility classes that were developed in CloudPower but may be useful elsewhere. Added reflection based property copy to ParsableOptions.
+v0.2.76: Added function to LookupFieldProvisioner to help us easily get all the additional fields for a primary lookup field.
+v0.2.75: Added several shorthand methods to FieldProperties in an effort to make it easier to interact with.
 v0.2.74: Changes to site column "get/find" extensions to allow for recurse parent webs, user fields only, and move core logic to field collection extensions.
 v0.2.73: Added method to detect user-created vs. built-in fields/site columns.
 v0.2.72: Added support for dynamic indentation to the ITrace interface and implementation.

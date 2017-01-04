@@ -33,7 +33,11 @@ namespace Kraken.SharePoint.IdentityModel.Pages {
 
     public const string ErrorCode = "errorCode";
 
-    protected KrakenLoggingService log = KrakenLoggingService.CreateNew(LoggingCategories.KrakenClaims);
+    protected KrakenLoggingService log = KrakenLoggingService.CreateNew(
+      new LoggingProperties() {
+        DefaultCategory = LoggingCategories.KrakenClaims
+      }
+    );
 
     internal SPWebApplication WebApplication {
       get {
@@ -52,6 +56,7 @@ namespace Kraken.SharePoint.IdentityModel.Pages {
       }
     }
 
+    /*
     internal SPIisSettings IisSettings {
       get {
         try {
@@ -63,6 +68,7 @@ namespace Kraken.SharePoint.IdentityModel.Pages {
         }
       }
     }
+    */
 
     protected SPAuthenticationProvider GetAuthenticationProvider(string targetProvider, AuthenticationProviderSearchProperty findBy) {
       if (this.IisSettings == null)

@@ -19,10 +19,19 @@
 
   public static class KrakenFieldExtensions {
 
+    public static FieldProperties CreateProperties(this Field field) {
+      if (!field.IsLoaded(f => f.SchemaXml)) {
+        ClientContext ctx = (ClientContext)field.Context;
+        ctx.Load(field, f => f.SchemaXml);
+        ctx.ExecuteQueryIfNeeded();
+      }
+      return FieldProperties.Deserialize(field.SchemaXml);
+    }
+
     public static void Update(this Field existingField, FieldProperties properties, bool execute = true, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)existingField.Context;
-      if (properties.IsLookup) {
+      if (properties.IsLookupField) {
         LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
         lookupFieldProvisioner.UpdateField(existingField, properties);
         return;
@@ -130,6 +139,16 @@
     }
 #endif
 
+    public static bool IsLookupField(this Field field) {
+      return FieldUtility.IsLookupFieldType(field.TypeAsString);
+    }
+    public static bool IsChoiceField(this Field field) {
+      return FieldUtility.IsChoiceFieldType(field.TypeAsString);
+    }
+    public static bool IsTaxonomyField(this Field field) {
+      return FieldUtility.IsTaxonomyFieldType(field.TypeAsString);
+    }
+
     public static bool IsLookupSupported(this Field field) {
       return (field.FieldTypeKind.Equals(FieldType.Counter) ||
           field.FieldTypeKind.Equals(FieldType.Text) ||
@@ -193,7 +212,7 @@
     public static Field Add(this FieldCollection fields, FieldProperties properties, bool execute = true, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)fields.Context;
-      if (properties.IsLookup) {
+      if (properties.IsLookupField) {
         LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
         return lookupFieldProvisioner.CreateField(properties);
       }

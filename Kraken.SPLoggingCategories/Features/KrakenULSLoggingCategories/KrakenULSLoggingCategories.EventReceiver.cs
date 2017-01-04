@@ -21,33 +21,11 @@ namespace Kraken.SharePoint.Features.KrakenULSLoggingCategories {
   public class KrakenULSLoggingCategoriesEventReceiver : SPFeatureReceiver {
 
     public override void FeatureActivated(SPFeatureReceiverProperties properties) {
-      try {
-        KrakenLoggingService.Register();
-        KrakenLoggingService.Local.Update();
-      } catch (Exception ex) {
-        try {
-          KrakenLoggingService.Default.Write(ex);
-        } catch {
-          // black hole, can't register and can't log, something's really messed up, but don't 
-          // prevent installation
-        }
-      }
+      KrakenLoggingService.Register();
     }
 
     public override void FeatureDeactivating(SPFeatureReceiverProperties properties) {
-      try {
-        //this is actually done in Unregister
-        //  KrakenLoggingService.Local.Delete();
-        KrakenLoggingService.Unregister();
-      } catch (Exception ex) {
-        try {
-          if (KrakenLoggingService.Default != null)
-            KrakenLoggingService.Default.Write(ex);
-        } catch {
-          // black hole, can't register and can't log, something's really messed up, but don't 
-          // prevent uninstallation
-        }
-      }
+      KrakenLoggingService.Unregister();
     }
 
     public override void FeatureInstalled(SPFeatureReceiverProperties properties) {

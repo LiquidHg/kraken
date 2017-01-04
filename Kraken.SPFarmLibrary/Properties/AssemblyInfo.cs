@@ -6,13 +6,13 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kraken.SharePoint")]
+[assembly: AssemblyTitle("Kraken SharePoint Farm Solution Library")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Liquid Mercury Solutions / Colossus Consulting LLC")]
-[assembly: AssemblyProduct("Kraken.SharePoint.SandboxSafe")]
-[assembly: AssemblyCopyright("Copyright ©2003,2007,2010,2013 Colossus Consulting LLC. All Rights Reserved.")]
-[assembly: AssemblyTrademark("Liquid Mercury Solutions, Kraken, and Beowulf are Trademarks of Colossus Consulting LLC")]
+[assembly: AssemblyCompany("Liquid Mercury Solutions")]
+[assembly: AssemblyProduct("Kraken SharePoint Library")]
+[assembly: AssemblyCopyright("Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.")]
+[assembly: AssemblyTrademark("Kraken is a trademark of Liquid Mercury Solutions - established Oct. 2009")]
 [assembly: AssemblyCulture("")]
 
 /*
@@ -29,22 +29,12 @@ using System.Security;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ec689a42-1c8e-40cd-8df7-22a015875809")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-#if DOTNET_V45
-[assembly: AssemblyVersion("15.0.0.0")]
-//[assembly: AssemblyFileVersion("15.0.0.0")]
+#if DOTNET_V35
+[assembly: AssemblyVersion("14.0.0.0")]
+[assembly: AssemblyFileVersion("14.2.1701.0201")]
 #else
-    [assembly: AssemblyVersion("14.0.0.0")]
-    //[assembly: AssemblyFileVersion("14.0.0.0")]
+[assembly: AssemblyVersion("15.0.0.0")]
+[assembly: AssemblyFileVersion("15.2.1701.0201")]
 #endif
 // Allow sandbox code to call this assembly
 //[assembly: AllowPartiallyTrustedCallers()]

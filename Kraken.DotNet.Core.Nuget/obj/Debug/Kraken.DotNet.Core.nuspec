@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Kraken.DotNet.Core</id>
+    <version>0.2.4</version>
+    <title>Kraken Core .NET Library</title>
+    <authors>Liquid-Hg.com</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for .NET development that fall outside the scope of SharePoint itself. Both partial-trust and full-trust libraries are included; trim references if you need this in a partial trust environment.</description>
+    <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
+    <releaseNotes>v0.2.4: AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.</releaseNotes>
+    <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <language>en-US</language>
+    <tags>Kraken SharePoint DotNet Security</tags>
+    <dependencies>
+      <group>
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+        <dependency id="log4net" version="2.0.6" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="log4net" version="2.0.6" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.dll" target="lib\net45\Kraken.Core.SandboxTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.dll" target="lib\net45\Kraken.Security.dll" exclude="" />
+    <file src="R:\Repos\kraken\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll" target="lib\net45\System.Net.Http.Extensions.dll" exclude="" />
+    <file src="R:\Repos\kraken\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll" target="lib\net45\System.Net.Http.Formatting.dll" exclude="" />
+    <file src="R:\Repos\kraken\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll" target="lib\net45\System.Net.Http.Primitives.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\Debug45\Kraken.Core.SandboxTrust.pdb" target="lib\net45\Kraken.Core.SandboxTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\bin\Debug45\Kraken.Security.pdb" target="lib\net45\Kraken.Security.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.dll" target="lib\net45\Kraken.Core.FullTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\bin\Debug45\Kraken.Core.FullTrust.pdb" target="lib\net45\Kraken.Core.FullTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.DotNet.Core.Nuget\Language.nuspec" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.DotNet.Core.Nuget\push.cmd" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.DotNet.Core.Nuget\Readme.txt" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\AppSettingsExtensions.cs" target="src\Kraken.Core.SandboxTrust\AppSettingsExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Collections\AutoSortArrayList.cs" target="src\Kraken.Core.SandboxTrust\Collections\AutoSortArrayList.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Collections\HashtableExtensions.cs" target="src\Kraken.Core.SandboxTrust\Collections\HashtableExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Collections\ParsableOptionsBase.cs" target="src\Kraken.Core.SandboxTrust\Collections\ParsableOptionsBase.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Collections\TypeSupportChecker.cs" target="src\Kraken.Core.SandboxTrust\Collections\TypeSupportChecker.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\IO\FileSystemExtensions.cs" target="src\Kraken.Core.SandboxTrust\IO\FileSystemExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\IO\StreamUtilities.cs" target="src\Kraken.Core.SandboxTrust\IO\StreamUtilities.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\IO\TextMemoryStream.cs" target="src\Kraken.Core.SandboxTrust\IO\TextMemoryStream.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Linq\DynamicLinq.cs" target="src\Kraken.Core.SandboxTrust\Linq\DynamicLinq.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Net\Json\RestSharpJsonNetSerializer.cs" target="src\Kraken.Core.SandboxTrust\Net\Json\RestSharpJsonNetSerializer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Net\WebResponseExtensions.cs" target="src\Kraken.Core.SandboxTrust\Net\WebResponseExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Resourcer.cs" target="src\Kraken.Core.SandboxTrust\Resourcer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Strings\EnumStringValueAttribute.cs" target="src\Kraken.Core.SandboxTrust\Strings\EnumStringValueAttribute.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Strings\ParserDictionary.cs" target="src\Kraken.Core.SandboxTrust\Strings\ParserDictionary.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Strings\StringEnum.cs" target="src\Kraken.Core.SandboxTrust\Strings\StringEnum.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Strings\StringExtensions.cs" target="src\Kraken.Core.SandboxTrust\Strings\StringExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Strings\TypeValidator.cs" target="src\Kraken.Core.SandboxTrust\Strings\TypeValidator.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\System\ObjectExtensions.cs" target="src\Kraken.Core.SandboxTrust\System\ObjectExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Text\Base64Encoder.cs" target="src\Kraken.Core.SandboxTrust\Text\Base64Encoder.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Trace\NullTrace.cs" target="src\Kraken.Core.SandboxTrust\Trace\NullTrace.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Trace\SimpleTrace.cs" target="src\Kraken.Core.SandboxTrust\Trace\SimpleTrace.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Trace\StopwatchTrace.cs" target="src\Kraken.Core.SandboxTrust\Trace\StopwatchTrace.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Trace\TraceExtensions.cs" target="src\Kraken.Core.SandboxTrust\Trace\TraceExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Xml\Linq\LinqXmlExtensions.cs" target="src\Kraken.Core.SandboxTrust\Xml\Linq\LinqXmlExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Xml\Serializer.cs" target="src\Kraken.Core.SandboxTrust\Xml\Serializer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Xml\StringBuilderXmlExtensions.cs" target="src\Kraken.Core.SandboxTrust\Xml\StringBuilderXmlExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.SandboxTrust\Xml\XmlSerializableNullable.cs" target="src\Kraken.Core.SandboxTrust\Xml\XmlSerializableNullable.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\ActiveDirectory\ADFunctions.cs" target="src\Kraken.Core.Security\ActiveDirectory\ADFunctions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\ActiveDirectory\ADUserInfo.cs" target="src\Kraken.Core.Security\ActiveDirectory\ADUserInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\ActiveDirectory\LdapExtensions.cs" target="src\Kraken.Core.Security\ActiveDirectory\LdapExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\ActiveDirectory\LdapFunctions.cs" target="src\Kraken.Core.Security\ActiveDirectory\LdapFunctions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Certificates\CertificateUtil.cs" target="src\Kraken.Core.Security\Certificates\CertificateUtil.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Credentials\CredUtils.cs" target="src\Kraken.Core.Security\Credentials\CredUtils.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Crypto\CRC32.cs" target="src\Kraken.Core.Security\Crypto\CRC32.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Crypto\HashExtensions.cs" target="src\Kraken.Core.Security\Crypto\HashExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\LoggingReflectionCopies\Log4NetExtensions.cs" target="src\Kraken.Core.Security\LoggingReflectionCopies\Log4NetExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\LoggingReflectionCopies\ReflectionExtentions.cs" target="src\Kraken.Core.Security\LoggingReflectionCopies\ReflectionExtentions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Resources\AssemblyLoader.cs" target="src\Kraken.Core.Security\Resources\AssemblyLoader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\SecureStringMarshaller.cs" target="src\Kraken.Core.Security\SecureStringMarshaller.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\StrongRandomizer.cs" target="src\Kraken.Core.Security\StrongRandomizer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Unsafe\SecureStringTools.cs" target="src\Kraken.Core.Security\Unsafe\SecureStringTools.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.Security\Web\WebSslUtility.cs" target="src\Kraken.Core.Security\Web\WebSslUtility.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\AppDomainManager.cs" target="src\Kraken.Core.FullTrust\AppDomainManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Collections\ParsableOptions.cs" target="src\Kraken.Core.FullTrust\Collections\ParsableOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingBase.cs" target="src\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingBase.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingEmail.cs" target="src\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingEmail.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingFile.cs" target="src\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingFile.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingMemory.cs" target="src\Kraken.Core.FullTrust\Diagnostics\Logging\LoggingMemory.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Diagnostics\Unsafe\CorrelationId.cs" target="src\Kraken.Core.FullTrust\Diagnostics\Unsafe\CorrelationId.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\IO\CsvReader.cs" target="src\Kraken.Core.FullTrust\IO\CsvReader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\IO\QuickLogWriter.cs" target="src\Kraken.Core.FullTrust\IO\QuickLogWriter.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\IP\IpNetworking.cs" target="src\Kraken.Core.FullTrust\Net\IP\IpNetworking.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonBehavior.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonBehavior.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonBehaviorExtension.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonBehaviorExtension.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonClientFormatter.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonClientFormatter.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonContentTypeMapper.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonContentTypeMapper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonDispatchFormatter.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\NewtJsonDispatchFormatter.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Json\NewtJsonService\RawBodyWriter.cs" target="src\Kraken.Core.FullTrust\Net\Json\NewtJsonService\RawBodyWriter.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\SMS\EarthSMSWebClient.cs" target="src\Kraken.Core.FullTrust\Net\SMS\EarthSMSWebClient.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Smtp\MailMessageExtended.cs" target="src\Kraken.Core.FullTrust\Net\Smtp\MailMessageExtended.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Smtp\MailMessageTemplateData.cs" target="src\Kraken.Core.FullTrust\Net\Smtp\MailMessageTemplateData.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Net\Smtp\MassMailer.cs" target="src\Kraken.Core.FullTrust\Net\Smtp\MassMailer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Reflection\EnumNameAttribute.cs" target="src\Kraken.Core.FullTrust\Reflection\EnumNameAttribute.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Reflection\PropertyMap.cs" target="src\Kraken.Core.FullTrust\Reflection\PropertyMap.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Reflection\ReflectionExtensions.cs" target="src\Kraken.Core.FullTrust\Reflection\ReflectionExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Reflection\ReflectionOperationResult.cs" target="src\Kraken.Core.FullTrust\Reflection\ReflectionOperationResult.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\Strings\Parser.cs" target="src\Kraken.Core.FullTrust\Strings\Parser.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypeConfigBase.cs" target="src\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypeConfigBase.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypeConfigEntryAttribute.cs" target="src\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypeConfigEntryAttribute.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypedArgsBase.cs" target="src\Kraken.Core.FullTrust\StrongTypeConfig\StrongTypedArgsBase.cs" exclude="" />
+  </files>
+</package>

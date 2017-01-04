@@ -67,7 +67,9 @@
     /// Legacy method for the SP2007 method of reading properties
     /// </summary>
     /// <param name="properties"></param>
+#pragma warning disable 618
     private void PopulatePropertyNames(PropertyCollection properties) {
+#pragma warning restore 618
       propertyNames = new List<string>();
       foreach (Property property in properties) {
         propertyNames.Add(property.Name);

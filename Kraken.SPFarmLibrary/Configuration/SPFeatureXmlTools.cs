@@ -31,104 +31,112 @@
 
 namespace Kraken.SharePoint.Configuration {
 
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Linq;
+  using System;
+  using System.Collections.Generic;
+  using System.Diagnostics.CodeAnalysis;
+  using System.Linq;
+  using System.Text;
+  using System.Xml;
+  using System.Xml.Linq;
 
-    using Microsoft.SharePoint.Utilities;
+  using Microsoft.SharePoint.Utilities;
 
   using Kraken.Xml.Linq;
 
-    public class SPFeatureXmlTools {
+  public class SPFeatureXmlTools {
 
-        //internal const string MOSS_NAMESPACE = "http://schemas.microsoft.com/sharepoint/";
-        //internal const string MOSS_SOAP_NAMESPACE = "http://schemas.microsoft.com/sharepoint/soap/";
+    //internal const string MOSS_NAMESPACE = "http://schemas.microsoft.com/sharepoint/";
+    //internal const string MOSS_SOAP_NAMESPACE = "http://schemas.microsoft.com/sharepoint/soap/";
 
-        public static string GetTemplateFilePath(string filePath) {
-            string fn = SPUtility.GetGenericSetupPath(@"TEMPLATE\") + filePath;
-            return fn;
+
+    public static string GetTemplateFilePath(string filePath) {
+      string fn =
+#if DOTNET_V35
+      SPUtility.GetGenericSetupPath(@"TEMPLATE\")
+#else
+      SPUtility.GetVersionedGenericSetupPath(@"TEMPLATE\", SPFeatureExtensions.FarmVersion)
+#endif
+       + filePath;
+      return fn;
+    }
+    public static string GetFeatureFilePath(string featureAndFileName) {
+      string fn =
+        SPFeatureExtensions.GetFeatureFilePath(featureAndFileName);
+      return fn;
+    }
+
+    [Obsolete("If possible use System.Xml.Linq and XElement queries instead.")]
+    [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage", Justification = "This overloaded method has also been marked as obsolete.")]
+    public static XmlDocument GetConfigFile(string featureAndFileName) {
+      string fn = GetFeatureFilePath(featureAndFileName);
+      XmlDocument doc = new XmlDocument();
+      doc.Load(fn);
+      return doc.DocumentElement.CreateCleanXmlDocument();
+    }
+
+    public static XElement XGetConfigFile(string featureAndFileName) {
+      string fn = GetFeatureFilePath(featureAndFileName);
+      XElement x = XElement.Load(fn);
+      return x;
+    }
+
+    /*
+    public static string GetFeatureFilePath(SPFeatureDefinition featureDefinition, string featureFile) {
+        string sharepointFeaturesDir = GetSharePointFeaturesDirectory();
+        string filePath = String.Empty;
+        if (featureDefinition != null && !String.IsNullOrEmpty(sharepointFeaturesDir)) {
+            string featureName = featureDefinition.DisplayName;
+            string featureDir = Path.Combine(sharepointFeaturesDir, featureName);
+            filePath = Path.Combine(featureDir, featureFile); // "SiteProvisioning.xml"
         }
-        public static string GetFeatureFilePath(string featureAndFileName) {
-            string fn = SPUtility.GetGenericSetupPath(@"TEMPLATE\FEATURES\") + featureAndFileName;
-            return fn;
-        }
+        return filePath;
+    }
 
-        [Obsolete("If possible use System.Xml.Linq and XElement queries instead.")]
-        [SuppressMessage("Microsoft.Design", "CA1041:ProvideObsoleteAttributeMessage", Justification = "This overloaded method has also been marked as obsolete.")]
-        public static XmlDocument GetConfigFile(string featureAndFileName) {
-            string fn = GetFeatureFilePath(featureAndFileName);
-            XmlDocument doc = new XmlDocument();
-            doc.Load(fn);
-            return doc.DocumentElement.CreateCleanXmlDocument();
+    public static string GetFeatureFilePath(string featureFile, SPFeatureDefinition featureDefinition) {
+        string sharepointFeaturesDir = GetSharePointFeaturesDirectory();
+        string filePath = String.Empty;
+        if (featureDefinition != null && !String.IsNullOrEmpty(sharepointFeaturesDir)) {
+            string featureName = featureDefinition.DisplayName;
+            string featureDir = Path.Combine(sharepointFeaturesDir, featureName);
+            filePath = Path.Combine(featureDir, featureFile); // "SiteProvisioning.xml"
         }
+        return filePath;
+    }
 
-        public static XElement XGetConfigFile(string featureAndFileName) {
-            string fn = GetFeatureFilePath(featureAndFileName);
-            XElement x = XElement.Load(fn);
-            return x;
+    public static string GetSharePointTemplateDirectory() {
+        string propertyName = @"SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\12.0";
+        string name = "Location";
+        string dir = String.Empty;
+        try {
+            RegistryKey regKey = Registry.LocalMachine.OpenSubKey(propertyName);
+            string valString = regKey.GetValue(name) as string;
+            regKey.Close();
+            dir = Path.Combine(valString, @"template");
+        } catch (SecurityException) {
+            dir = String.Empty;
+        } catch (ArgumentNullException) {
+            dir = String.Empty;
+        } catch (ArgumentException) {
+            dir = String.Empty;
+        } catch (ObjectDisposedException) {
+            dir = String.Empty;
+        } catch (IOException) {
+            dir = String.Empty;
+        } catch (UnauthorizedAccessException) {
+            dir = String.Empty;
         }
+        return dir;
+    }
 
-        /*
-        public static string GetFeatureFilePath(SPFeatureDefinition featureDefinition, string featureFile) {
-            string sharepointFeaturesDir = GetSharePointFeaturesDirectory();
-            string filePath = String.Empty;
-            if (featureDefinition != null && !String.IsNullOrEmpty(sharepointFeaturesDir)) {
-                string featureName = featureDefinition.DisplayName;
-                string featureDir = Path.Combine(sharepointFeaturesDir, featureName);
-                filePath = Path.Combine(featureDir, featureFile); // "SiteProvisioning.xml"
-            }
-            return filePath;
-        }
-
-        public static string GetFeatureFilePath(string featureFile, SPFeatureDefinition featureDefinition) {
-            string sharepointFeaturesDir = GetSharePointFeaturesDirectory();
-            string filePath = String.Empty;
-            if (featureDefinition != null && !String.IsNullOrEmpty(sharepointFeaturesDir)) {
-                string featureName = featureDefinition.DisplayName;
-                string featureDir = Path.Combine(sharepointFeaturesDir, featureName);
-                filePath = Path.Combine(featureDir, featureFile); // "SiteProvisioning.xml"
-            }
-            return filePath;
-        }
-
-        public static string GetSharePointTemplateDirectory() {
-            string propertyName = @"SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\12.0";
-            string name = "Location";
-            string dir = String.Empty;
-            try {
-                RegistryKey regKey = Registry.LocalMachine.OpenSubKey(propertyName);
-                string valString = regKey.GetValue(name) as string;
-                regKey.Close();
-                dir = Path.Combine(valString, @"template");
-            } catch (SecurityException) {
-                dir = String.Empty;
-            } catch (ArgumentNullException) {
-                dir = String.Empty;
-            } catch (ArgumentException) {
-                dir = String.Empty;
-            } catch (ObjectDisposedException) {
-                dir = String.Empty;
-            } catch (IOException) {
-                dir = String.Empty;
-            } catch (UnauthorizedAccessException) {
-                dir = String.Empty;
-            }
-            return dir;
-        }
-
-        internal static string GetSharePointFeaturesDirectory() {
-            string templateDir = GetSharePointTemplateDirectory();
-            if (string.IsNullOrEmpty(templateDir))
-                return templateDir;
-            templateDir = Path.Combine(templateDir, @"features");
+    internal static string GetSharePointFeaturesDirectory() {
+        string templateDir = GetSharePointTemplateDirectory();
+        if (string.IsNullOrEmpty(templateDir))
             return templateDir;
-        }
-         */
+        templateDir = Path.Combine(templateDir, @"features");
+        return templateDir;
+    }
+     */
 
-    } // class
+  } // class
 
 } // namespace

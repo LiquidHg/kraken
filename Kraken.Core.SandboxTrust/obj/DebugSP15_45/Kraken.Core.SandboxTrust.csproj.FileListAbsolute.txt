@@ -1,0 +1,13 @@
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Kraken.Core.SandboxTrust.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Kraken.Core.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Kraken.Security.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Newtonsoft.Json.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\RestSharp.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\log4net.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Kraken.Security.pdb
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\Newtonsoft.Json.xml
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\RestSharp.xml
+R:\Repos\kraken\Kraken.Core.SandboxTrust\bin\DebugSP15_45\log4net.xml
+R:\Repos\kraken\Kraken.Core.SandboxTrust\obj\DebugSP15_45\Kraken.Core.SandboxTrust.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.Core.SandboxTrust\obj\DebugSP15_45\Kraken.Core.SandboxTrust.dll
+R:\Repos\kraken\Kraken.Core.SandboxTrust\obj\DebugSP15_45\Kraken.Core.SandboxTrust.pdb

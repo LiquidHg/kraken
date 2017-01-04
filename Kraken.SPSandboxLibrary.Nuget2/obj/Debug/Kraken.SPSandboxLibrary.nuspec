@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Kraken.SPSandboxLibrary</id>
+    <version>0.2.4</version>
+    <title>Kraken SharePoint Sanbox Solution Library</title>
+    <authors>Liquid-Hg.com</authors>
+    <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
+    <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
+    <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries useful for developing sandbox solutions and SharePoint configurations with limited trust. Note that it is also included in SPFarmLibrary, so you don't need to reference it seperately.</description>
+    <summary>Developer library for creating SharePoint Sandbox Solutions.</summary>
+    <releaseNotes>v0.2.4: AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.</releaseNotes>
+    <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <language>en-US</language>
+    <tags>SharePoint Sandbox WSP</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="SharePoint" version="15.0.0" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Program Files\Microsoft SDKs\Azure\.NET SDK\v2.9\bin\plugins\Diagnostics\Microsoft.Web.Administration.dll" target="lib\net45\Microsoft.Web.Administration.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.ServerRuntime.dll" target="lib\net45\Microsoft.SharePoint.Client.ServerRuntime.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.dll" target="lib\net45\Microsoft.SharePoint.Search.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Web.CommandUI.dll" target="lib\net45\Microsoft.Web.CommandUI.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\Microsoft.Data.Edm.dll" target="lib\net45\Microsoft.Data.Edm.dll" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Microsoft Identity Extensions\1.0\Microsoft.IdentityModel.Extensions.dll" target="lib\net45\Microsoft.IdentityModel.Extensions.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.BusinessData.dll" target="lib\net45\Microsoft.BusinessData.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\Microsoft.Data.OData.dll" target="lib\net45\Microsoft.Data.OData.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.dll" target="lib\net45\Microsoft.SharePoint.Client.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Security.dll" target="lib\net45\Microsoft.SharePoint.Security.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.Runtime.dll" target="lib\net45\Microsoft.SharePoint.Client.Runtime.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\System.Spatial.dll" target="lib\net45\System.Spatial.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.dll" target="lib\net45\Microsoft.Office.Server.Search.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Taxonomy.dll" target="lib\net45\Microsoft.SharePoint.Taxonomy.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.dll" target="lib\net45\Microsoft.Office.Server.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Portal.dll" target="lib\net45\Microsoft.SharePoint.Portal.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Publishing.dll" target="lib\net45\Microsoft.SharePoint.Publishing.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.UserProfiles.dll" target="lib\net45\Microsoft.Office.Server.UserProfiles.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Applications.dll" target="lib\net45\Microsoft.Office.Server.Search.Applications.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft.NET\Primary Interop Assemblies\Microsoft.mshtml.dll" target="lib\net45\Microsoft.mshtml.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Connector.dll" target="lib\net45\Microsoft.Office.Server.Search.Connector.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.Search.dll" target="lib\net45\Microsoft.SharePoint.Client.Search.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft.NET\ADOMD.NET\90\Microsoft.AnalysisServices.AdomdClient.dll" target="lib\net45\Microsoft.AnalysisServices.AdomdClient.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Excel.Server.WebServices.dll" target="lib\net45\Microsoft.Office.Excel.Server.WebServices.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.DocumentManagement.dll" target="lib\net45\Microsoft.Office.DocumentManagement.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Policy.dll" target="lib\net45\Microsoft.Office.Policy.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.UserProfiles.dll" target="lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.SecureStoreService.Server.Security.dll" target="lib\net45\Microsoft.Office.SecureStoreService.Server.Security.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Excel.Server.Udf.dll" target="lib\net45\Microsoft.Office.Excel.Server.Udf.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\de\Microsoft.Data.Edm.resources.dll" target="lib\net45\Microsoft.Data.Edm.resources.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\de\Microsoft.Data.OData.resources.dll" target="lib\net45\Microsoft.Data.OData.resources.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\de\System.Spatial.resources.dll" target="lib\net45\System.Spatial.resources.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll" target="lib\net45\Kraken.SharePoint.SandboxTrust.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb" target="lib\net45\Kraken.SharePoint.SandboxTrust.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\Language.nuspec" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\push.cmd" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\Readme.txt" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Caml\CAML.cs" target="src\Caml\CAML.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Caml\CamlResources.Designer.cs" target="src\Caml\CamlResources.Designer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Events\ReadInfoPathListItemEventReceiver.cs" target="src\Events\ReadInfoPathListItemEventReceiver.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Extensions\SPFileExtensions_SandboxSafe.cs" target="src\Extensions\SPFileExtensions_SandboxSafe.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Extensions\SPListExtensions_SandboxSafe.cs" target="src\Extensions\SPListExtensions_SandboxSafe.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Extensions\SPListItemExtensions_SandboxSafe.cs" target="src\Extensions\SPListItemExtensions_SandboxSafe.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Extensions\SPQueryExtensions_SandboxSafe.cs" target="src\Extensions\SPQueryExtensions_SandboxSafe.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Extensions\SPViewExtensions_SandboxSafe.cs" target="src\Extensions\SPViewExtensions_SandboxSafe.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\IdentityModel\ClaimsEncodingBase.cs" target="src\IdentityModel\ClaimsEncodingBase.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\IdentityModel\EncodedClaimInfo.cs" target="src\IdentityModel\EncodedClaimInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\IdentityModel\SimpleClaimsDecoder.cs" target="src\IdentityModel\SimpleClaimsDecoder.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\IdentityModel\SimpleClaimsTypeEncoding.cs" target="src\IdentityModel\SimpleClaimsTypeEncoding.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\IdentityModel\SimpleClaimsValueTypeEncoding.cs" target="src\IdentityModel\SimpleClaimsValueTypeEncoding.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\SandboxScriptExtensions.cs" target="src\WebParts\Extensions\SandboxScriptExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\ShowHideExpanderExtensions.cs" target="src\WebParts\Extensions\ShowHideExpanderExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\WebPartDisplayModeExtensions.cs" target="src\WebParts\Extensions\WebPartDisplayModeExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\WebPartErrorExtensions.cs" target="src\WebParts\Extensions\WebPartErrorExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\WebPartPropertyExtensions.cs" target="src\WebParts\Extensions\WebPartPropertyExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\WebPartRequiredPropertyExtensions.cs" target="src\WebParts\Extensions\WebPartRequiredPropertyExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\Extensions\WebPartToolPaneExtensions.cs" target="src\WebParts\Extensions\WebPartToolPaneExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\FlexBaseDotNetWebPart.cs" target="src\WebParts\FlexBaseDotNetWebPart.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ListDataHelper.cs" target="src\WebParts\ListDataHelper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\NotificationBag.cs" target="src\WebParts\NotificationBag.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\SandboxListDataWebPart.cs" target="src\WebParts\SandboxListDataWebPart.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\SandboxWebPart.cs" target="src\WebParts\SandboxWebPart.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ScriptManager\SandboxScriptInfo.cs" target="src\WebParts\ScriptManager\SandboxScriptInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ScriptManager\SandboxScriptManager.cs" target="src\WebParts\ScriptManager\SandboxScriptManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ScriptManager\ScriptKey.cs" target="src\WebParts\ScriptManager\ScriptKey.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ToolParts\FlexDotNetBaseToolPart.cs" target="src\WebParts\ToolParts\FlexDotNetBaseToolPart.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\ToolParts\SiteAndListPickerToolPart.cs" target="src\WebParts\ToolParts\SiteAndListPickerToolPart.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\WebParts\WebPartNotification.cs" target="src\WebParts\WebPartNotification.cs" exclude="" />
+  </files>
+</package>

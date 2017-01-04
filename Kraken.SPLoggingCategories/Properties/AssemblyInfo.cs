@@ -6,13 +6,13 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kraken.SharePoint.LoggingCategories")]
+[assembly: AssemblyTitle("Kraken SharePoint Logging Categories")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Kraken.SharePoint.LoggingCategories")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Liquid Mercury Solutions")]
+[assembly: AssemblyProduct("Kraken SharePoint Library")]
+[assembly: AssemblyCopyright("Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.")]
+[assembly: AssemblyTrademark("Kraken is a trademark of Liquid Mercury Solutions - established Oct. 2009")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -23,20 +23,10 @@ using System.Security;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("427c39f1-4f9c-470e-8d65-372d755903d6")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-#if DOTNET_V45
-[assembly: AssemblyVersion("15.0.0.0")]
-//[assembly: AssemblyFileVersion("15.0.0.0")]
+#if DOTNET_V35
+[assembly: AssemblyVersion("14.0.0.0")]
+[assembly: AssemblyFileVersion("14.2.1701.0201")]
 #else
-    [assembly: AssemblyVersion("14.0.0.0")]
-    //[assembly: AssemblyFileVersion("14.0.0.0")]
+[assembly: AssemblyVersion("15.0.0.0")]
+[assembly: AssemblyFileVersion("15.2.1701.0201")]
 #endif

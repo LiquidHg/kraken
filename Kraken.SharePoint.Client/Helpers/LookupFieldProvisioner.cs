@@ -59,7 +59,7 @@ namespace Kraken.SharePoint.Client.Helpers {
         bool needAdd = true;
         try {
           var fp = FieldProperties.Deserialize(field.SchemaXml);
-          if (fp.IsLookup) {
+          if (fp.IsLookupField) {
             if (fp.ListId != null) {
               var list = Context.Web.Lists.GetById(fp.ListId.GetValueOrDefault());
               list.RootFolder.EnsureProperty(this.Trace, e => e.ServerRelativeUrl);
@@ -168,15 +168,15 @@ namespace Kraken.SharePoint.Client.Helpers {
       }
     }
 
-    private void AddAdditionalFields(Field newField, ClientContext lookupClientContext, List lookupList, FieldProperties properties) {
+    private void AddAdditionalFields(Field primaryLookupField, ClientContext lookupClientContext, List lookupList, FieldProperties properties) {
       if (lookupList == null)
         return;
-      Web web = ((ClientContext)newField.Context).Web;
+      Web web = ((ClientContext)primaryLookupField.Context).Web;
       List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
       if (addFields != null && addFields.Count > 0) {
-        newField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
+        primaryLookupField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
         foreach (Field field in addFields) {
-          string newLookupFieldName = string.Format("{0}{1}", newField.InternalName, field.InternalName);
+          string newLookupFieldName = string.Format("{0}{1}", primaryLookupField.InternalName, field.InternalName);
           if (web.Fields.FindAny(newLookupFieldName) != null) {
             Trace.TraceVerbose("Auxiliary lookup field {0} already exists and will be skipped.", newLookupFieldName);
             continue;
@@ -184,7 +184,7 @@ namespace Kraken.SharePoint.Client.Helpers {
           properties.InternalName = newLookupFieldName;
           properties.DisplayName = field.Title;
           properties.ShowField = field.Title;
-          properties.FieldRef = newField.Id;
+          properties.FieldRef = primaryLookupField.Id;
           try {
             Trace.TraceVerbose("Creating additional field {0} from properties.", properties.InternalName);
             string xml = properties.GenerateSchemaXml();
@@ -195,6 +195,28 @@ namespace Kraken.SharePoint.Client.Helpers {
           }
         }
       }
+    }
+
+    /// <summary>
+    /// Given a primary lookup field, returns
+    /// all the additional fields.
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="fields"></param>
+    /// <returns></returns>
+    public List<Field> GetAdditionalFields(Field field, IEnumerable<Field> fields) {
+      if (!field.IsLookupField())
+        throw new NotSupportedException("This method is only valid on lookup fields.");
+      FieldProperties primaryFProps = field.CreateProperties();
+      if (primaryFProps.FieldRef.HasValue)
+        throw new NotSupportedException("This method is only valid on primary lookup fields. The provided field is an additional/secondary lookup field.");
+      List<Field> results = new List<Field>();
+      foreach (Field f in fields) {
+        FieldProperties fp = f.CreateProperties();
+        if (fp.FieldRef.HasValue && fp.FieldRef.Value == field.Id)
+          results.Add(field);
+      }
+      return results;
     }
 
     private List<Field> GetAdditionalFields(ClientContext context, List list, FieldProperties properties) {

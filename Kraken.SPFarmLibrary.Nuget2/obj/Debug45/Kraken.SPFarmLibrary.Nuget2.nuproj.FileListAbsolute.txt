@@ -1,7 +1,7 @@
 R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\DeployScripts\Deploy_Core_DevRed.ps1
 R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\DeployScripts\SPDeployFunctions.ps1
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\Kraken.SPFarmLibrary.0.1.2.nupkg
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\Kraken.SPFarmLibrary.0.1.2.symbols.nupkg
 R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug45\Kraken.SPFarmLibrary.nuspec
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug45\Kraken.SPFarmLibrary.0.1.2.nupkg
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug45\Kraken.SPFarmLibrary.0.1.2.symbols.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\Kraken.SPFarmLibrary.0.1.3.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\bin\Debug45\Kraken.SPFarmLibrary.0.1.3.symbols.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug45\Kraken.SPFarmLibrary.0.1.3.nupkg
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\obj\Debug45\Kraken.SPFarmLibrary.0.1.3.symbols.nupkg

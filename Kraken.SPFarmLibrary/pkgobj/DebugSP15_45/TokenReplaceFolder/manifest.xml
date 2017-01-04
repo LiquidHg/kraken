@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Solution xmlns="http://schemas.microsoft.com/sharepoint/" SolutionId="9d5f4078-2af7-446d-a49e-487720c1bfaf" ResetWebServer="TRUE" SharePointProductVersion="14.0">
   <Assemblies>
-    <Assembly Location="Kraken.Core.FullTrust.dll" DeploymentTarget="GlobalAssemblyCache" />
     <Assembly Location="Kraken.Core.SandboxTrust.dll" DeploymentTarget="GlobalAssemblyCache" />
     <Assembly Location="Kraken.Security.dll" DeploymentTarget="GlobalAssemblyCache" />
     <Assembly Location="Kraken.SharePoint.SandboxTrust.dll" DeploymentTarget="GlobalAssemblyCache" />
+    <Assembly Location="Kraken.Core.FullTrust.dll" DeploymentTarget="GlobalAssemblyCache" />
     <Assembly Location="Kraken.SharePoint.FullTrust.dll" DeploymentTarget="GlobalAssemblyCache" />
   </Assemblies>
   <TemplateFiles>

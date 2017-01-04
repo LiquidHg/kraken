@@ -31,115 +31,135 @@
 
 namespace Kraken.SharePoint {
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
 
-    using Microsoft.SharePoint;
-    using Microsoft.SharePoint.Administration;
-    using Microsoft.SharePoint.Utilities;
+  using Microsoft.SharePoint;
+  using Microsoft.SharePoint.Administration;
+  using Microsoft.SharePoint.Utilities;
 
-    public static class SPFeatureExtensions {
+  public static class SPFeatureExtensions {
 
-        public static string GetFeatureFilePath(this SPFeature feature) {
-            return feature.Definition.GetFeatureFilePath();
+    public static int FarmVersion {
+      get {
+        try {
+          return SPFarm.Local.BuildVersion.Major;
+        } catch {
+#if DOTNET_V35
+        return 14;
+#else
+          return 15;
+#endif
         }
-        public static string GetFeatureFilePath(this SPFeature feature, string fileName) {
-            return feature.Definition.GetFeatureFilePath(fileName);
-        }
-        public static string GetFeatureFilePath(this SPFeatureDefinition featureDefinition) {
-            return GetFeatureFilePath(featureDefinition.Name);
-            // TODO determine if above should actually be the DisplayName as shown in old code below
-        }
-        public static string GetFeatureFilePath(this SPFeatureDefinition featureDefinition, string fileName) {
-            return GetFeatureFilePath(featureDefinition.Name + @"\" + fileName);
-            // TODO determine if above should actually be the DisplayName as shown in old code below
-        }
-        public static string GetFeatureFilePath(string featureName) {
-            string fn = SPUtility.GetGenericSetupPath(@"TEMPLATE\FEATURES\") + featureName;
-            return fn;
-        }
+      }
+    }
 
-        #region FeatureChecker methods
+    public static string GetFeatureFilePath(this SPFeature feature) {
+      return feature.Definition.GetFeatureFilePath();
+    }
+    public static string GetFeatureFilePath(this SPFeature feature, string fileName) {
+      return feature.Definition.GetFeatureFilePath(fileName);
+    }
+    public static string GetFeatureFilePath(this SPFeatureDefinition featureDefinition) {
+      return GetFeatureFilePath(featureDefinition.Name);
+      // TODO determine if above should actually be the DisplayName as shown in old code below
+    }
+    public static string GetFeatureFilePath(this SPFeatureDefinition featureDefinition, string fileName) {
+      return GetFeatureFilePath(featureDefinition.Name + @"\" + fileName);
+      // TODO determine if above should actually be the DisplayName as shown in old code below
+    }
+    public static string GetFeatureFilePath(string featureName) {
+      string fn =
+#if DOTNET_V35
+      SPUtility.GetGenericSetupPath(@"TEMPLATE\FEATURES\") + featureName;
+#else
+        SPUtility.GetVersionedGenericSetupPath(@"TEMPLATE\FEATURES\", FarmVersion)
+#endif
+       + featureName;
+      return fn;
+    }
 
-        public static bool IsFeatureActivated(this SPFeatureCollection features, Guid featureId) {
-            SPFeature feature = null;
-            try {
-                feature = features[featureId];
-                return (feature != null);
-            } catch {
-                return false;
-            }
-        }
+#region FeatureChecker methods
 
-        public static Guid GetFeatureIdByName(this SPFeatureCollection features, string featureName) {
-            foreach (SPFeature feature in features) {
-                if (string.Equals(feature.Definition.DisplayName, featureName, StringComparison.InvariantCultureIgnoreCase)
-                  || string.Equals(feature.Definition.Name, featureName, StringComparison.InvariantCultureIgnoreCase)) {
-                    return feature.DefinitionId;
-                }
-            }
-            return Guid.Empty;
-        }
+    public static bool IsFeatureActivated(this SPFeatureCollection features, Guid featureId) {
+      SPFeature feature = null;
+      try {
+        feature = features[featureId];
+        return (feature != null);
+      } catch {
+        return false;
+      }
+    }
 
-      /// <summary>
-      /// Get the feature collection of the feature's parent object.
-      /// This is generally useful in activating or deactivating the feature.
-      /// </summary>
-      /// <param name="feature"></param>
-      /// <returns></returns>
-        public static SPFeatureCollection GetParentFeatures(this SPFeature feature) {
-          object featureParent = feature.Parent;
-          SPWeb web = featureParent as SPWeb;
-          if (web != null)
-            return web.Features;
-          SPSite site = featureParent as SPSite;
-          if (site != null)
-            return site.Features;
-          SPWebApplication app = featureParent as SPWebApplication;
-          if (app != null)
-            return app.Features;
-          throw new ArgumentException("The argument passed to featureParent must be type 'SPWeb', 'SPSite', or 'SPWebApplication'.", "featureParent");
+    public static Guid GetFeatureIdByName(this SPFeatureCollection features, string featureName) {
+      foreach (SPFeature feature in features) {
+        if (string.Equals(feature.Definition.DisplayName, featureName, StringComparison.InvariantCultureIgnoreCase)
+          || string.Equals(feature.Definition.Name, featureName, StringComparison.InvariantCultureIgnoreCase)) {
+          return feature.DefinitionId;
         }
+      }
+      return Guid.Empty;
+    }
 
-        public static SPFeature GetFeature(this SPWeb web, string featureName) {
-          SPFeatureCollection features = web.Features;
-          return GetFeature(features, featureName);
-        }
-        public static SPFeature GetFeature(this SPSite site, string featureName) {
-          SPFeatureCollection features = site.Features;
-          return GetFeature(features, featureName);
-        }
-        public static SPFeature GetFeature(this SPWebApplication webApp, string featureName) {
-            SPFeatureCollection features = webApp.Features;
-            return GetFeature(features, featureName);
-        }
-        /// <summary>
-        /// Gets the feature by its name; throws an exception if this can't be done.
-        /// </summary>
-        /// <param name="web"></param>
-        /// <param name="webApp"></param>
-        /// <param name="features"></param>
-        /// <param name="featureName"></param>
-        /// <returns></returns>
-        public static SPFeature GetFeature(this SPFeatureCollection features, string featureName) {
-            try {
-                Guid FeatureId = features.GetFeatureIdByName(featureName);
-                if (FeatureId != Guid.Empty && features != null) {
-                    SPFeature feature = features[FeatureId];
-                    if (feature != null) {
-                        return feature;
-                    }
-                }
-                throw new Exception("Feature not found in collection.");
-            } catch (Exception ex) {
-                throw new Exception(string.Format("Could not get the '{0}' feature. Please check the configuration and redeploy. ", featureName), ex);
-            }
-        }
+    /// <summary>
+    /// Get the feature collection of the feature's parent object.
+    /// This is generally useful in activating or deactivating the feature.
+    /// </summary>
+    /// <param name="feature"></param>
+    /// <returns></returns>
+    public static SPFeatureCollection GetParentFeatures(this SPFeature feature) {
+      object featureParent = feature.Parent;
+      SPWeb web = featureParent as SPWeb;
+      if (web != null)
+        return web.Features;
+      SPSite site = featureParent as SPSite;
+      if (site != null)
+        return site.Features;
+      SPWebApplication app = featureParent as SPWebApplication;
+      if (app != null)
+        return app.Features;
+      throw new ArgumentException("The argument passed to featureParent must be type 'SPWeb', 'SPSite', or 'SPWebApplication'.", "featureParent");
+    }
 
-        #endregion
+    public static SPFeature GetFeature(this SPWeb web, string featureName) {
+      SPFeatureCollection features = web.Features;
+      return GetFeature(features, featureName);
+    }
+    public static SPFeature GetFeature(this SPSite site, string featureName) {
+      SPFeatureCollection features = site.Features;
+      return GetFeature(features, featureName);
+    }
+    public static SPFeature GetFeature(this SPWebApplication webApp, string featureName) {
+      SPFeatureCollection features = webApp.Features;
+      return GetFeature(features, featureName);
+    }
+    /// <summary>
+    /// Gets the feature by its name; throws an exception if this can't be done.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="webApp"></param>
+    /// <param name="features"></param>
+    /// <param name="featureName"></param>
+    /// <returns></returns>
+    public static SPFeature GetFeature(this SPFeatureCollection features, string featureName) {
+      try {
+        Guid FeatureId = features.GetFeatureIdByName(featureName);
+        if (FeatureId != Guid.Empty && features != null) {
+          SPFeature feature = features[FeatureId];
+          if (feature != null) {
+            return feature;
+          }
+        }
+        throw new Exception("Feature not found in collection.");
+      } catch (Exception ex) {
+        throw new Exception(string.Format("Could not get the '{0}' feature. Please check the configuration and redeploy. ", featureName), ex);
+      }
+    }
 
-    } // class
+#endregion
+
+  } // class
 
 } // namespace

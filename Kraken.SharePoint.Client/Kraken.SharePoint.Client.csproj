@@ -265,6 +265,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj">
+      <Project>{757c7239-0e1b-41ba-aed5-7a15ac141042}</Project>
+      <Name>Kraken.Core.FullTrust</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj">
       <Project>{dab0080d-c9b1-442e-84df-fc47ad8a442a}</Project>
       <Name>Kraken.Core.SandboxTrust</Name>

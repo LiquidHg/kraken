@@ -1,0 +1,5 @@
+R:\Repos\kraken\Kraken.DotNet.Core.Nuget\obj\Debug\Kraken.DotNet.Core.nuspec
+R:\Repos\kraken\Kraken.DotNet.Core.Nuget\bin\Debug\Kraken.DotNet.Core.0.2.4.nupkg
+R:\Repos\kraken\Kraken.DotNet.Core.Nuget\bin\Debug\Kraken.DotNet.Core.0.2.4.symbols.nupkg
+R:\Repos\kraken\Kraken.DotNet.Core.Nuget\obj\Debug\Kraken.DotNet.Core.0.2.4.nupkg
+R:\Repos\kraken\Kraken.DotNet.Core.Nuget\obj\Debug\Kraken.DotNet.Core.0.2.4.symbols.nupkg

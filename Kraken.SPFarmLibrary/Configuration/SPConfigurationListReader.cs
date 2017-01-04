@@ -21,7 +21,11 @@ namespace Kraken.SharePoint.Configuration {
   /// </summary>
   class SPConfigurationListReader {
 
-    KrakenLoggingService log = KrakenLoggingService.CreateNew(LoggingCategories.KrakenConfiguration);
+    KrakenLoggingService log = KrakenLoggingService.CreateNew(
+      new LoggingProperties() {
+        DefaultCategory = LoggingCategories.KrakenConfiguration,
+      }
+    );
     //public SPConfigurationListReader() {
     //}
 

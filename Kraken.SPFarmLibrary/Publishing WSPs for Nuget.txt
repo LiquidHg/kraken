@@ -1,0 +1,14 @@
+﻿Copying WSP packages to Nuget and other solutions is currently a manual process.
+
+The following target paths can be used in Publish:
+
+R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget2\content\Deploy
+
+Then, rename to either below as needed:
+Kraken.SPFarmLibrary.2013.wsp
+Kraken.SPFarmLibrary.2010.wsp
+
+For Beowulf packaging, deploy to:
+
+R:\Repos\Beowulf\Deploy14\WSP
+R:\Repos\Beowulf\Deploy15\WSP

@@ -40,7 +40,6 @@ namespace Kraken.SharePoint {
   using Microsoft.SharePoint.Administration;
   using Microsoft.SharePoint.Administration.Claims;
 
-  using reflect = Kraken.Reflection;
   using Kraken.SharePoint.Logging;
 
   public static class SPTrustedLoginProviderExtensions {
@@ -55,8 +54,8 @@ namespace Kraken.SharePoint {
     /// <returns></returns>
     public static bool TryResetClaimProvider(this SPTrustedLoginProvider sts, bool doUpadte) {
       try {
-        reflect.Reflector.SetFieldOrProperty(sts, "m_ClaimProviderName", false, string.Empty);
-        reflect.Reflector.SetFieldOrProperty(sts, "m_ClaimProvider", false, null);
+        sts.SetFieldOrProperty("m_ClaimProviderName", false, string.Empty);
+        sts.SetFieldOrProperty("m_ClaimProvider", false, null);
         if (doUpadte)
           sts.Update(true);
         return true;

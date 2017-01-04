@@ -87,6 +87,7 @@ namespace Kraken.SharePoint.Client {
     }
 
     public static bool IsLookupFieldType(string type) {
+      // TODO does User count as a lookup field??
       return (type.StartsWith(FieldType.Lookup.ToString(), StringComparison.InvariantCultureIgnoreCase));
     }
     public static bool IsChoiceFieldType(string type) {

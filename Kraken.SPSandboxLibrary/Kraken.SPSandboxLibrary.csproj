@@ -34,87 +34,92 @@
   <Import Project="$(MSBuildProjectDirectory)\..\vsproj.include.TargetFramework.xml" />
   <!-- End: standard Kraken project build configurations -->
   <PropertyGroup>
-		<ProductVersion>8.0.30703</ProductVersion>
-		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{DFF9B6EA-5C6E-4079-8506-181220FC7148}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Kraken.SharePoint</RootNamespace>
-		<AssemblyName>Kraken.SharePoint.SandboxTrust</AssemblyName>
-	</PropertyGroup>
-	<PropertyGroup>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DFF9B6EA-5C6E-4079-8506-181220FC7148}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kraken.SharePoint</RootNamespace>
+    <AssemblyName>Kraken.SharePoint.SandboxTrust</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <!-- the following custom property defines which SharePoint DLLs will be referenced in the include below -->
   <PropertyGroup>
     <SPRef>Core</SPRef>
     <!-- ;Security;Moss;Profiles;Identity;Portal;Taxonomy;AdminPages;ClientRuntime -->
   </PropertyGroup>
   <Import Project="$(SolutionDir)\vsproj.include.SharePoint.xml" />
-	<ItemGroup>
-		<Reference Include="System" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Web" />
-		<Reference Include="System.Xml.Linq" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Xml" />
-		<Reference Include="System.Data.DataSetExtensions" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Caml\CAML.cs" />
-		<Compile Include="Caml\CamlResources.Designer.cs">
-			<DependentUpon>CamlResources.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Events\ReadInfoPathListItemEventReceiver.cs" />
-		<Compile Include="Extensions\SPFileExtensions_SandboxSafe.cs" />
-		<Compile Include="Extensions\SPListExtensions_SandboxSafe.cs" />
-		<Compile Include="Extensions\SPListItemExtensions_SandboxSafe.cs" />
-		<Compile Include="Extensions\SPQueryExtensions_SandboxSafe.cs" />
-		<Compile Include="Extensions\SPViewExtensions_SandboxSafe.cs" />
-		<Compile Include="IdentityModel\SPClaimsAuthProviderTypes.cs" />
-		<Compile Include="IdentityModel\EncodedClaimInfo.cs" />
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="IdentityModel\ClaimConstants.cs" />
-		<Compile Include="IdentityModel\ClaimsEncodingBase.cs" />
-		<Compile Include="IdentityModel\SimpleClaimsTypeEncoding.cs" />
-		<Compile Include="IdentityModel\SimpleClaimsValueTypeEncoding.cs" />
-		<Compile Include="IdentityModel\SimpleClaimsDecoder.cs" />
-		<Compile Include="Users\UserInfoFieldConstants.cs" />
-		<Compile Include="WebParts\Extensions\WebPartDisplayModeExtensions.cs" />
-		<Compile Include="WebParts\Extensions\WebPartRequiredPropertyExtensions.cs" />
-		<Compile Include="WebParts\SandboxListDataWebPart.cs" />
-		<Compile Include="WebParts\SandboxWebPart.cs" />
-		<Compile Include="WebParts\Extensions\SandboxScriptExtensions.cs" />
-		<Compile Include="WebParts\Extensions\ShowHideExpanderExtensions.cs" />
-		<Compile Include="WebParts\Extensions\WebPartErrorExtensions.cs" />
-		<Compile Include="WebParts\Extensions\WebPartPropertyExtensions.cs" />
-		<Compile Include="WebParts\Extensions\WebPartToolPaneExtensions.cs" />
-		<Compile Include="WebParts\FlexBaseDotNetWebPart.cs" />
-		<Compile Include="WebParts\IRequiredPropertiesWebPart.cs" />
-		<Compile Include="WebParts\ListDataHelper.cs" />
-		<Compile Include="WebParts\NotificationBag.cs" />
-		<Compile Include="WebParts\ScriptManager\SandboxScriptInfo.cs" />
-		<Compile Include="WebParts\ScriptManager\SandboxScriptManager.cs" />
-		<Compile Include="WebParts\ScriptManager\ScriptKey.cs" />
-		<Compile Include="WebParts\ToolParts\FlexDotNetBaseToolPart.cs" />
-		<Compile Include="WebParts\ToolParts\SiteAndListPickerToolPart.cs" />
-		<Compile Include="WebParts\WebPartNotification.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Caml\CamlResources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>CamlResources.Designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="key.snk" />
-	</ItemGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharePoint.15.0.0\lib\Microsoft.SharePoint\Microsoft.SharePoint.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caml\CAML.cs" />
+    <Compile Include="Caml\CamlResources.Designer.cs">
+      <DependentUpon>CamlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Events\ReadInfoPathListItemEventReceiver.cs" />
+    <Compile Include="Extensions\SPFileExtensions_SandboxSafe.cs" />
+    <Compile Include="Extensions\SPListExtensions_SandboxSafe.cs" />
+    <Compile Include="Extensions\SPListItemExtensions_SandboxSafe.cs" />
+    <Compile Include="Extensions\SPQueryExtensions_SandboxSafe.cs" />
+    <Compile Include="Extensions\SPViewExtensions_SandboxSafe.cs" />
+    <Compile Include="IdentityModel\SPClaimsAuthProviderTypes.cs" />
+    <Compile Include="IdentityModel\EncodedClaimInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IdentityModel\ClaimConstants.cs" />
+    <Compile Include="IdentityModel\ClaimsEncodingBase.cs" />
+    <Compile Include="IdentityModel\SimpleClaimsTypeEncoding.cs" />
+    <Compile Include="IdentityModel\SimpleClaimsValueTypeEncoding.cs" />
+    <Compile Include="IdentityModel\SimpleClaimsDecoder.cs" />
+    <Compile Include="Users\UserInfoFieldConstants.cs" />
+    <Compile Include="WebParts\Extensions\WebPartDisplayModeExtensions.cs" />
+    <Compile Include="WebParts\Extensions\WebPartRequiredPropertyExtensions.cs" />
+    <Compile Include="WebParts\SandboxListDataWebPart.cs" />
+    <Compile Include="WebParts\SandboxWebPart.cs" />
+    <Compile Include="WebParts\Extensions\SandboxScriptExtensions.cs" />
+    <Compile Include="WebParts\Extensions\ShowHideExpanderExtensions.cs" />
+    <Compile Include="WebParts\Extensions\WebPartErrorExtensions.cs" />
+    <Compile Include="WebParts\Extensions\WebPartPropertyExtensions.cs" />
+    <Compile Include="WebParts\Extensions\WebPartToolPaneExtensions.cs" />
+    <Compile Include="WebParts\FlexBaseDotNetWebPart.cs" />
+    <Compile Include="WebParts\IRequiredPropertiesWebPart.cs" />
+    <Compile Include="WebParts\ListDataHelper.cs" />
+    <Compile Include="WebParts\NotificationBag.cs" />
+    <Compile Include="WebParts\ScriptManager\SandboxScriptInfo.cs" />
+    <Compile Include="WebParts\ScriptManager\SandboxScriptManager.cs" />
+    <Compile Include="WebParts\ScriptManager\ScriptKey.cs" />
+    <Compile Include="WebParts\ToolParts\FlexDotNetBaseToolPart.cs" />
+    <Compile Include="WebParts\ToolParts\SiteAndListPickerToolPart.cs" />
+    <Compile Include="WebParts\WebPartNotification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Caml\CamlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CamlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

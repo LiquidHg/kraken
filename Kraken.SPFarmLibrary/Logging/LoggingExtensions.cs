@@ -8,10 +8,9 @@
 
   using Microsoft.SharePoint.Administration;
   using Kraken.SharePoint.Logging;
-  using Kraken.Reflection;
   using System.Diagnostics;
 
-  public static class ReflectionExtensions {
+  public static class LoggingExtensions {
 
     public static void EnteringPreCheck(this KrakenLoggingService uls, MethodBase method) {
       uls.Write(string.Format("Entering Pre-check '{0}'.", method.GetName()), TraceSeverity.Verbose, EventSeverity.Verbose);

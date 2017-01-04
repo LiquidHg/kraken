@@ -24,7 +24,7 @@ namespace Kraken.Core.Security.Certificates {
 
   public static class CertificateUtil {
 
-    private static bool VerboseLogs = false; // make true to get more detail
+    //private static bool VerboseLogs = false; // make true to get more detail
 
     private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
