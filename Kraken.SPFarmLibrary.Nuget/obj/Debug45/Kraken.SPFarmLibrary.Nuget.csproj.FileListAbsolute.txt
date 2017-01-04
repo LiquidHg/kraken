@@ -1,8 +1,0 @@
-R:\Kraken.GitHub\kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug45\Kraken.SPFarmLibrary.Nuget.dll
-R:\Kraken.GitHub\kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug45\Kraken.SPFarmLibrary.Nuget.pdb
-R:\Kraken.GitHub\kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug45\Kraken.SPFarmLibrary.Nuget.dll
-R:\Kraken.GitHub\kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug45\Kraken.SPFarmLibrary.Nuget.pdb
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug45\Kraken.SPFarmLibrary.Nuget.dll
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget\bin\Debug45\Kraken.SPFarmLibrary.Nuget.pdb
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug45\Kraken.SPFarmLibrary.Nuget.dll
-R:\Repos\kraken\Kraken.SPFarmLibrary.Nuget\obj\Debug45\Kraken.SPFarmLibrary.Nuget.pdb
