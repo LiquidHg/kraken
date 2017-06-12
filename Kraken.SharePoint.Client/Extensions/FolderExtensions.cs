@@ -308,88 +308,81 @@
       ClientContext context = (ClientContext)folder.Context;
       File newFile = null;
 
+      string fn = System.IO.Path.GetFileName(localFilePath);
+      string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fn);
+      // TODO move the size calculation to here
+      double estimatedSeconds = EstimateUploadTime(fi);
+      int estTimeOut = (int)(estimatedSeconds * 1000 * 2); // HACK x2 added because stuff was timing out too often
+      trace.TraceInfo("Using upload method {0}", uploadMethod);
+      trace.TraceInfo(string.Format("Estimated {0} seconds.", estimatedSeconds));
+
+      byte[] buffer = null;
+      if (uploadMethod == UploadMethod.CSOM)
+        buffer = System.IO.File.ReadAllBytes(localFilePath);
+
+      context.ExecuteQueryIfNeeded();
       var scope = new ExceptionHandlingScope(context);
-      using (scope.StartScope()) {
-        using (scope.StartTry()) {
-          switch (uploadMethod) {
-            case UploadMethod.CSOM:
-              byte[] buffer = System.IO.File.ReadAllBytes(localFilePath);
-              FileCreationInformation fci = new FileCreationInformation();
-              fci.Url = System.IO.Path.GetFileName(localFilePath);
-              fci.Content = buffer;
-              fci.Overwrite = overwrite;
-              newFile = folder.Files.Add(fci);
-              break;
-            case UploadMethod.Direct:
-            case UploadMethod.DirectClone:
-              string fn = System.IO.Path.GetFileName(localFilePath);
-              string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fn);
-              using (System.IO.FileStream fstream = System.IO.File.OpenRead(localFilePath)) {
-                // This was causing our files to be 0kb because the pointer was at the end of the buffer
-                //fstream.Read(content, 0, (int)fi.Length);
-                if (uploadMethod == UploadMethod.Direct) {
-                  File.SaveBinaryDirect(context, fileUrl, fstream, true);
-                } else { // about 40 MB
-                  // note that this doesn't save the file creation and modification dates
-                  // TODO move the size calculation to here
-                  double estimatedSeconds = EstimateUploadTime(fi);
-                  int estTimeOut = (int)(estimatedSeconds * 1000 * 2); // HACK x2 added because stuff was timing out too often
-                  trace.TraceInfo(string.Format("Estimated {0} seconds.", estimatedSeconds));
-                  // loads the file the brute force way
-                  context.SaveBinaryDirect(estTimeOut, fileUrl, fstream, overwrite); // hugeFileTimeOut
-                }
-                fstream.Close();
-              }
-              newFile = context.Web.GetFileByServerRelativeUrl(fileUrl);
-              break;
+      // we can't use the exception handling scope with this method
+      if (uploadMethod == UploadMethod.Direct || uploadMethod == UploadMethod.DirectClone) { // about 40 MB
+        using (System.IO.FileStream fstream = System.IO.File.OpenRead(localFilePath)) {
+          // This was causing our files to be 0kb because the pointer was at the end of the buffer
+          //* fstream.Read(content, 0, (int)fi.Length); */
+          // note that this doesn't save the file creation and modification dates
+          // loads the file the brute force way
+          if (uploadMethod == UploadMethod.Direct) {
+            File.SaveBinaryDirect(context, fileUrl, fstream, true);
+          } else { // about 40 MB
+            // note that this doesn't save the file creation and modification dates
+            // loads the file the brute force way
+            context.SaveBinaryDirect(estTimeOut, fileUrl, fstream, overwrite); // hugeFileTimeOut
+          }
+          fstream.Close();
+        }
+        /*
+        using (scope.StartScope()) {
+          using (scope.StartTry()) {
+        */
+            newFile = context.Web.GetFileByServerRelativeUrl(fileUrl);
+            context.Load(newFile);
+            context.Load(newFile.ListItemAllFields);
+        /*
           }
         }
-        using (scope.StartCatch()) {
-          // TODO what do we want to do here???
+        */
+      } else {
+        /*
+        using (scope.StartScope()) {
+          using (scope.StartTry()) {
+        */
+            FileCreationInformation fci = new FileCreationInformation();
+            fci.Url = fn;
+            fci.Content = buffer;
+            fci.Overwrite = overwrite;
+            newFile = folder.Files.Add(fci);
+            context.Load(newFile);
+            context.Load(newFile.ListItemAllFields);
+        /*
+          }
         }
-        using (scope.StartFinally()) {
-        }
+        */
+        // ServerException will throw on failure to be caught by caller
       }
-      context.Load(newFile);
-      context.Load(newFile.ListItemAllFields);
       context.ExecuteQuery();
-      // ServerException will throw on failure to be caught by caller
-      if (scope.HasException) {
+      if (scope != null && scope.HasException) {
         trace.TraceError(scope.ErrorMessage + " -> " + scope.ServerStackTrace);
-        //throw new Exception();
+        return newFile;
       }
-
       // TODO can we reduce the number of fields here to save transfer time?
       ListItem item = newFile.ListItemAllFields;
       // core will need to do its own ExecuteQuery if fields need to be added
       CoreMetadataInfo core = new CoreMetadataInfo(localFilePath, item.ParentList, !string.IsNullOrEmpty(localFilPathFieldName), trace);
-
-      ExceptionHandlingScope scope2 = new ExceptionHandlingScope(context);
-      using (scope2.StartScope()) {
-        using (scope2.StartTry()) {
-          /*
-          if (parentList == null)
-            parentList = item.ParentList;
-           */
-          item.UpdateCoreMetadata(core, ctid, crcHash, md5Hash);
-          item.Update();
-        }
-        using (scope2.StartCatch()) {
-          // TODO what do we want to do here???
-        }
-        using (scope2.StartFinally()) {
-        }
-      }
-      context.ExecuteQuery();
-      // ServerException will throw on failure to be caught by caller
-      if (scope2.HasException) {
-        trace.TraceError(scope2.ErrorMessage + " -> " + scope2.ServerStackTrace);
-        //throw new Exception();
-      }
-
+      /*
+      if (parentList == null)
+        parentList = item.ParentList;
+       */
+      item.DoUpdateCoreMetadata(core, ctid, crcHash, md5Hash, trace);
       if (item != null)
         item.ThrowOnZeroKBFile();
-
       return newFile;
     }
 

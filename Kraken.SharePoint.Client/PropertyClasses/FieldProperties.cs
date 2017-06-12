@@ -16,7 +16,7 @@ using Kraken.Xml;
 
 namespace Kraken.SharePoint.Client {
 
-/* Stub enum for older versions of CSOM */
+  /* Stub enum for older versions of CSOM */
 #if DOTNET_V35
   public enum DateTimeFieldFriendlyFormatType {
     Unspecified,
@@ -147,7 +147,7 @@ namespace Kraken.SharePoint.Client {
       }
       set {
         _alias = value;
-        this.ConfigureFromAlias(value); 
+        this.ConfigureFromAlias(value);
       }
     }
 
@@ -377,10 +377,10 @@ namespace Kraken.SharePoint.Client {
     /// "UserInfo" which is the name of a reserved table in the site collection root. Truly the ocean
     /// of SharePoint is deep and full of wondrous mysteries!
     /// </remarks>
-    [XmlAttribute("List", Type = typeof(string), DataType="string")]
+    [XmlAttribute("List", Type = typeof(string), DataType = "string")]
     public string ListRaw {
       get;
-      set;      
+      set;
     }
 
     /// <summary>
@@ -469,6 +469,12 @@ namespace Kraken.SharePoint.Client {
     public string[] Choices { get; set; }
 
     /// <summary>
+    /// Specify what character will be used to parse ChoicesDelimited.
+    /// Default is pipe '|'
+    /// </summary>
+    public char ChoicesDelimChar { get; set; } = '|';
+
+    /// <summary>
     /// Shorthand property allows you to
     /// quickly get/set Choices using
     /// a pipe delimited string.
@@ -476,12 +482,12 @@ namespace Kraken.SharePoint.Client {
     public string ChoicesDelimited {
       get {
         string choices = (this.Choices != null)
-          ? string.Join("|", this.Choices)
+          ? string.Join(ChoicesDelimChar.ToString(), this.Choices)
           : string.Empty;
-          return choices;
+        return choices;
       }
       set {
-        char[] delim = new char[] { '|' };
+        char[] delim = new char[] { ChoicesDelimChar };
         this.Choices = value.Split(delim, StringSplitOptions.None);
       }
     }
@@ -658,6 +664,13 @@ namespace Kraken.SharePoint.Client {
         }
       }
       set {
+        if (value == null) {
+          this.DefaultFormula = string.Empty;
+          this.DefaultValue = null;
+          if (this.TypeKind == FieldType.Calculated)
+            this.Formula = string.Empty;
+          return;
+        }
         string defaultValueOrFormula = value.ToString();
         if (this.TypeKind == FieldType.Calculated) {
           if (!string.IsNullOrWhiteSpace(defaultValueOrFormula)) {
@@ -665,17 +678,17 @@ namespace Kraken.SharePoint.Client {
             if (!defaultValueOrFormula.StartsWith("="))
               defaultValueOrFormula = "=" + defaultValueOrFormula;
             this.Formula = defaultValueOrFormula;
-            this.DefaultFormula = null;
+            this.DefaultFormula = string.Empty;
             this.DefaultValue = null;
           }
         } else if (defaultValueOrFormula.StartsWith("=")) {
           this.DefaultFormula = defaultValueOrFormula;
           this.DefaultValue = null;
-          this.Formula = null;
+          this.Formula = string.Empty;
         } else {
           this.DefaultValue = value;
-          this.DefaultFormula = null;
-          this.Formula = null;
+          this.DefaultFormula = string.Empty;
+          this.Formula = string.Empty;
         }
       }
       // TODO lifted from FieldPropertiesExtensions
@@ -726,18 +739,50 @@ namespace Kraken.SharePoint.Client {
           case FieldType.Text:
           case FieldType.Lookup: // TODO still work to do in order to make this work properly
             return true;
-          // TODO implement support for these types
-          //case FieldType.Computed:
-          //case FieldType.PageSeparator:
-          //case FieldType.Recurrence:
-          //case FieldType.AllDayEvent:
-          //case FieldType.Guid:
-          //case FieldType.CrossProjectLink:
+            // TODO implement support for these types
+            //case FieldType.Computed:
+            //case FieldType.PageSeparator:
+            //case FieldType.Recurrence:
+            //case FieldType.AllDayEvent:
+            //case FieldType.Guid:
+            //case FieldType.CrossProjectLink:
         }
       }
       return false;
     }
 
+    /// <summary>
+    /// Clean up properties that don't make sense
+    /// This is different from Validate in that it
+    /// will never fail. It's called at the top of ValidateProperties()
+    /// </summary>
+    public void CleanUp() {
+      if (FieldUtility.IsFormulaFieldType(this.Type)) {
+        // p was probably meant for Formula - because how do you even have a default value in a calc field?
+        if (this.DefaultValue != null && !string.IsNullOrWhiteSpace(this.DefaultValue.ToString()) && string.IsNullOrWhiteSpace(this.Formula)) {
+          this.Formula = this.DefaultValue.ToString();
+          this.DefaultValue = null;
+        }
+        // fixup the missing = when people forget
+        if (!string.IsNullOrEmpty(Formula) && !this.Formula.StartsWith("="))
+          this.Formula = "=" + this.Formula;
+      }
+      // create today where people are lazy and use the wrong syntax
+      if (FieldUtility.IsFieldType(this.Type, FieldType.DateTime)
+        && this.DefaultValueOrFormula != null && this.DefaultValueOrFormula.ToString().Equals("Today", StringComparison.InvariantCultureIgnoreCase)) {
+        this.DefaultValueOrFormula = "=[TODAY]";
+      }
+      // TODO support same as above for [ME]
+      if (FieldUtility.IsUserFieldType(this.Type)) {
+        // NOTE we don't actually have List here we use LookupListID, so set the List attrib deeper in the code
+        // it is actually done in the XML renderer for FieldProperties
+        if (!this.UserSelectionMode.HasValue)
+          this.UserSelectionMode = FieldUserSelectionMode.PeopleOnly;
+        if (!this.UserSelectionScope.HasValue)
+          this.UserSelectionScope = 0; // users in all groups;
+        // TODO support Group attribute
+      }
+    }
 
     public void ConfigureFromAlias(FieldTypeAlias alias) {
       type = FieldUtility.Convert(alias);
@@ -797,6 +842,8 @@ namespace Kraken.SharePoint.Client {
       }
     }
 
+    #region Property Validation
+
     private void ThrowInvalidProperty(string propertyName, ICollection<Enum> allowedTypes) {
       string typeList = string.Empty;
       foreach (Enum ft in allowedTypes) {
@@ -834,6 +881,8 @@ namespace Kraken.SharePoint.Client {
     }
 
     public void ValidateProperties() {
+      // This takes care of some user-based dumbness
+      CleanUp();
       // Can't do much without these required properties
       if (string.IsNullOrEmpty(this.InternalName))
         throw new ArgumentNullException("InternalName");
@@ -923,6 +972,10 @@ namespace Kraken.SharePoint.Client {
       if (!string.IsNullOrEmpty(this.Format))
         FieldUtility.ValidateFieldFormat(this.Type, this.Format);
     }
+
+    #endregion
+
+    #region Implementation for XML generation
 
     /// <summary>
     /// Attempot to detemrine the optimal schema generation methodology
@@ -1019,7 +1072,7 @@ namespace Kraken.SharePoint.Client {
             sb.AppendAttribute("List", "UserInfo");
           } else {
             if (ListId.HasValue)
-              sb.AppendAttribute("List", (Guid.Empty == ListId.Value) ? "Self" : ListId.Value.ToString());
+              sb.AppendAttribute("List", (Guid.Empty == ListId.Value) ? "Self" : ListId.Value.ToString("B"));
           }
           sb.AppendAttribute("ListItemMenu", ListItemMenu);
           sb.AppendAttribute("ListItemMenuAllowed", ListItemMenuAllowed);
@@ -1073,6 +1126,11 @@ namespace Kraken.SharePoint.Client {
           sb.AppendAttribute("Viewable", Viewable);
           sb.AppendAttribute("WikiLinking", WikiLinking);
           sb.AppendAttribute("WebId", WebId);
+          // as it turns out, FieldRef and WebId do not have the curly braces OOTB
+          /*
+          if (WebId.HasValue && WebId.Value != Guid.Empty)
+            sb.AppendAttribute("WebId", WebId.Value.ToString("B"));
+          */
           // yet another advanced topic - title field override in Office 365
           // http://community.office365.com/en-us/f/154/t/45407.aspx
           /*
@@ -1418,7 +1476,9 @@ namespace Kraken.SharePoint.Client {
       return props;
     }
 
-#region IXmlSerializable members
+    #endregion
+
+    #region IXmlSerializable members
 
     public void WriteXml(XmlWriter writer) {
       //if (SomeInt != null) { writer.WriteValue(writer); }
@@ -1440,9 +1500,9 @@ namespace Kraken.SharePoint.Client {
       XmlTextReader reader = (XmlTextReader)reader2;
       //using (XmlTextReader reader = (XmlTextReader)reader2) {
 #if !DOTNET_V35
-        reader.DtdProcessing = DtdProcessing.Prohibit; //reader.ProhibitDtd = true;
+      reader.DtdProcessing = DtdProcessing.Prohibit; //reader.ProhibitDtd = true;
 #endif
-        document.Load(reader);
+      document.Load(reader);
       //}
       XmlElement docElement = document.DocumentElement; // Field
 
@@ -1562,7 +1622,7 @@ namespace Kraken.SharePoint.Client {
             break;
           case "MAPPINGS":
             XmlNodeList mappings = ((XmlElement)node).GetElementsByTagName("MAPPINGS");
-            Dictionary<string, string> mapDict = new Dictionary<string,string>();
+            Dictionary<string, string> mapDict = new Dictionary<string, string>();
             foreach (XmlNode mapping in mappings) {
               //<MAPPING Value=\"{0}\">{1}</MAPPING>", key, this.MappedChoices[key];
               string key = ((XmlElement)mapping).ReadAttribute("Value");
@@ -1580,7 +1640,7 @@ namespace Kraken.SharePoint.Client {
       return (null);
     }
 
-#endregion
+    #endregion
 
   }
 

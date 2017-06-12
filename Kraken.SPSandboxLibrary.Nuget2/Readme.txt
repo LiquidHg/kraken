@@ -83,6 +83,7 @@ join the team.
 
 Update History:
 
+v0.2.5: Ensured update to latest CSOM
 v0.2.4: AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.
 v0.2.3: Updating nuget library dependencies to latest.
 v0.2.2: Rebuild after discovering 4 projects weren't set to Build in the build configuration for 15-45.

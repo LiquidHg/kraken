@@ -46,3 +46,8 @@ R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\en\Microsoft.IdentityMod
 R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.Cloud.XmlSerializers.dll
 R:\Repos\kraken\Kraken.SharePoint.Apps\obj\DebugSP16_45\Kraken.SharePoint.Apps.dll
 R:\Repos\kraken\Kraken.SharePoint.Apps\obj\DebugSP16_45\Kraken.SharePoint.Apps.pdb
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\System.Net.Http.Extensions.dll
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\System.Net.Http.Formatting.dll
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\System.Net.Http.Primitives.dll
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb

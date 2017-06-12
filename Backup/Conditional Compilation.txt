@@ -1,0 +1,1 @@
+﻿LegacyXmlContentTypeFunctions switches back to old style XmlDocument objects.

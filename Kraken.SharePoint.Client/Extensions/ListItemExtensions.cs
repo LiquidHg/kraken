@@ -58,9 +58,12 @@
           ctx.Site.EnsureProperty(trace, s => s.Url);
           url = ctx.Site.Url;
           try {
-            url += item[BuiltInFieldId.GetName(BuiltInFieldId.FileRef)];
+            url += item[fileRef];
           } catch (KeyNotFoundException) {
             trace.TraceWarning("Field '{0}' was not present in the list of returned fields. ", fileRef);
+            return null;
+          } catch (PropertyOrFieldNotInitializedException) {
+            trace.TraceWarning("Field '{0}' was not initialized. ", fileRef);
             return null;
           }
           return new Uri(url);
@@ -117,6 +120,34 @@
     }
 
     #region Updates of core metadata
+
+    /// <summary>
+    /// UpdateCoreMetadata with exception handling scope
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="core"></param>
+    /// <param name="ctid"></param>
+    /// <param name="crcHash"></param>
+    /// <param name="md5Hash"></param>
+    internal static void DoUpdateCoreMetadata(this ListItem item, CoreMetadataInfo core, string ctid, string crcHash, string md5Hash, ITrace trace) {
+      ClientContext context = (ClientContext)item.Context;
+      ExceptionHandlingScope scope = new ExceptionHandlingScope(context);
+      using (scope.StartScope()) {
+        using (scope.StartTry()) {
+          item.UpdateCoreMetadata(core, ctid, crcHash, md5Hash);
+          item.Update();
+        }
+        using (scope.StartCatch()) {
+        }
+        using (scope.StartFinally()) {
+        }
+      }
+      context.ExecuteQuery();
+      // ServerException will throw on failure to be caught by caller
+      if (scope.HasException) {
+        trace.TraceError(scope.ErrorMessage + " -> " + scope.ServerStackTrace);
+      }
+    }
 
     internal static void UpdateCoreMetadata(this ListItem item, CoreMetadataInfo core, string ctid, string crcHash, string md5Hash) {
       core.SetListItemMetadata(item);

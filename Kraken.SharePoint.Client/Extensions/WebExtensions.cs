@@ -293,7 +293,7 @@
       if (trace == null) trace = NullTrace.Default;
       if (props == null)
         throw new ArgumentNullException("props");
-      props.Validate(true, true, trace);
+      props.Validate((ClientContext)web.Context, true, true, trace);
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)web.Context;
       List list = null;
@@ -302,6 +302,8 @@
           throw new ArgumentException(string.Format("A list named '{0}' already exists at web '{1}'.", props.Title, web.UrlSafeFor2010()), "listTitle");
         return list;
       }
+      // this was moved under props.Validate / props.DoConversions
+      /*
       if (props.TemplateTypeDefined.HasValue) {
         props.TemplateType = (Int32)props.TemplateTypeDefined.Value;
       } else if (props.HasChangedValue(props.TemplateTypeCustom)) {
@@ -320,6 +322,18 @@
           throw new ArgumentNullException(string.Format("You must specify a pre-defined or custom list template."), "TemplateTypeDefined or TemplateTypeCustom");
         return null;
       }
+      */
+
+      // ensure that SKIP doesn't get saved as a description
+      if (!props.HasChangedValue(props.Description))
+        props.Description = string.Empty;
+      string title = string.Empty;
+      if (props.HasChangedValue(props.RootFolderName, props.Title)) {
+        trace.TraceVerbose("Root folder name specified, saving title for update step.");
+        title = props.Title;
+        props.Title = props.RootFolderName;
+      }
+      trace.TraceVerbose("Creating list {0} [{1}]", props.Title, props.RootFolderName);
       try {
         ListCreationInformation lci = props.ConvertSP14Safe();
         list = web.Lists.Add(lci);
@@ -332,8 +346,12 @@
           throw new Exception(msg, ex);
         }
       }
-      if (list != null)
-        list.Update(props, true, cm, trace);
+      if (list != null) {
+        trace.TraceVerbose("Updating extended list properties...");
+        if (string.IsNullOrEmpty(title))
+          props.Title = title;
+        list.Update(props, !string.IsNullOrEmpty(title), cm, trace);
+      }
       return list;
     }
 

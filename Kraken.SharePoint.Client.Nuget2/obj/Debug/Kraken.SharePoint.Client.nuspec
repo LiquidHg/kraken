@@ -2,52 +2,221 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.78</version>
+    <version>0.2.85-alpha12</version>
     <title>Kraken SharePoint Client Library</title>
-    <authors>Thomas Carpe and Liquid Mercury Solutions</authors>
+    <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
     <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
     <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
     <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
+    <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.78: Moved TraceExtensions from Core.FullTrust to Core.SandboxTrust. Add reference in SandboxTrust project to Core.Security.</releaseNotes>
-    <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
+    <releaseNotes>v0.2.85-alpha02: Fixing a problem with field properties not being loaded during canonicalization of formulas when creating site columns.</releaseNotes>
+    <copyright>Copyright ©2007-2017 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.5903.1200" />
+        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.6420.1200" />
+        <dependency id="Kraken.DotNet.Core" version="0.2.5" />
+        <dependency id="log4net" version="2.0.7" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="RestSharpSigned" version="105.2.3" />
+        <dependency id="AngleSharp" version="0.9.9" />
+        <dependency id="AppForSharePointOnlineWebToolkit" version="3.1.5" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+        <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+        <dependency id="Microsoft.Azure.ActiveDirectory.GraphClient" version="2.1.1" />
+        <dependency id="Microsoft.Azure.KeyVault.Core" version="2.0.4" />
+        <dependency id="Microsoft.Data.Edm" version="5.8.2" />
+        <dependency id="Microsoft.Data.OData" version="5.8.2" />
+        <dependency id="Microsoft.Data.Services.Client" version="5.8.2" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Options" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.Primitives" version="1.1.0" />
+        <dependency id="Microsoft.Extensions.WebEncoders" version="1.1.0" />
+        <dependency id="Microsoft.IdentityModel" version="6.1.7600.16394" />
+        <dependency id="Microsoft.NETCore.Platforms" version="1.1.0" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="SharePointPnP.IdentityModel.Extensions" version="1.2.2" />
+        <dependency id="SharePointPnPCoreOnline" version="2.14.1704.0" />
+        <dependency id="System.Collections" version="4.3.0" />
+        <dependency id="System.Collections.Concurrent" version="4.3.0" />
+        <dependency id="System.ComponentModel" version="4.3.0" />
+        <dependency id="System.ComponentModel.EventBasedAsync" version="4.3.0" />
+        <dependency id="System.Diagnostics.Debug" version="4.3.0" />
+        <dependency id="System.Diagnostics.Tools" version="4.3.0" />
+        <dependency id="System.Diagnostics.Tracing" version="4.3.0" />
+        <dependency id="System.Dynamic.Runtime" version="4.3.0" />
+        <dependency id="System.Globalization" version="4.3.0" />
+        <dependency id="System.IO" version="4.3.0" />
+        <dependency id="System.IO.Compression" version="4.3.0" />
+        <dependency id="System.Linq" version="4.3.0" />
+        <dependency id="System.Linq.Expressions" version="4.3.0" />
+        <dependency id="System.Linq.Queryable" version="4.3.0" />
+        <dependency id="System.Net.Http" version="4.3.1" />
+        <dependency id="System.Net.Primitives" version="4.3.0" />
+        <dependency id="System.Net.Requests" version="4.3.0" />
+        <dependency id="System.ObjectModel" version="4.3.0" />
+        <dependency id="System.Reflection" version="4.3.0" />
+        <dependency id="System.Reflection.Extensions" version="4.3.0" />
+        <dependency id="System.Reflection.Primitives" version="4.3.0" />
+        <dependency id="System.Resources.ResourceManager" version="4.3.0" />
+        <dependency id="System.Runtime" version="4.3.0" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="4.3.0" />
+        <dependency id="System.Runtime.Extensions" version="4.3.0" />
+        <dependency id="System.Runtime.InteropServices" version="4.3.0" />
+        <dependency id="System.Runtime.InteropServices.RuntimeInformation" version="4.3.0" />
+        <dependency id="System.Runtime.Numerics" version="4.3.0" />
+        <dependency id="System.Spatial" version="5.8.2" />
+        <dependency id="System.Text.Encoding" version="4.3.0" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.3.0" />
+        <dependency id="System.Text.Encodings.Web" version="4.3.0" />
+        <dependency id="System.Text.RegularExpressions" version="4.3.0" />
+        <dependency id="System.Threading" version="4.3.0" />
+        <dependency id="System.Threading.Tasks" version="4.3.0" />
+        <dependency id="System.Xml.ReaderWriter" version="4.3.0" />
+        <dependency id="System.Xml.XDocument" version="4.3.0" />
+        <dependency id="WindowsAzure.Storage" version="8.1.1" />
       </group>
       <group>
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="RestSharpSigned" version="105.2.3" />
-        <dependency id="log4net" version="2.0.5" />
+        <dependency id="log4net" version="2.0.6" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Core.SandboxTrust.dll" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Core.SandboxTrust.pdb" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Security.dll" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.Security.pdb" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Client.dll" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Client.pdb" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.dll" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.pdb" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net35\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net35\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Core.SandboxTrust.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Core.SandboxTrust.pdb" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Security.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.Security.pdb" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Client.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Client.pdb" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.pdb" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.dll" target="lib\net45\Kraken.SharePoint.Cloud.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.pdb" target="lib\net45\Kraken.SharePoint.Cloud.pdb" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.dll" target="lib\net45\Kraken.SharePoint.Client.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.pdb" target="lib\net45\Kraken.SharePoint.Client.pdb" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Microsoft Identity Extensions\1.0\Microsoft.IdentityModel.Extensions.dll" target="lib\net45\Microsoft.IdentityModel.Extensions.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\Readme.txt" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\ContentType.cs" target="src\Kraken.SharePoint.Cloud\Client2007\ContentType.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\ContentTypeRepository.cs" target="src\Kraken.SharePoint.Cloud\Client2007\ContentTypeRepository.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\List.cs" target="src\Kraken.SharePoint.Cloud\Client2007\List.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\ListRepository.cs" target="src\Kraken.SharePoint.Cloud\Client2007\ListRepository.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\Web.cs" target="src\Kraken.SharePoint.Cloud\Client2007\Web.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Client2007\WebRepository.cs" target="src\Kraken.SharePoint.Cloud\Client2007\WebRepository.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\ContentTypes\ContentTypeExtensions.cs" target="src\Kraken.SharePoint.Cloud\ContentTypes\ContentTypeExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\ContentTypes\FieldXMLTools.cs" target="src\Kraken.SharePoint.Cloud\ContentTypes\FieldXMLTools.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\ContentTypes\SharePointNode.cs" target="src\Kraken.SharePoint.Cloud\ContentTypes\SharePointNode.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Office365Auth\AutehnticationExample.cs" target="src\Kraken.SharePoint.Cloud\Office365Auth\AutehnticationExample.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Office365Auth\MsOnlineClaimsHelper.cs" target="src\Kraken.SharePoint.Cloud\Office365Auth\MsOnlineClaimsHelper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Office365Auth\O365ClientContext.cs" target="src\Kraken.SharePoint.Cloud\Office365Auth\O365ClientContext.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Office365Auth\WcfClientContracts.cs" target="src\Kraken.SharePoint.Cloud\Office365Auth\WcfClientContracts.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Properties\Settings.Designer.cs" target="src\Kraken.SharePoint.Cloud\Properties\Settings.Designer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\CellStorageHTTPS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\CellStorageHTTPS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\CellStorageHTTP\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\CellStorageHTTP\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\ExcelService\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\ExcelService\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\Lists\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\Lists\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\Sites\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\Sites\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\SPClaimProviderWebServiceHTTPS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\SPClaimProviderWebServiceHTTPS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\SPClaimProviderWebServiceHTTP\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\SPClaimProviderWebServiceHTTP\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\UserGroup\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\UserGroup\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\UserProfileService\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\UserProfileService\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\Views\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\Views\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\WebPartPages\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\WebPartPages\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Service References\Webs\Reference.cs" target="src\Kraken.SharePoint.Cloud\Service References\Webs\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\ClientManagers\ExportOptions.cs" target="src\Kraken.SharePoint.Cloud\Services\ClientManagers\ExportOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\ClientManagers\ListsWebServiceClientManager.cs" target="src\Kraken.SharePoint.Cloud\Services\ClientManagers\ListsWebServiceClientManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\ClientManagers\ViewsWebServiceClientManager.cs" target="src\Kraken.SharePoint.Cloud\Services\ClientManagers\ViewsWebServiceClientManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\ClientManagers\WebsWebServiceClientManager.cs" target="src\Kraken.SharePoint.Cloud\Services\ClientManagers\WebsWebServiceClientManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\Gateways\SPServiceGateways.cs" target="src\Kraken.SharePoint.Cloud\Services\Gateways\SPServiceGateways.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\Mappers\ContentTypeMapper.cs" target="src\Kraken.SharePoint.Cloud\Services\Mappers\ContentTypeMapper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\Mappers\ListMapper.cs" target="src\Kraken.SharePoint.Cloud\Services\Mappers\ListMapper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\SharePointConnection.cs" target="src\Kraken.SharePoint.Cloud\Services\SharePointConnection.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\SPServicesBindingFactory.cs" target="src\Kraken.SharePoint.Cloud\Services\SPServicesBindingFactory.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\SPServicesClientFactory.cs" target="src\Kraken.SharePoint.Cloud\Services\SPServicesClientFactory.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\SPServiceUrl.cs" target="src\Kraken.SharePoint.Cloud\Services\SPServiceUrl.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Services\WebServiceClientManager.cs" target="src\Kraken.SharePoint.Cloud\Services\WebServiceClientManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\AuthenticationWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\AuthenticationWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\ExcelServiceWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\ExcelServiceWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\ListsWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\ListsWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\SearchWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\SearchWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\SiteDataWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\SiteDataWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\SitesWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\SitesWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\SPSearchWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\SPSearchWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\UserProfileServiceWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\UserProfileServiceWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\ViewsWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\ViewsWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\WebPartPagesWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\WebPartPagesWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\Web References\WebsWS\Reference.cs" target="src\Kraken.SharePoint.Cloud\Web References\WebsWS\Reference.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Cache\ContentTypeCache.cs" target="src\Kraken.SharePoint.Client\Cache\ContentTypeCache.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Cache\FolderCache.cs" target="src\Kraken.SharePoint.Client\Cache\FolderCache.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Cache\ListCache.cs" target="src\Kraken.SharePoint.Client\Cache\ListCache.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Caml\CAML.cs" target="src\Kraken.SharePoint.Client\Caml\CAML.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Caml\CamlFieldToValueMatchOptions.cs" target="src\Kraken.SharePoint.Client\Caml\CamlFieldToValueMatchOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Caml\CamlHelpers.cs" target="src\Kraken.SharePoint.Client\Caml\CamlHelpers.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Caml\CamlMatchOptions.cs" target="src\Kraken.SharePoint.Client\Caml\CamlMatchOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Caml\CamlResources.Designer.cs" target="src\Kraken.SharePoint.Client\Caml\CamlResources.Designer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\ClientTools.cs" target="src\Kraken.SharePoint.Client\ClientTools.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\ClientContextAuthentication.cs" target="src\Kraken.SharePoint.Client\Connections\ClientContextAuthentication.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\MultiWebContextManager.cs" target="src\Kraken.SharePoint.Client\Connections\MultiWebContextManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\MyWSTrustFeb2005RequestSerializer.cs" target="src\Kraken.SharePoint.Client\Connections\MyWSTrustFeb2005RequestSerializer.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\SharePointCredential.cs" target="src\Kraken.SharePoint.Client\Connections\SharePointCredential.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\WebContextManager.cs" target="src\Kraken.SharePoint.Client\Connections\WebContextManager.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Connections\WebScrapingAuthenticator.cs" target="src\Kraken.SharePoint.Client\Connections\WebScrapingAuthenticator.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Enums\BuiltInContentTypeId.cs" target="src\Kraken.SharePoint.Client\Enums\BuiltInContentTypeId.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Enums\BuiltInFieldId.cs" target="src\Kraken.SharePoint.Client\Enums\BuiltInFieldId.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Enums\BuiltInWebTemplates.cs" target="src\Kraken.SharePoint.Client\Enums\BuiltInWebTemplates.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Exceptions\ZeroByteFileUploadException.cs" target="src\Kraken.SharePoint.Client\Exceptions\ZeroByteFileUploadException.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ClientContextExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ClientContextExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ClientObjectExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ClientObjectExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ContentTypeExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ContentTypeExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FieldExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FieldExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ICredentialExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ICredentialExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListCollectionExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListCollectionExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListItemExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListItemExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\NavigationExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\NavigationExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\SiteExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\SiteExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ViewExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ViewExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\WebExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\WebExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\WorkflowExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\WorkflowExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\BaseFileUploader.cs" target="src\Kraken.SharePoint.Client\Files\BaseFileUploader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\CsomFileUploader.cs" target="src\Kraken.SharePoint.Client\Files\CsomFileUploader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\FancyFileUploader.cs" target="src\Kraken.SharePoint.Client\Files\FancyFileUploader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\FileTransferEngineFactory.cs" target="src\Kraken.SharePoint.Client\Files\FileTransferEngineFactory.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\FrontPageRPCFileUploader.cs" target="src\Kraken.SharePoint.Client\Files\FrontPageRPCFileUploader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\LocalFileOrFolder.cs" target="src\Kraken.SharePoint.Client\Files\LocalFileOrFolder.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\LocalRemotePathMap.cs" target="src\Kraken.SharePoint.Client\Files\LocalRemotePathMap.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Files\WebDAVFileUploader.cs" target="src\Kraken.SharePoint.Client\Files\WebDAVFileUploader.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\ContentTypeIdHelper.cs" target="src\Kraken.SharePoint.Client\Helpers\ContentTypeIdHelper.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FieldUtility.cs" target="src\Kraken.SharePoint.Client\Helpers\FieldUtility.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FieldXmlHelpers.cs" target="src\Kraken.SharePoint.Client\Helpers\FieldXmlHelpers.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentInfo.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentProperty.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentProperty.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentPropertyCollection.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\DocumentPropertyCollection.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\FrontPageRPC.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\FrontPageRPC.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\FrontPageRPCException.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\FrontPageRPCException.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\HashUtil.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\HashUtil.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\LinqReflectionUtility.cs" target="src\Kraken.SharePoint.Client\Helpers\LinqReflectionUtility.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\LookupFieldProvisioner.cs" target="src\Kraken.SharePoint.Client\Helpers\LookupFieldProvisioner.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\Utils.cs" target="src\Kraken.SharePoint.Client\Helpers\Utils.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\XmlSerialization.cs" target="src\Kraken.SharePoint.Client\Helpers\XmlSerialization.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ContentTypeProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ContentTypeProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\CoreMetadataInfo.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\CoreMetadataInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\CreateItemOptions.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\CreateItemOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\FieldLinkProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\FieldLinkProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\FieldProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\FieldProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ListItemIdentifier.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ListItemIdentifier.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ListOptions.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ListOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\MetadataInfo.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\MetadataInfo.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\NavigationProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\NavigationProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\QueryItemOptions.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\QueryItemOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ResolveLookupOptions.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ResolveLookupOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\UpdateItemOptions.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\UpdateItemOptions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ViewProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ViewProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\WebProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\WebProperties.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\SharePointContext.cs" target="src\Kraken.SharePoint.OfficeDevPnP\SharePointContext.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\TokenHelper.cs" target="src\Kraken.SharePoint.OfficeDevPnP\TokenHelper.cs" exclude="" />
   </files>
 </package>

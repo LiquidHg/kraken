@@ -33,9 +33,9 @@
     <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
     <Id>Kraken.SPSandboxLibrary</Id>
     <Title>Kraken SharePoint Sanbox Solution Library</Title>
-    <Version>0.2.4</Version>
+    <Version>0.2.5</Version>
     <Tags>SharePoint Sandbox WSP</Tags>
-    <ReleaseNotes>v0.2.4: AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.</ReleaseNotes>
+    <ReleaseNotes>v0.2.5: Ensured update to latest CSOM</ReleaseNotes>
     <!--
     0.1.3 Brings this package current with other Nuget packages.
     0.1.1 Updates to nuget packages to keep pace with consumer libs.

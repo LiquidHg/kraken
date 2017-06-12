@@ -29,7 +29,6 @@ R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\OfficeDevPnP.Cor
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Net.Http.Formatting.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Spatial.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Web.Http.dll
-R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Azure.KeyVault.Core.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Data.Edm.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Data.OData.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Data.Services.Client.xml
@@ -78,3 +77,19 @@ R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\zh-Hant\System.S
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.Options.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.Primitives.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.WebEncoders.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\SharePointPnP.IdentityModel.Extensions.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Runtime.CompilerServices.Unsafe.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Runtime.InteropServices.RuntimeInformation.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Text.Encodings.Web.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.Options.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.Primitives.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.WebEncoders.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Runtime.CompilerServices.Unsafe.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Text.Encodings.Web.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\AngleSharp.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\AngleSharp.xml

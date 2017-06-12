@@ -36,3 +36,4 @@ R:\Repos\kraken\Kraken.Core.TestConsole\bin\Debug\Kraken.SharePoint.Cloud.XmlSer
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.exe
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.pdb
+R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.csproj.Kraken.Core.TestConsole.exe.config

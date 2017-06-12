@@ -16,17 +16,10 @@ namespace Kraken.SharePoint.Client.Helpers {
     }
 
     public void UpdateField(Field existingField, FieldProperties properties) {
-      var web = Context.Web;
-
+      Web web = Context.Web;
       ClientContext lookupClientContext = GetLookupClientContext(properties);
       List lookupList = GetLookupList(lookupClientContext, properties);
-      if (lookupList != null) {
-        properties.ListId = lookupList.Id;
-        if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/"))) {
-          lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
-          properties.WebId = lookupClientContext.Web.Id;
-        }
-      }
+      CanonicalizeLookupListProperties(lookupClientContext, lookupList, properties);
       string xml = properties.GenerateSchemaXml();
       // do not call the properties overload here; that'd create a infinite loop / stack overflow 
       existingField.Update(xml, true, true, this.Trace);
@@ -34,22 +27,28 @@ namespace Kraken.SharePoint.Client.Helpers {
     }
 
     public Field CreateField(FieldProperties properties) {
-      var web = Context.Web;
-
-      var lookupClientContext = GetLookupClientContext(properties);
-      var lookupList = GetLookupList(lookupClientContext, properties);
-      if (lookupList != null) {
-        properties.ListId = lookupList.Id;
-        if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/"))) {
-          lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
-          properties.WebId = lookupClientContext.Web.Id;
-        }
-      }
+      Web web = Context.Web;
+      ClientContext lookupClientContext = GetLookupClientContext(properties);
+      List lookupList = GetLookupList(lookupClientContext, properties);
+      CanonicalizeLookupListProperties(lookupClientContext, lookupList, properties);
       string xml = properties.GenerateSchemaXml();
       // do not call the properties overload here; that'd create a infinite loop / stack overflow 
       Field newField = web.Fields.Add(xml, true, this.Trace);
       AddAdditionalFields(newField, lookupClientContext, lookupList, properties);
       return newField;
+    }
+
+    private void CanonicalizeLookupListProperties(ClientContext lookupClientContext, List lookupList, FieldProperties properties) {
+      if (lookupList != null) {
+        properties.ListId = lookupList.Id;
+        // we'll do this all the time
+        //if (!Context.Url.TrimEnd("/").EqualsIgnoreCase(lookupClientContext.Url.TrimEnd("/"))) {
+        lookupClientContext.Web.EnsureProperty(this.Trace, e => e.Id);
+        properties.WebId = lookupClientContext.Web.Id;
+        //}
+        // blank out properties that are bad for secondary fields
+        properties.LookupListUrl = string.Empty;
+      }
     }
 
     public IEnumerable<FieldProperties> CreateFieldPropertiesList(IEnumerable<Field> fields) {
@@ -169,25 +168,36 @@ namespace Kraken.SharePoint.Client.Helpers {
     }
 
     private void AddAdditionalFields(Field primaryLookupField, ClientContext lookupClientContext, List lookupList, FieldProperties properties) {
-      if (lookupList == null)
+      Trace.Enter(System.Reflection.MethodBase.GetCurrentMethod());
+      if (lookupList == null) {
+        Trace.Exit(System.Reflection.MethodBase.GetCurrentMethod(), "lookupList is null.");
         return;
+      }
+
       Web web = ((ClientContext)primaryLookupField.Context).Web;
       List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
+      Trace.TraceVerbose("addFields count = {0}", addFields.Count);
       if (addFields != null && addFields.Count > 0) {
         primaryLookupField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
         foreach (Field field in addFields) {
-          string newLookupFieldName = string.Format("{0}{1}", primaryLookupField.InternalName, field.InternalName);
+          string newLookupFieldName = string.Format("{0}_x003A_{1}", primaryLookupField.InternalName, field.InternalName);
+          string newLookupFieldTitle = string.Format("{0}:{1}", primaryLookupField.Title, field.Title);
+          web.Fields.EnsureCriticalProperties();
           if (web.Fields.FindAny(newLookupFieldName) != null) {
             Trace.TraceVerbose("Auxiliary lookup field {0} already exists and will be skipped.", newLookupFieldName);
             continue;
+          } else {
+            Trace.TraceVerbose("Adding auxiliary lookup field {0}.", newLookupFieldName);
           }
           properties.InternalName = newLookupFieldName;
-          properties.DisplayName = field.Title;
-          properties.ShowField = field.Title;
+          properties.DisplayName = newLookupFieldTitle;
+          properties.ShowField = field.InternalName; // field.Title;
+          // this should maybe be moved deeper into code
+          ///properties.WebId = web.Id;
           properties.FieldRef = primaryLookupField.Id;
           try {
-            Trace.TraceVerbose("Creating additional field {0} from properties.", properties.InternalName);
             string xml = properties.GenerateSchemaXml();
+            Trace.TraceVerbose("Secondary lookup field schema: {0}", xml);
             // do not call the properties overload here; that'd create a infinite loop / stack overflow 
             /* Field newField2 = */ web.Fields.Add(xml, true, this.Trace);
           } catch (Exception ex) {
@@ -195,6 +205,7 @@ namespace Kraken.SharePoint.Client.Helpers {
           }
         }
       }
+      Trace.Exit(System.Reflection.MethodBase.GetCurrentMethod());
     }
 
     /// <summary>
@@ -228,15 +239,10 @@ namespace Kraken.SharePoint.Client.Helpers {
 
       // Do a pre-check to make sure what the end-user provided
       // actually exists in SharePoint, because it might not!
-      List<Field> existingFields = list.Fields.FindAny(addFields);
-      //List<string> nonExisting = new List<string>();
+      List<Field> requestedFields = list.Fields.FindAny(addFields);
       foreach (string fieldNameOrId in addFields) {
-        // basically the opposite of the above when we calculated matchedFields
-        // TODO is there a more performant way to do this??
-        if (existingFields.FindAny(fieldNameOrId) == null) {
-          //nonExisting.Add(fieldNameOrId);
+        if (requestedFields.FindAny(fieldNameOrId) == null)
           Trace.TraceWarning("FieldRef with internal name, id, or title '{0}' does not exist in Lookup List '{1}' at web: '{2}'.", fieldNameOrId, list.Title, list.ParentWeb.UrlSafeFor2010());
-        }
       }
 
       // This will automatically return only existing fields, so the 
@@ -244,20 +250,19 @@ namespace Kraken.SharePoint.Client.Helpers {
       List<Field> supportedFields = list.Fields.GetLookupSupportedFields(Trace);
 
       // check type support now that we've narrowed it down.
-      foreach (Field field in existingFields) { // addFields
-        // basically the opposite of the above when we calculated matchedFields
-        // TODO is there a more performant way to do this??
+      List<Field> matchedFields = new List<Field>();
+      foreach (Field field in requestedFields) {
+        // Warn the user they are trying to indirectly show a hidden field
+        if (field.Hidden)
+          Trace.TraceWarning("Field {0} is hidden, and nornally not suitable for addition to Lookup fields, but ya-kno-watt? F-da-man! We're gonna try it anyhow.", field.InternalName);
         if (supportedFields.FindAny(field.InternalName) == null) // fieldNameOrId
           Trace.TraceWarning("FieldRef with internal name '{0}' is a type '{1}' that is not supported in lookups. web='{2}'", field.InternalName, field.TypeAsString, list.ParentWeb.UrlSafeFor2010()); // fieldNameOrId
+        else
+          matchedFields.Add(field);
       }
-      // Warn the user they are trying to indirectly show a hidden field
-      List<Field> matchedFields = supportedFields.FindAny(addFields);
-      foreach (Field f in matchedFields) {
-        //moved "if (field.Hidden) continue;" from GetLookupSupportedFields
-        if (f.Hidden)
-          Trace.TraceWarning("Field {0} is hidden, and nornally not suitable for addition to Lookup fields, but ya-kno-watt? Fuk-da-man! We're gonna try it anyhow.", f.InternalName);
-      }
-      return supportedFields;
+      // TODO is there a more performant way to do this??
+      // we tried a few but they turned out to be quite buggy
+      return matchedFields;
     }
 
   }

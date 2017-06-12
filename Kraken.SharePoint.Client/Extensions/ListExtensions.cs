@@ -1008,71 +1008,236 @@
         throw new ArgumentNullException("props");
       if (list == null)
         throw new ArgumentNullException("list");
-      if (!props.HasExtendedSettings) {
-        trace.TraceVerbose("Nothing to update on list '{0}' because !props.HasExtendedSettings", props.Title);
+      if (skipCreateProperties && !props.HasExtendedSettings) {
+        trace.TraceVerbose("Nothing to update on list '{0}' because skipCreateProperties && !props.HasExtendedSettings", props.Title);
         return;
       }
+
+      if (props.DataSourceProperties != null && props.DataSourceProperties.Count > 0)
+        trace.TraceWarning("List option 'DataSourceProperties' is unsupported; use at your own risk.");
+      if (props.HasChangedValue(props.CustomSchemaXml) && !string.IsNullOrEmpty(props.CustomSchemaXml))
+        trace.TraceWarning("List option 'CustomSchemaXml' is unsupported; use at your own risk.");
+      if (props.DefaultDisplayFormUrl != null)
+        trace.TraceWarning("List option 'DefaultDisplayFormUrl' is experimental; use at your own risk.");
+      if (props.DefaultEditFormUrl != null)
+        trace.TraceWarning("List option 'DefaultEditFormUrl' is experimental; use at your own risk.");
+      if (props.DefaultNewFormUrl != null)
+        trace.TraceWarning("List option 'DefaultNewFormUrl' is experimental; use at your own risk.");
+      if (props.ReadSecurity.HasValue)
+        trace.TraceWarning("List option 'ReadSecurity' is experimental; use at your own risk.");
+      if (props.DocumentTemplateType > 0)
+        trace.TraceWarning("List option 'DocumentTemplateType' is experimental; use at your own risk.");
+      if (props.DocumentTemplateUrl != null)
+        trace.TraceWarning("List option 'DocumentTemplateUrl' is experimental; use at your own risk.");
+      if (props.ImageUrl != null)
+        trace.TraceWarning("List option 'ImageUrl' is experimental; use at your own risk.");
+      if (props.HasChangedValue(props.ValidationFormula))
+        trace.TraceWarning("List option 'ValidationFormula' is unsupported; use at your own risk.");
+      if (props.HasChangedValue(props.ValidationMessage))
+        trace.TraceWarning("List option 'ValidationMessage' is unsupported; use at your own risk.");
+
       Web web = ((ClientContext)list.Context).Web;
       if (!skipCreateProperties) {
-        if (props.HasChangedValue(props.Title))
+        if (props.HasChangedValue(props.Title)) {
+          trace.TraceVerbose("Setting list property '{0}' = '{1}'", "Title", props.Title);
           list.Title = props.Title;
-        if (props.HasChangedValue(props.Description))
+        }
+        // allow blank descriptions
+        if (props.HasChangedValue(props.Description) || string.IsNullOrEmpty(props.Description)) {
+          trace.TraceVerbose("Setting list property '{0}' = '{1}'", "Description", props.Description);
           list.Description = props.Description;
-        if (props.OnQuickLaunch.HasValue)
+        }
+        if (props.OnQuickLaunch.HasValue) {
+          trace.TraceVerbose("Setting list property '{0}' = '{1}'", "OnQuickLaunch", props.OnQuickLaunch.Value);
           list.OnQuickLaunch = props.OnQuickLaunch.Value;
+        }
       }
-      if (props.ContentTypesEnabled.HasValue)
+      if (props.ContentTypesEnabled.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ContentTypesEnabled", props.ContentTypesEnabled.Value);
         list.ContentTypesEnabled = props.ContentTypesEnabled.Value;
-      if (props.DraftVersionVisibility.HasValue)
+      }
+      if (props.DraftVersionVisibility.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DraftVersionVisibility", props.DraftVersionVisibility.Value);
         list.DraftVersionVisibility = props.DraftVersionVisibility.Value;
-      if (props.EnableAttachments.HasValue)
+      }
+      if (props.EnableAttachments.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableAttachments", props.EnableAttachments.Value);
         list.EnableAttachments = props.EnableAttachments.Value;
-      if (props.EnableFolderCreation.HasValue)
+      }
+      if (props.EnableFolderCreation.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableFolderCreation", props.EnableFolderCreation.Value);
         list.EnableFolderCreation = props.EnableFolderCreation.Value;
-      if (props.EnableMinorVersions.HasValue)
+      }
+      if (props.EnableMinorVersions.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableMinorVersions", props.EnableMinorVersions.Value);
         list.EnableMinorVersions = props.EnableMinorVersions.Value;
-      if (props.EnableModeration.HasValue)
+      }
+      if (props.EnableModeration.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableModeration", props.EnableModeration.Value);
         list.EnableModeration = props.EnableModeration.Value;
-      if (props.EnableVersioning.HasValue)
+      }
+      if (props.EnableVersioning.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableVersioning", props.EnableVersioning.Value);
         list.EnableVersioning = props.EnableVersioning.Value;
-      if (props.ForceCheckout.HasValue)
+      }
+      if (props.ForceCheckout.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ForceCheckout", props.ForceCheckout.Value);
         list.ForceCheckout = props.ForceCheckout.Value;
-      if (props.Hidden.HasValue)
+      }
+      if (props.Hidden.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "Hidden", props.Hidden.Value);
         list.Hidden = props.Hidden.Value;
-      if (props.NoCrawl.HasValue)
+      }
+      if (props.NoCrawl.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "NoCrawl", props.NoCrawl.Value);
         list.NoCrawl = props.NoCrawl.Value;
-      if (props.HasChangedValue(props.DefaultDisplayFormUrl))
-        list.DefaultDisplayFormUrl = props.DefaultDisplayFormUrl;
-      if (props.HasChangedValue(props.DefaultEditFormUrl))
-        list.DefaultEditFormUrl = props.DefaultEditFormUrl;
-      if (props.HasChangedValue(props.DefaultNewFormUrl))
-        list.DefaultNewFormUrl = props.DefaultNewFormUrl;
-      if (props.HasChangedValue(props.DocumentTemplateUrl))
-        list.DocumentTemplateUrl = props.DocumentTemplateUrl;
-      if (props.ImageUrl != null)
+      }
+      if (props.DefaultDisplayFormUrl != null) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DefaultDisplayFormUrl", props.DefaultDisplayFormUrl);
+        list.DefaultDisplayFormUrl = props.DefaultDisplayFormUrl.ToString();
+      }
+      if (props.DefaultEditFormUrl != null) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DefaultEditFormUrl", props.DefaultEditFormUrl);
+        list.DefaultEditFormUrl = props.DefaultEditFormUrl.ToString();
+      }
+      if (props.DefaultNewFormUrl != null) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DefaultNewFormUrl", props.DefaultNewFormUrl);
+        list.DefaultNewFormUrl = props.DefaultNewFormUrl.ToString();
+      }
+      if (props.DocumentTemplateUrl != null) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DocumentTemplateUrl", props.DocumentTemplateUrl);
+        list.DocumentTemplateUrl = props.DocumentTemplateUrl.ToString();
+      }
+      if (props.ImageUrl != null) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ImageUrl", props.ImageUrl);
         list.ImageUrl = props.ImageUrl.ToString();
-      if (props.HasChangedValue(props.ValidationFormula))
+      }
+      if (props.HasChangedValue(props.ValidationFormula)) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ValidationFormula", props.ValidationFormula);
         list.ValidationFormula = props.ValidationFormula;
-      if (props.HasChangedValue(props.ValidationMessage))
+      }
+      if (props.HasChangedValue(props.ValidationMessage)) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ValidationMessage", props.ValidationMessage);
         list.ValidationMessage = props.ValidationMessage;
-
+      }
+      if (props.MajorVersionLimit.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "MajorVersionLimit", props.MajorVersionLimit.Value);
+        list.MajorVersionLimit = props.MajorVersionLimit.Value;
+      }
+      if (props.MajorWithMinorVersionsLimit.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "MajorWithMinorVersionsLimit", props.MajorWithMinorVersionsLimit.Value);
+        list.MajorWithMinorVersionsLimit = props.MajorWithMinorVersionsLimit.Value;
+      }
+      if (props.ParserDisabled.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ParserDisabled", props.ParserDisabled.Value);
+        list.ParserDisabled = props.ParserDisabled.Value;
+      }
+      if (props.ReadSecurity.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ReadSecurity", props.ReadSecurity.Value);
+        list.ReadSecurity = props.ReadSecurity.Value;
+      }
+      if (props.MultipleDataList.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "MultipleDataList", props.MultipleDataList.Value);
+        list.MultipleDataList = props.MultipleDataList.Value;
+      }
+      if (props.HasChangedValue(props.Direction)) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "Direction", props.Direction);
+        list.Direction = props.Direction;
+      }
+      if (props.UXExperience.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "UXExperience", props.UXExperience.Value);
+        list.ListExperienceOptions = props.UXExperience.Value;
+      }
+      if (props.AllowDeletion.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "AllowDeletion", props.AllowDeletion.Value);
+        list.AllowDeletion = props.AllowDeletion.Value;
+      }
+      if (props.CrawlNonDefaultViews.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "CrawlNonDefaultViews", props.CrawlNonDefaultViews.Value);
+        list.CrawlNonDefaultViews = props.CrawlNonDefaultViews.Value;
+      }
+      if (props.EnableAssignToEmail.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnableAssignToEmail", props.EnableAssignToEmail.Value);
+        list.EnableAssignToEmail = props.EnableAssignToEmail.Value;
+      }
+      if (props.ExcludeFromOfflineClient.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ExcludeFromOfflineClient", props.ExcludeFromOfflineClient.Value);
+        list.ExcludeFromOfflineClient = props.ExcludeFromOfflineClient.Value;
+      }
+      if (props.ExemptFromBlockDownloadOfNonViewableFiles.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ExemptFromBlockDownloadOfNonViewableFiles", props.ExemptFromBlockDownloadOfNonViewableFiles.Value);
+        //list.ExemptFromBlockDownloadOfNonViewableFiles = props.ExemptFromBlockDownloadOfNonViewableFiles.Value;
+        list.SetExemptFromBlockDownloadOfNonViewableFiles(props.ExemptFromBlockDownloadOfNonViewableFiles.Value);
+      }
+      if (props.IrmEnabled.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "IrmEnabled", props.IrmEnabled.Value);
+        list.IrmEnabled = props.IrmEnabled.Value;
+      }
+      if (props.IrmExpire.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "IrmExpire", props.IrmExpire.Value);
+        list.IrmExpire = props.IrmExpire.Value;
+      }
+      if (props.IrmReject.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "IrmReject", props.IrmReject.Value);
+        list.IrmReject = props.IrmReject.Value;
+      }
+      if (props.IsApplicationList.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "IsApplicationList", props.IsApplicationList.Value);
+        list.IsApplicationList = props.IsApplicationList.Value;
+      }
+      if (props.WriteSecurity.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "WriteSecurity", props.WriteSecurity.Value);
+        list.WriteSecurity = props.WriteSecurity.Value;
+      }
       // run the updates
       try {
         list.Update();
         list.Context.ExecuteQueryIfNeeded();
       } catch (Exception ex) {
-        string msg = string.Format("Couldn't update List '{0}' at '{1}'", props.Title, web.UrlSafeFor2010());
+        string msg = string.Format("Couldn't update List '{0}' at '{1}'", list.Title, web.UrlSafeFor2010());
         trace.TraceWarning(msg);
         trace.TraceError(ex);
         if (props.ThrowOnError) {
           throw new Exception(msg, ex);
         }
       }
-      // TODO this might require something special to work correctly
+
+      trace.TraceVerbose("Setting complex list properties...");
+      if (props.HasChangedValue(props.DefaultContentType)) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DefaultContentType", props.DefaultContentType);
+        list.SetDefaultContentType(props.DefaultContentType, trace);
+      }
       //if (props.HasChangedValue(props.DefaultView, list.DefaultView.Title))
-      // actually it'll just skip if there's nothing to do
-      if (props.HasChangedValue(props.DefaultView))
+      // it'll just skip if there's nothing to do
+      if (props.HasChangedValue(props.DefaultView)) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "DefaultView", props.DefaultView);
         list.SetDefaultView(props.DefaultView, trace);
+      }
+      trace.TraceVerbose("Setting 'problematic' list properties...");
+      if (props.Ordered.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "Ordered", props.Ordered.Value);
+        list.SetLegacyAttribute("Ordered", props.Ordered.Value, cm, trace);
+      }
+      if (props.ShowUser.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ShowUser", props.ShowUser.Value);
+        list.SetLegacyAttribute("ShowUser", props.ShowUser.Value, cm, trace);
+      }
+      if (props.PreserveEmptyValues.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "PreserveEmptyValues", props.ShowUser.Value);
+        list.SetLegacyAttribute("PreserveEmptyValues", props.PreserveEmptyValues.Value, cm, trace);
+      }
+      if (props.EnforceDataValidation.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "EnforceDataValidation", props.ShowUser.Value);
+        list.SetLegacyAttribute("EnforceDataValidation", props.EnforceDataValidation.Value, cm, trace);
+      }
+      // TODO Flags and NavigateForFormsPages must be handled on creation of list
+      /*
+      if (props.NavigateForFormsPages.HasValue) {
+        trace.TraceVerbose("Setting list property '{0}' = '{1}'", "NavigateForFormsPages", props.NavigateForFormsPages.Value);
+        trace.TraceWarning("Set NavigateForFormsPages currently has no effect due to limitations of legacy web services.");
+        list.SetNavigateForFormsPages(props.NavigateForFormsPages.Value, cm, trace);
+      }
+      */
 
       if (cm == null) {
         trace.TraceWarning("Had to skip EnsureContentTypes() because a context manager wasn't provided.");
@@ -1089,7 +1254,53 @@
       }
     }
 
-    #region List Content Types
+    /// <summary>
+    /// Set the default content type for a list.
+    /// Other content types will have an aribtrary order.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="ContentTypeName"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    public static bool SetDefaultContentType(this List list, string ContentTypeName, ITrace trace) {
+      if (trace == null)
+        trace = NullTrace.Default;
+      if (list == null)
+        throw new ArgumentNullException("list");
+      ClientContext context = (ClientContext)list.Context;
+      try {
+        ContentTypeCollection listContentTypes = list.ContentTypes;
+        //clientContext.Load(listContentTypes, listCTs => listCTs.Include(ls => ls.Name).Where(ls => ls.Name == ContentTypeName));
+        context.Load(listContentTypes);
+        context.ExecuteQueryIfNeeded();
+        if (listContentTypes.Count != 0) {
+          IList<ContentTypeId> cTypes = new List<ContentTypeId>();
+          foreach (ContentType ct in listContentTypes) {
+            // TODO support skipping all folder content types
+            if (ct.Name != "Folder") {
+              if (ct.Name == ContentTypeName) {
+                cTypes.Insert(0, ct.Id);
+              } else {
+                cTypes.Add(ct.Id);
+              }
+            }
+          }
+          list.RootFolder.UniqueContentTypeOrder = cTypes;
+          list.RootFolder.Update();
+          list.Update();
+          context.ExecuteQuery();
+          list.RefreshLoad();
+          context.ExecuteQueryIfNeeded();
+          return true;
+        }
+      } catch (Exception ex) {
+        trace.TraceError(ex);
+        throw;
+      }
+      return false;
+    }
+
+#region List Content Types
 
     public static void ResolveContentTypeId(this List list, Hashtable fieldValues, WebContextManager contextManager = null, ITrace trace = null) {
       if (!fieldValues.ContainsKey("ContentType"))
@@ -1553,6 +1764,7 @@
 #endregion
 
 #region Custom Properties
+
     public static ClientObjectData GetObjectData(this List list) {
       //protected internal
       Type type = typeof(ClientObject);
@@ -1568,7 +1780,14 @@
       return (ClientObjectData)return_object;
     }
 
-    public static ulong Flags(this List list, WebContextManager contextManager, XElement listNode = null) {
+    /// <summary>
+    /// Get the Flags attribute from SchemaXml
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static ulong GetFlags(this List list) { // , WebContextManager contextManager, XElement listNode = null
+      XElement listNode = list.GetSchemaXml();
+      /*
       if (listNode == null) {
         listNode = XDocument.Parse(list.SchemaXml).Root;
         if (contextManager != null) {
@@ -1576,8 +1795,9 @@
           XElement listNode2 = conn.ListsManager.GetListSchema(list.Id);
         }
         // TODO test the list schema by web svc and make sure the value matches what we have in CSOM
-        return Flags(list, contextManager, listNode);
+        return GetFlags(list, contextManager, listNode);
       }
+      */
       XAttribute flagsAttrib = listNode.Attributes().Where(x => x.Name == "Flags").FirstOrDefault();
       if (flagsAttrib != null) {
         ulong flags;
@@ -1597,7 +1817,34 @@
       return (ulong)objectData.Properties["Flags"];
         */
     }
+    /// <summary>
+    /// Returns a boolean based on the presence of a flag
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="mask"></param>
+    /// <returns></returns>
+    public static bool GetFlag(this List list, ulong mask) {
+      return (0L != (list.GetFlags() & mask));
+    }
 
+    /// <summary>
+    /// Since there isn't a way to set Flags except at list
+    /// creation, use this to set CustomSchemaXml as needed.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static ulong SetFlags(this List list, ulong mask, bool value) {
+      ulong flags = list.GetFlags();
+      if (value)
+        flags |= mask;
+      else
+        flags &= ~mask;
+      return flags;
+    }
+
+    public const ulong FlagMask_NavigateForFormsPages = 0x80000000000000L;
+
+    /*
     /// <summary>
     /// </summary>
     /// <remarks>
@@ -1608,52 +1855,25 @@
     /// <param name="value"></param>
     /// <param name="contextManager"></param>
     /// <param name="listNode"></param>
-    public static void Flags(this List list, ulong value, WebContextManager contextManager, XElement listNode = null) {
-      /*
-      // since we're doing something a bit strange and connecting to 
-      // web services through a side channel, we need to make sure that
-      // we're pulling the absolute most recent version of the list
-      // before trying to make any updates.
-      Guid listId = list.Id;
-      {
-        contextManager.Context.Load(contextManager.Context.Web, w => w.Lists);
-        List listRefresh = contextManager.Context.Web.Lists.GetById(listId);
-        listRefresh.LoadBasicProperties(true);
-        contextManager.Context.ExecuteQuery();
-        list = listRefresh;
-      }
-       */
-
-      // don't use this because it may well be an old Version
-      //XElement oldListNode = XDocument.Parse(list.SchemaXml).Root;
-      /*
-      if (listNode == null) {
-        listNode = XDocument.Parse(list.SchemaXml).Root;
-        Flags(list, value, contextManager, listNode);
+    public static void SetFlags(this List list, ulong value, WebContextManager contextManager) { // , XElement listNode = null
+      / *
+      XAttribute flagsAttrib = listNode.Attributes().Where(x => x.Name == "Flags").FirstOrDefault();
+      if (flagsAttrib == null) {
+        flagsAttrib = new XAttribute("Flags", value);
+        listNode.Add(flagsAttrib);
       } else {
-       */
+        flagsAttrib.Value = value.ToString();
+      }
+       * /
+      
+      // This won't work; it is unsupported property
+      list.SetLegacyAttribute("Flags", value, contextManager, contextManager.TraceWriter);
 
-        /*
-        XAttribute flagsAttrib = listNode.Attributes().Where(x => x.Name == "Flags").FirstOrDefault();
-        if (flagsAttrib == null) {
-          flagsAttrib = new XAttribute("Flags", value);
-          listNode.Add(flagsAttrib);
-        } else {
-          flagsAttrib.Value = value.ToString();
-        }
-         */
-
-        // let's keep this really simple, we don't care about any other property at all!
-        listNode = XDocument.Parse(string.Format("<List Flags=\"{0}\" />", value.ToString())).Root;
-
-        // overcome CSOM limits by using a legacy connection to the SharePoint server
-        kcloud.SharePointConnection conn = contextManager.CreateLegacyConnection(true, false);
-        conn.ListsManager.UpdateListSchema(list.Id.ToString(), listNode, false);
-        // does not work, because in CSOM (even server-side) SchemaXml does not exist as a writable property
-        //list.SchemaXml_SetCustom();
+      // does not work, because in CSOM (even server-side) SchemaXml does not exist as a writable property
+      //list.SchemaXml_SetCustom();
       //}
       // Commented because it causes 'Field or property "Flags" does not exist.'
-      /*
+      / *
       ClientObjectData objectData = list.GetObjectData();
       if (!objectData.Properties.ContainsKey("Flags"))
         objectData.Properties.Add("Flags", value);
@@ -1661,8 +1881,9 @@
         objectData.Properties["Flags"] = value;
       if (list.Context != null)
         list.Context.AddQuery(new ClientActionSetProperty(list, "Flags", value));
-        */
+        * /
     }
+    */
 
     // nice try - doesn't work
     // Commented because it causes 'Field or property "Flags" does not exist.'
@@ -1675,23 +1896,94 @@
       }
      */
 
-    public static bool NavigateForFormsPages(this List list, WebContextManager contextManager) {
+    public static XElement GetSchemaXml(this List list) { // , WebContextManager contextManager
+      ClientContext context = (ClientContext)list.Context;
+      context.Load(list, l => l.SchemaXml);
+      context.ExecuteQueryIfNeeded();
+      XElement listNode = XDocument.Parse(list.SchemaXml).Root;
+      return listNode;
+    }
 
-      //list.RootFolder.MoveTo();
-
-      //XElement listNode = XDocument.Parse(list.SchemaXml).Root;
-      //XAttribute navigateAttrib = listNode.Attributes().Where(x => x.Name == "NavigateForFormsPages").FirstOrDefault();
+    public static bool? GetNavigateForFormsPages(this List list) { // , WebContextManager contextManager
+      XElement listNode = list.GetSchemaXml();
+      XAttribute navigateAttrib = listNode.Attributes().Where(x => x.Name == "NavigateForFormsPages").FirstOrDefault();
+      if (navigateAttrib != null)
+        return bool.Parse(navigateAttrib.Value);
+      else {
+        // another way to (maybe) do this
+        return list.GetFlag(FlagMask_NavigateForFormsPages);
+      }
+      // and another method that didn't work
       /*
         object obj2 = this.m_ListAttributesDict["NavigateForFormsPages"];
         if (obj2 != null) {
           return (bool)obj2;
         }
-       */
-      return (0L != (list.Flags(contextManager) & ((ulong)0x80000000000000L)));
+      */
     }
 
     /// <summary>
-    /// 
+    /// Uses Lists.asmx web serivce to set some legacy attributes that
+    /// are still not accessible in CSOM. 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="propName">Supported attributes are "Ordered", "ShowUser", "PreserveEmptyValues", and "EnforceDataValidation".</param>
+    /// <param name="value"></param>
+    /// <param name="cm"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    // StsSoap.dll ListSchemaImpl.UpdateProp makes it clear that only certain attributes are supported
+    // here are a few that may work but aren't available in CSOM
+    public static List SetLegacyAttribute(this List list, string propName, bool value, WebContextManager cm, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      if (cm == null) {
+        trace.TraceWarning("Can't set '{0}' a WebConextManager. Operation skipped.", propName);
+        return list;
+      }
+      if (propName != "Ordered"
+        && propName != "ShowUser"
+        && propName != "PreserveEmptyValues"
+        && propName != "EnforceDataValidation") {
+        trace.TraceWarning("You specified a proeprty name '{0}' that is either supported by CSOM or not supported by the Lists.asmx web service. Most likely this call will have no effect.", propName);
+      }
+      // emsure the properties we need are loaded
+      cm.Context.Load(list, l => l.Id, l => l.SchemaXml);
+      cm.Context.ExecuteQueryIfNeeded();
+
+      // Make a legacy web services connection and do things that way
+      kcloud.SharePointConnection connection = cm.CreateLegacyConnection(true, false);
+      XElement listNode = XDocument.Parse(string.Format("<List {0}=\"{1}\" />", propName, value.ToString().ToUpper())).Root;
+      XElement result = connection.ListsManager.UpdateListSchema(list.Id, listNode, null, false);
+      // TODO check what is result??
+      list.RefreshLoad();
+      cm.Context.ExecuteQueryIfNeeded();
+      return list;
+    }
+    public static List SetLegacyAttribute(this List list, string propName, ulong value, WebContextManager cm, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      if (cm == null) {
+        trace.TraceWarning("Can't set '{0}' a WebConextManager. Operation skipped.", propName);
+        return list;
+      }
+      if (propName != "Ordered"
+        && propName != "ShowUser"
+        && propName != "PreserveEmptyValues"
+        && propName != "EnforceDataValidation") {
+        trace.TraceWarning("You specified a proeprty name '{0}' that is either supported by CSOM or not supported by the Lists.asmx web service. Most likely this call will have no effect.");
+      }
+      // Make a legacy web services connection and do things that way
+      kcloud.SharePointConnection connection = cm.CreateLegacyConnection(true, false);
+      XElement listNode = XDocument.Parse(string.Format("<List {0}=\"{1}\" />", propName, value.ToString())).Root;
+      XElement result = connection.ListsManager.UpdateListSchema(list.Id, listNode, null, false);
+      // TODO check what is result??
+      list.RefreshLoad();
+      cm.Context.ExecuteQueryIfNeeded();
+      return list;
+    }
+
+    /*
+    /// <summary>
+    /// Set list NavigateForFormsPages using legacy web service
     /// </summary>
     /// <remarks>
     /// This method makes a live call to the SP web service
@@ -1700,10 +1992,24 @@
     /// <param name="list"></param>
     /// <param name="value"></param>
     /// <param name="contextManager"></param>
-    public static void NavigateForFormsPages(this List list, bool value, WebContextManager contextManager) {
-      /*
+    public static void SetNavigateForFormsPages(this List list, bool value, WebContextManager cm, ITrace trace = null) { // , WebContextManager contextManager
+      if (cm == null) {
+        trace.TraceWarning("Can't set NavigateForFormsPages without a WebConextManager. Operation skipped.");
+        return;
+      }
+      if (trace == null) trace = NullTrace.Default;
+      bool? current = list.GetNavigateForFormsPages();
+      if (current.HasValue && current.Value == value) {
+        trace.TraceVerbose("SetNavigateForFormsPages for list '{0}' had nothing to do and was skipped.", list.Title);
+        return;
+      }
+
+      // will not work because web service won't support this property
+      list.SetLegacyAttribute("NavigateForFormsPages", value, cm, trace);
+
+      // didn't work because NavigateForFormsPages isn't a client property
+      / *
       ClientObjectData objectData = list.GetObjectData();
-      string propName = "NavigateForFormsPages";
       if (!objectData.Properties.ContainsKey(propName))
         objectData.Properties.Add(propName, value);
       else
@@ -1711,25 +2017,26 @@
       // this is a public property on SPList. Should be interesting to see what happens.
       if (list.Context != null)
         list.Context.AddQuery(new ClientActionSetProperty(list, propName, value));
-      */
-
-      /*
+      * /
+      // didn't work because Flags isn't a client property
+      / *
       ulong flags = list.Flags(contextManager);
       if (value) {
-        flags |= (ulong)0x80000000000000L;
+        flags |= (ulong)0x0080000000000000L;
       } else {
-        flags &= 18410715276690587647L;
+        flags &= (~(ulong)0x0080000000000000L); // 18410715276690587647L;
       }
       list.Flags(flags, contextManager);
       //this.m_ListAttributesDict["NavigateForFormsPages"] = value;
-       */
+       * /
     }
+    */
 
     #endregion
 
 #region Remote Event Receivers
 
-/* Sorry, but event receivers are a new thing in CSOM */
+    /* Sorry, but event receivers are a new thing in CSOM */
 #if !DOTNET_V35
 
     // with thanks to https://blogs.msdn.microsoft.com/kaevans/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web/

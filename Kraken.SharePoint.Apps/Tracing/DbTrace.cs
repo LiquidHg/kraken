@@ -115,6 +115,7 @@ namespace Kraken.Apps.Models {
     public Action<TraceLevel, string> Handler { get; set; }
 
     public TraceLevel Level { get; set; }
+    public int Depth { get; set; } = 0;
 
     public bool SilenceErrors { get; set; }
     public bool SilenceWarnings { get; set; }

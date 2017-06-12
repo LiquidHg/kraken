@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f81ca9ae-8237-4fab-bfe0-a5383729c5ec" solutionId="f81ca9ae-8237-4fab-bfe0-a5383729c5ec" resetWebServer="false" name="Kraken.SharePoint.Migration" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="48784efb-0d39-481f-9d0e-96139ed9e530" />
+  </features>
+</package>
