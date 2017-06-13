@@ -178,12 +178,14 @@ namespace Kraken.SharePoint.Client.Helpers {
       List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
       Trace.TraceVerbose("addFields count = {0}", addFields.Count);
       if (addFields != null && addFields.Count > 0) {
-        primaryLookupField.EnsureProperty(this.Trace, e => e.Id, e => e.InternalName);
+        // TODO these can be consolidated into a single call
+        primaryLookupField.EnsureProperty(this.Trace, e => e.Title, e => e.Id, e => e.InternalName);
+        web.Fields.LoadKeyProperties();
         foreach (Field field in addFields) {
           string newLookupFieldName = string.Format("{0}_x003A_{1}", primaryLookupField.InternalName, field.InternalName);
           string newLookupFieldTitle = string.Format("{0}:{1}", primaryLookupField.Title, field.Title);
-          web.Fields.EnsureCriticalProperties();
-          if (web.Fields.FindAny(newLookupFieldName) != null) {
+          web.Fields.LoadKeyProperties();
+          if (web.Fields.MatchFirst(newLookupFieldName) != null) {
             Trace.TraceVerbose("Auxiliary lookup field {0} already exists and will be skipped.", newLookupFieldName);
             continue;
           } else {
@@ -239,9 +241,9 @@ namespace Kraken.SharePoint.Client.Helpers {
 
       // Do a pre-check to make sure what the end-user provided
       // actually exists in SharePoint, because it might not!
-      List<Field> requestedFields = list.Fields.FindAny(addFields);
+      List<Field> requestedFields = list.Fields.MatchAny(addFields).ToList();
       foreach (string fieldNameOrId in addFields) {
-        if (requestedFields.FindAny(fieldNameOrId) == null)
+        if (requestedFields.MatchFirst(fieldNameOrId) == null)
           Trace.TraceWarning("FieldRef with internal name, id, or title '{0}' does not exist in Lookup List '{1}' at web: '{2}'.", fieldNameOrId, list.Title, list.ParentWeb.UrlSafeFor2010());
       }
 
@@ -255,7 +257,7 @@ namespace Kraken.SharePoint.Client.Helpers {
         // Warn the user they are trying to indirectly show a hidden field
         if (field.Hidden)
           Trace.TraceWarning("Field {0} is hidden, and nornally not suitable for addition to Lookup fields, but ya-kno-watt? F-da-man! We're gonna try it anyhow.", field.InternalName);
-        if (supportedFields.FindAny(field.InternalName) == null) // fieldNameOrId
+        if (supportedFields.MatchFirst(field.InternalName) == null) // fieldNameOrId
           Trace.TraceWarning("FieldRef with internal name '{0}' is a type '{1}' that is not supported in lookups. web='{2}'", field.InternalName, field.TypeAsString, list.ParentWeb.UrlSafeFor2010()); // fieldNameOrId
         else
           matchedFields.Add(field);

@@ -260,7 +260,7 @@
       ClientContext context = (ClientContext)ct.Context;
       // TODO implement site column cache
       Web web = context.Web;
-      SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any;
+      FieldFindMethod findMethod = FieldFindMethod.Any;
       bool recurseAllParentWebs = true;
       // try getting the named site column from this web site or any parent web site
       Field sc = web.GetSiteColumn(internalNameOrId, findMethod, recurseAllParentWebs, contextManager, trace);

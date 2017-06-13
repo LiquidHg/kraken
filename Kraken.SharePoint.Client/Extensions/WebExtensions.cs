@@ -388,7 +388,7 @@
     /// <returns></returns>
     public static ContentType GetContentType(this Web web, string contentTypeNameOrId) {
       ClientContext context = (ClientContext)web.Context;
-      context.LoadProperties(web, new string[] { "ContentTypes" });
+      context.LoadIfRequired(web, new string[] { "ContentTypes" });
       return web.ContentTypes.GetByNameOrId(contentTypeNameOrId);
     }
 
@@ -564,84 +564,14 @@
     /// This overload does not implement the site column cache.
     /// </summary>
     /// <param name="web"></param>
-    /// <param name="siteColumnName">The internal name or title of the site column</param>
+    /// <param name="identifier">The internal name or title of the site column</param>
     /// <param name="searchByTitle">If true, search by Title instead of InternalName</param>
     /// <returns></returns>
-    public static Field GetSiteColumn(this Web web, string siteColumnName, SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any) {
-      ClientContext context = (ClientContext)web.Context;
-      Field targetField = null;
-      IEnumerable<Field> result = null;
-      // interpret flags in logical best-performance order
-      // default option is to do the most permissive search possible
-      if (findMethod == SiteColumnFindMethod.Any) {
-        result = context.LoadQuery(web.Fields.Where(f => 
-          f.StaticName == siteColumnName
-          || f.InternalName == siteColumnName
-          || f.Title == siteColumnName
-        ).IncludeSiteColumnDefaults());
-        context.ExecuteQuery();
-        targetField = result.FirstOrDefault();
-      }
-      // not found yet and *just* flags InternalName and DisplayName together
-      if (targetField == null && findMethod == (SiteColumnFindMethod.InternalName | SiteColumnFindMethod.DisplayName)) {
-        targetField = web.Fields.GetByInternalNameOrTitle(siteColumnName);
-        context.LoadSiteColumnDefaults(targetField);
-        context.ExecuteQuery();
-      }
-      // not found yet and *just* flags InternalName and StaticName together
-      if (targetField == null && findMethod == (SiteColumnFindMethod.InternalName | SiteColumnFindMethod.StaticName)) {
-        result = context.LoadQuery(web.Fields.Where(f =>
-          f.StaticName == siteColumnName
-          || f.InternalName == siteColumnName
-        ).IncludeSiteColumnDefaults());
-        context.ExecuteQuery();
-        targetField = result.FirstOrDefault();
-      }
-      // not found yet and any flags with StaticName
-      if (targetField == null) {
-        switch(findMethod) {
-          case SiteColumnFindMethod.StaticName:
-            result = context.LoadQuery(web.Fields.Where(f => f.StaticName == siteColumnName).IncludeSiteColumnDefaults());
-            context.ExecuteQuery();
-            targetField = result.FirstOrDefault();
-            break;
-          case SiteColumnFindMethod.InternalName:
-            result = context.LoadQuery(web.Fields.Where(f => f.InternalName == siteColumnName).IncludeSiteColumnDefaults());
-            context.ExecuteQuery();
-            targetField = result.FirstOrDefault();
-            break;
-          case SiteColumnFindMethod.DisplayName:
-            targetField = web.Fields.GetByTitle(siteColumnName);
-            context.LoadSiteColumnDefaults(targetField);
-            context.ExecuteQuery();
-            break;
-        }
-      }
-      return targetField;
+    public static Field GetSiteColumn(this Web web, string identifier, FieldFindMethod findMethod = FieldFindMethod.Any) {
+      return web.Fields.GetField(identifier, findMethod);
     }
     public static Field GetSiteColumn(this Web web, Guid uniqueId) {
-      ClientContext context = (ClientContext)web.Context;
-      Field targetField = web.Fields.GetById(uniqueId);
-      context.LoadSiteColumnDefaults(targetField);
-      context.ExecuteQuery();
-      return targetField;
-    }
-
-    public static Web GetParentWeb(this Web web, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
-      ClientContext ctx = (ClientContext)web.Context;
-      if (web != null
-        && web.ParentWeb != null
-        && !web.ParentWeb.ServerObjectIsNull.GetValueOrDefault()) {
-        ctx.Load(web,
-          w => w.ParentWeb.ServerRelativeUrl,
-          w => w.ParentWeb.Id);
-        ctx.ExecuteQueryIfNeeded();
-        trace.TraceVerbose("Searching parent web {0}", web.ParentWeb.ServerRelativeUrl);
-        return ctx.Site.OpenWebById(web.ParentWeb.Id);
-      } else {
-        return null;
-      }
+      return web.Fields.GetField(uniqueId);
     }
 
     /// <summary>
@@ -655,77 +585,43 @@
     /// <returns>A List<Field> object with all the erequested fields</returns>
     public static IEnumerable<Field> GetSiteColumns(this Web web, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
+      trace.Enter(System.Reflection.MethodBase.GetCurrentMethod());
       ClientContext context = (ClientContext)web.Context;
       web = context.Web;
       List<Field> allResults = new List<Field>();
       while (web != null) {
+        trace.TraceVerbose("Querying web fields...");
         IEnumerable<Field> result = web.Fields.GetAllFields(excludeBuiltInFields);
         allResults.AddRange(result);
+        trace.TraceVerbose("Done. {0} fields added.", result.Count());
         web = (recursParentWebs) ? web.GetParentWeb(trace) : null;
+        if (web != null)
+          trace.TraceVerbose("Recursing parent web.");
       } // end while
+      trace.Exit(System.Reflection.MethodBase.GetCurrentMethod());
       return allResults;
     }
 
     public static IEnumerable<Field> GetSiteColumnsInGroup(this Web web, string groupName, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
+      trace.Enter(System.Reflection.MethodBase.GetCurrentMethod());
       ClientContext context = (ClientContext)web.Context;
       web = context.Web;
       List<Field> allResults = new List<Field>();
       while (web != null) {
-        IEnumerable<Field> result = web.Fields.FindByGroup(groupName, excludeBuiltInFields);
+        trace.TraceVerbose("Querying web fields...");
+        IEnumerable<Field> result = web.Fields.GetFieldsByGroup(groupName, excludeBuiltInFields);
         allResults.AddRange(result);
+        trace.TraceVerbose("Done. {0} fields added.", result.Count());
         web = (recursParentWebs) ? web.GetParentWeb(trace) : null;
+        if (web != null)
+          trace.TraceVerbose("Recursing parent web.");
       } // end while
+      trace.Exit(System.Reflection.MethodBase.GetCurrentMethod());
       return allResults;
     }
 
-    /// <summary>
-    /// Creates a collection of FieldProperties
-    /// for many fields, using LookupFieldProvisioner
-    /// to populate additional field info.
-    /// </summary>
-    /// <param name="web"></param>
-    /// <param name="groupName"></param>
-    /// <param name="trace"></param>
-    /// <returns></returns>
-    public static IEnumerable<FieldProperties> GetFieldPropertiesList(
-      this Web web, 
-      string groupName = "",
-      bool recursParentWebs = true, 
-      bool excludeBuiltInFields = false,
-      ITrace trace = null)
-      {
-      if (trace == null) trace = NullTrace.Default;
-      IEnumerable<Field> fields = 
-          (string.IsNullOrEmpty(groupName))
-          ? web.GetSiteColumns(recursParentWebs, excludeBuiltInFields, trace) 
-          : web.GetSiteColumnsInGroup(groupName, recursParentWebs, excludeBuiltInFields, trace);
-        ClientContext context = (ClientContext)web.Context;
-        LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
-        IEnumerable<FieldProperties> ret = lookupFieldProvisioner.CreateFieldPropertiesList(fields);
-        return ret;
-    }
-
-    // TODO is there a way we can make this configurable in case the caller needs more fields??
-
-    /// <summary>
-    /// Provided to give a single point to manage included columns to be returned in site columns by default
-    /// </summary>
-    /// <param name="where"></param>
-    /// <returns></returns>
-    internal static IQueryable<Field> IncludeSiteColumnDefaults(this IQueryable<Field> where) {
-      return where.Include(type => type.InternalName, type => type.Title, type => type.StaticName, type => type.Hidden, type => type.Id, type => type.Group, type => type.TypeAsString, type => type.SchemaXml);
-    }
-    /// <summary>
-    /// Provided to give a single point to manage included columns to be returned in site columns by default
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="targetField"></param>
-    private static void LoadSiteColumnDefaults(this ClientContext context, Field targetField) {
-      context.Load(targetField, type => type.InternalName, type => type.Title, type => type.StaticName, type => type.Hidden, type => type.Id, type => type.Group, type => type.TypeAsString, type => type.SchemaXml);
-    }
-
-    public static Field GetSiteColumn(this Web web, string siteColumnName, SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any, WebContextManager contextManager = null, ITrace trace = null) {
+    public static Field GetSiteColumn(this Web web, string siteColumnName, FieldFindMethod findMethod = FieldFindMethod.Any, WebContextManager contextManager = null, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
       //object scc = (contextManager == null) ? null : contextManager.SiteColumnCache;
       //trace.TraceVerbose("Getting site column from web cache...");
@@ -739,7 +635,7 @@
 
     // TODO implement site column caching
     // TODO recurse parent webs can be simplified here
-    public static Field GetSiteColumn(this Web web, string siteColumnName, SiteColumnFindMethod findMethod = SiteColumnFindMethod.Any, bool recurseAllParentWebs = true, WebContextManager contextManager = null, ITrace trace = null) {
+    public static Field GetSiteColumn(this Web web, string siteColumnName, FieldFindMethod findMethod = FieldFindMethod.Any, bool recurseAllParentWebs = true, WebContextManager contextManager = null, ITrace trace = null) {
       if (trace == null) trace = NullTrace.Default;
       if (recurseAllParentWebs && contextManager == null)
         throw new InvalidOperationException("You must provide a client context manager object when using recurseAllParentWebs.");
@@ -807,7 +703,51 @@
       return web.Fields.Add(properties, execute, trace);
     }
 
-#endregion
+
+    /// <summary>
+    /// Creates a collection of FieldProperties
+    /// for many fields, using LookupFieldProvisioner
+    /// to populate additional field info.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="groupName"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    public static IEnumerable<FieldProperties> GetFieldPropertiesList(
+      this Web web,
+      string groupName = "",
+      bool recursParentWebs = true,
+      bool excludeBuiltInFields = false,
+      ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      IEnumerable<Field> fields =
+          (string.IsNullOrEmpty(groupName))
+          ? web.GetSiteColumns(recursParentWebs, excludeBuiltInFields, trace)
+          : web.GetSiteColumnsInGroup(groupName, recursParentWebs, excludeBuiltInFields, trace);
+      ClientContext context = (ClientContext)web.Context;
+      LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
+      IEnumerable<FieldProperties> ret = lookupFieldProvisioner.CreateFieldPropertiesList(fields);
+      return ret;
+    }
+
+    #endregion
+
+    public static Web GetParentWeb(this Web web, ITrace trace = null) {
+      if (trace == null) trace = NullTrace.Default;
+      ClientContext ctx = (ClientContext)web.Context;
+      if (web != null
+        && web.ParentWeb != null
+        && !web.ParentWeb.ServerObjectIsNull.GetValueOrDefault()) {
+        ctx.Load(web,
+          w => w.ParentWeb.ServerRelativeUrl,
+          w => w.ParentWeb.Id);
+        ctx.ExecuteQueryIfNeeded();
+        trace.TraceVerbose("Searching parent web {0}", web.ParentWeb.ServerRelativeUrl);
+        return ctx.Site.OpenWebById(web.ParentWeb.Id);
+      } else {
+        return null;
+      }
+    }
 
     #region Sandbox Solutions
 

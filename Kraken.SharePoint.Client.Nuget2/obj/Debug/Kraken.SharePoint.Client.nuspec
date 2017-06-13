@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.85-alpha12</version>
+    <version>0.2.85</version>
     <title>Kraken SharePoint Client Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.85-alpha02: Fixing a problem with field properties not being loaded during canonicalization of formulas when creating site columns.</releaseNotes>
+    <releaseNotes>v0.2.85: Fixed problems with FieldProperties not being loaded during canonicalization of formulas when creating site columns and in creation of extra fields for lookup columns; updated to make it more consistent and robust. Added some useful methods to FieldUtility class. Made some changes to CSOM query optimization so that not as many calls to the server get made.</releaseNotes>
     <copyright>Copyright ©2007-2017 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
@@ -169,6 +169,7 @@
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ClientContextExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ClientContextExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ClientObjectExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ClientObjectExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ContentTypeExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ContentTypeExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FieldCollectionExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FieldCollectionExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FieldExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FieldExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" exclude="" />

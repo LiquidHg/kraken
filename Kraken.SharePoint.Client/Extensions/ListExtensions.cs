@@ -749,8 +749,8 @@
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)list.Context;
       trace.TraceVerbose("CreateItem overload 1...");
-
-      context.LoadProperties(list, new string[] { "BaseType" }, ExecuteQueryFrequency.Once, false, trace);
+      context.LoadIfRequired(list, new string[] { "BaseType" }/*, ExecuteQueryFrequency.Once */, false, trace);
+      context.ExecuteQueryIfNeeded();
       options.EnsureDefaultValues(list.IsDocumentLibrary(trace)); // checks that options.TitleInternalFieldName has a value
       if (fieldValues.ContainsKey("ID") && !options.IgnoreIDField)
         throw new NotSupportedException("You cannot specify 'ID' as a field. Remove it from the collection or pass ignoreIDField=true when calling this method.");

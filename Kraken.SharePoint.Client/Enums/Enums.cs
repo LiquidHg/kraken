@@ -72,7 +72,7 @@
   }
 
   [Flags]
-  public enum SiteColumnFindMethod {
+  public enum FieldFindMethod {
     None,
     InternalName,
     DisplayName,

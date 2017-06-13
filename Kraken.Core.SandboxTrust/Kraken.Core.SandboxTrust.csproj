@@ -88,6 +88,7 @@
     <Compile Include="IO\StreamUtilities.cs" />
     <Compile Include="IO\TextMemoryStream.cs" />
     <Compile Include="Linq\DynamicLinq.cs" />
+    <Compile Include="Linq\GenericCompare.cs" />
     <Compile Include="Net\Json\RestSharpJsonNetSerializer.cs" />
     <Compile Include="Strings\ParserDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

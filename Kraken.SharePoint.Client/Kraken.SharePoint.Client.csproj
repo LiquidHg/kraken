@@ -219,6 +219,7 @@
     <Compile Include="Extensions\ClientContextExtensions.cs" />
     <Compile Include="Extensions\ClientObjectExtensions.cs" />
     <Compile Include="Extensions\ContentTypeExtensions.cs" />
+    <Compile Include="Extensions\FieldCollectionExtensions.cs" />
     <Compile Include="Extensions\ICredentialExtensions.cs" />
     <Compile Include="Extensions\ListCollectionExtensions.cs" />
     <Compile Include="Extensions\NavigationExtensions.cs" />

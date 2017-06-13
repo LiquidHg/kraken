@@ -83,7 +83,7 @@ join the team.
 
 Update History:
 
-v0.2.85-alpha04: Fixed problems with FieldProperties not being loaded during canonicalization of formulas when creating site columns and in creation of extra fields for lookup columns; updated to make it more consistent and robust. Added some useful methods to FieldUtility class.
+v0.2.85: Fixed problems with FieldProperties not being loaded during canonicalization of formulas when creating site columns and in creation of extra fields for lookup columns; updated to make it more consistent and robust. Added some useful methods to FieldUtility class. Made some changes to CSOM query optimization so that not as many calls to the server get made.
 v0.2.84-alpha01: Fixed an issue with scope in file upload utility.
 v0.2.83-alpha09: Failed experimental build to make it possible to set NavigateForFormsPages and Flags in Lists using legacy web service calls. The process failed for these two properties, but worked for 4 others that were previously inaccessible. We also added some of the properties now available through the latest version of CSOM.v0.2.82: Expanded ListOptions and List.Update() to include DefaultContentType and DocumentTemplateType is now [better] implemented.
 v0.2.82: ???
