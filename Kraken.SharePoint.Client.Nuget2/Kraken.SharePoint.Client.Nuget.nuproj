@@ -19,9 +19,9 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.2.85</Version>
+    <Version>0.2.86</Version>
     <Title>Kraken SharePoint Client Library</Title>
-    <ReleaseNotes>v0.2.85: Fixed problems with FieldProperties not being loaded during canonicalization of formulas when creating site columns and in creation of extra fields for lookup columns; updated to make it more consistent and robust. Added some useful methods to FieldUtility class. Made some changes to CSOM query optimization so that not as many calls to the server get made.</ReleaseNotes>
+    <ReleaseNotes>v0.2.86: Additional fixes to support Info Architecture import functions after massive changes to site column methods. Specifically, the method for loading key properties for fields was not including all properties as speicifed, because CSOM is a total P.o.S.</ReleaseNotes>
     <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
