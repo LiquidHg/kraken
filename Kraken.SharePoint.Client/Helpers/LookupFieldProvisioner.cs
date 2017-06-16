@@ -176,8 +176,8 @@ namespace Kraken.SharePoint.Client.Helpers {
 
       Web web = ((ClientContext)primaryLookupField.Context).Web;
       List<Field> addFields = GetAdditionalFields(lookupClientContext, lookupList, properties);
-      Trace.TraceVerbose("addFields count = {0}", addFields.Count);
       if (addFields != null && addFields.Count > 0) {
+        Trace.TraceVerbose("addFields count = {0}", addFields.Count);
         // TODO these can be consolidated into a single call
         primaryLookupField.EnsureProperty(this.Trace, e => e.Title, e => e.Id, e => e.InternalName);
         web.Fields.LoadKeyProperties();

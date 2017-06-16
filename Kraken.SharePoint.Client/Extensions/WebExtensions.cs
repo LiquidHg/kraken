@@ -34,9 +34,9 @@
       try {
         ClientContext context = (ClientContext)web.Context;
 #if !DOTNET_V35
-        web.EnsureProperty(null, e => e.Url);
+        web.EnsureProperty(e => e.Url);
 #else
-				web.EnsureProperty(null, e => e.ServerRelativeUrl);
+				web.EnsureProperty(e => e.ServerRelativeUrl);
 #endif
         url = Url(web, context.IsSP2013AndUp());
       } catch (ServerException ex) { // ex.Message == "Field or property "Url" does not exist."
@@ -112,6 +112,8 @@
       return existingFolders;
     }
 
+    #region GetFolder
+
     /// <summary>
     /// Tries to get a folder from a list using its name.
     /// Calls underlying extension method list.GetFolder.
@@ -121,7 +123,7 @@
     /// <param name="folderName"></param>
     /// <param name="ignoreCase"></param>
     /// <returns></returns>
-		public static Folder GetFolder(this Web web, string listTitle, string folderName, bool ignoreCase) {
+    public static Folder GetFolder(this Web web, string listTitle, string folderName, bool ignoreCase) {
       List list;
       if (!web.TryGetList(listTitle, out list, ignoreCase) || list == null)
         return null;
@@ -131,7 +133,7 @@
     public static Folder GetFolder(this Web web, Uri serverRelativeUrl) {
       if (serverRelativeUrl.IsAbsoluteUri)
         throw new ArgumentException("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. ", "serverRelativeUrl");
-      return web.GetFolder(serverRelativeUrl);
+      return web.GetFolder(serverRelativeUrl.ToString());
     }
 
     /// <summary>
@@ -155,7 +157,7 @@
         folder = web.GetFolderByServerRelativeUrl(serverRelativeUrl);
         if (folder != null) {
           //context.Load(folder);
-          folder.EnsureProperty(null, f => f.ServerRelativeUrl);
+          folder.EnsureProperty(f => f.ServerRelativeUrl);
         }
       } catch (ServerException ex) {
         //if (ex.Message.Equals("File Not Found.", StringComparison.InvariantCultureIgnoreCase))
@@ -170,6 +172,8 @@
       return folder;
     }
 
+    #endregion
+
     /// <summary>
     /// Tries to get a folder from Web object using server relative URL.
     /// Calls underlying extension method web.GetFolder and has same behaviors.
@@ -178,7 +182,7 @@
     /// <param name="serverRelativeUrl">Example: "/sites/web1/library1/subfolder1/subfolder2"</param>
     /// <param name="folder"></param>
     /// <returns></returns>
-		public static bool TryGetFolder(this Web web, string serverRelativeUrl, out Folder folder) {
+    public static bool TryGetFolder(this Web web, string serverRelativeUrl, out Folder folder) {
       var ctx = web.Context;
       try {
         folder = web.GetFolder(serverRelativeUrl);
@@ -205,7 +209,7 @@
       var ctx = web.Context;
       try {
         file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-        file.EnsureProperty(null);
+        file.EnsureProperty(null, true);
         return true;
       } catch (Microsoft.SharePoint.Client.ServerException ex) {
         if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
@@ -274,7 +278,8 @@
           //string tryByUrl = web.ServerRelativeUrl + "/" + listUrlTitleOrName;
         }
         if (list != null) {
-          list.EnsureProperty(null);
+          // TODO do we have re-usable function we can call upon??
+          list.EnsureProperty(l => l.Id, l => l.Title, l => l.RootFolder, l => l.RootFolder.ServerRelativeUrl);
           return true;
         } else {
           return false;

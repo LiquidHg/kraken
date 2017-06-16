@@ -228,9 +228,7 @@
       if (trace == null) trace = NullTrace.Default;
       bool isDocLib = false;
       if (list != null) {
-        // TODO do we need to do this?
-        //list.EnsureProperty(trace, l => l.BaseType);
-        if (list.BaseType == BaseType.DocumentLibrary)
+        if (list.EnsureProperty(l => l.BaseType).BaseType == BaseType.DocumentLibrary)
           isDocLib = true;
       }
       return isDocLib;
@@ -619,6 +617,13 @@
     // TODO implement a lookup-caching scheme
     public static IEnumerable<ListItem> GetLookupItem(this List list, string value,
       ResolveLookupOptions options = null, ITrace trace = null) {
+      if (options == null) {
+        options = new ResolveLookupOptions() {
+          AllowMultipleResults = false,
+          LookupFieldName = list.IsDocumentLibrary() ? "FileLeafRef" : "Title",
+          LookupFieldType = "Text"
+        };
+      }
       /*
       if (onRootWeb) {
         list = clientContext.Site.RootWeb.Lists.GetByTitle(listName);
@@ -648,7 +653,7 @@
           FieldName = options.LookupFieldName,
           FieldType = options.LookupFieldType,
           FieldValue = value
-          // defaults to Eq
+          // defaults to Eq // Operator = CAML.Operator.Eq,
         };
         QueryItemOptions qo = new QueryItemOptions() {
           ViewFields = fields,
@@ -713,7 +718,7 @@
       File file;
       if (list.ParentWeb.TryGetFile(serverRelativeUrl, out file)) {
         var ctx = list.Context;
-        file.EnsureProperty(null, f => f.ListItemAllFields);
+        file.EnsureProperty(f => f.ListItemAllFields);
         return file.ListItemAllFields;
       }
       return null;
@@ -749,8 +754,6 @@
       if (trace == null) trace = NullTrace.Default;
       ClientContext context = (ClientContext)list.Context;
       trace.TraceVerbose("CreateItem overload 1...");
-      context.LoadIfRequired(list, new string[] { "BaseType" }/*, ExecuteQueryFrequency.Once */, false, trace);
-      context.ExecuteQueryIfNeeded();
       options.EnsureDefaultValues(list.IsDocumentLibrary(trace)); // checks that options.TitleInternalFieldName has a value
       if (fieldValues.ContainsKey("ID") && !options.IgnoreIDField)
         throw new NotSupportedException("You cannot specify 'ID' as a field. Remove it from the collection or pass ignoreIDField=true when calling this method.");
@@ -770,10 +773,9 @@
         contentTypeName = fieldValues["ContentType"].ToString();
 
       //bool doUpdate = false;
-      trace.Trace(TraceLevel.Info, "Creating Item: {0} = \"{1}\"...", options.TitleInternalFieldName, fieldValues[options.TitleInternalFieldName]);
+      trace.Trace(TraceLevel.Verbose, "Creating core Item: {0} = \"{1}\"...", options.TitleInternalFieldName, fieldValues[options.TitleInternalFieldName]);
 
       // scoped 
-      trace.Trace(TraceLevel.Verbose, "Creating core item...");
       ExecuteQueryFrequency freq = ExecuteQueryFrequency.Once;
       /*
       switch (options.UpdateFrequency) {
@@ -910,64 +912,33 @@
 
 #region Update Item
 
-    /// <summary>
-    /// This one should be used instead of the one from ListItem because
-    /// this performs addtional checks against List.Fields info.
-    /// </summary>
-    /// <param name="list"></param>
-    /// <param name="item"></param>
-    /// <param name="fieldValues"></param>
-    /// <param name="options"></param>
-    /// <param name="contextManager"></param>
-    /// <param name="trace"></param>
-    /// <returns></returns>
-    public static UpdateItemResult UpdateItem(this List list, ListItem item, Hashtable fieldValues, UpdateItemOptions options = null, WebContextManager contextManager = null, ITrace trace = null) {
-      if (item == null)
-        throw new ArgumentNullException("item");
+    private static Hashtable TranslateFieldValues(this List list, Hashtable fieldValues, UpdateItemOptions options, WebContextManager contextManager, ITrace trace) {
+      if (list == null)
+        throw new ArgumentNullException("list");
+      if (contextManager == null)
+        throw new ArgumentNullException("contextManager");
       if (options == null)
         throw new ArgumentNullException("options");
       if (fieldValues == null)
         throw new ArgumentNullException("fieldValues");
       if (trace == null) trace = NullTrace.Default;
 
-      ClientContext context = (ClientContext)item.Context;
-      Hashtable ht = new Hashtable();
-      //CoreMetadataInfo metaData = null;
-
-      // Does not generally actually go to CSOM, so left outside scope
-      // plus if it did, it would execute query to get the value
-      string nameOrTitle = item.GetNameOrTitle(fieldValues, options, trace);
-
-      // TODO we never did anything with this???
-      //trace.Trace(TraceLevel.Verbose, "Setting extended field values...");
-      //metaData = new CoreMetadataInfo(item);
       // transform and reality check items
-
       trace.Trace(TraceLevel.Verbose, "Checking Provided Fields...");
-
-      // found that after refactoring sometimes properties hadn't been loaded
-      // its honestly better to get it out of the way all at once anyway
-      context.Load(list.Fields);
-      context.LoadQuery(list.Fields.Include(
-        f => f.Id,
-        f => f.InternalName,
-        f => f.Title,
-        f => f.FieldTypeKind,
-        f => f.TypeAsString
-      ));
-      context.ExecuteQueryIfNeeded();
-      
+      Hashtable ht = new Hashtable();
       foreach (string fieldName in fieldValues.Keys) {
         trace.TraceVerbose("Checking field: {0}", fieldName);
 
-        Field field = (from f in list.Fields where (f.InternalName == fieldName) select f).FirstOrDefault();
+        Field field = (from f
+                       in list.Fields
+                       where (f.InternalName.ToLower() == fieldName.ToLower()
+                       || f.Title.ToLower() == fieldName.ToLower())
+                       select f).FirstOrDefault();
         if (field == null) {
           if (!options.SupressSkippedFieldWarnings)
             trace.TraceWarning("Field name '{0}' provided in FieldValues hash-table does not exist in list '{1}' and will be skipped.", fieldName, list.GetServerRelativeUrl());
           continue;
         }
-        // Can't be done in a scope because it calls execute query itself
-        //context.LoadProperties(field, new string[] { "Id", "Title", "InternalName", "FieldTypeKind", "TypeAsString" }); // "TypedObject" not supported
 
         trace.Trace(TraceLevel.Verbose, "Getting translated field value...");
         object translatedValue = fieldValues[fieldName];
@@ -985,19 +956,76 @@
           //translatedValue = field.EncodeTextValue(translatedValue, contextManager, trace);
         }
 
-        if ((!options.SkipTitleOnUpdate || fieldName != options.TitleInternalFieldName)
-        && (!options.SkipContentTypeIdOnUpdate || fieldName != BuiltInFieldId.GetName(BuiltInFieldId.ContentTypeId))
-        && fieldName != BuiltInFieldId.GetName(BuiltInFieldId.ID)
-        && fieldName != BuiltInFieldId.GetName(BuiltInFieldId.ContentType)) {  // always skips this one
-          trace.TraceVerbose("Added translated value '{0}' for field '{1}'", translatedValue, fieldName);
-          ht.Add(fieldName, translatedValue);
+        if (options.SkipTitleOnUpdate && fieldName == options.TitleInternalFieldName) {
+          if (!options.SupressSkippedFieldWarnings)
+            trace.TraceVerbose("Field '{0}' skipped because SkipTitleOnUpdate option is true.", fieldName);
+          continue;
         }
+        if (options.SkipContentTypeIdOnUpdate && fieldName == BuiltInFieldId.GetName(BuiltInFieldId.ContentTypeId)) {
+          if (!options.SupressSkippedFieldWarnings)
+            trace.TraceVerbose("Field '{0}' skipped because SkipContentTypeIdOnUpdate option is true.", fieldName);
+          continue;
+        }
+        if (fieldName == BuiltInFieldId.GetName(BuiltInFieldId.ID)
+        && fieldName == BuiltInFieldId.GetName(BuiltInFieldId.ContentType)) {  // always skips this one
+          if (!options.SupressSkippedFieldWarnings)
+            trace.TraceVerbose("Field '{0}' skipped because setting this field is not supported.", fieldName);
+          continue;
+        }
+
+        trace.TraceVerbose("Added translated value '{0}' for field '{1}'", translatedValue, field.InternalName);
+        ht.Add(field.InternalName, translatedValue);
       } // field loop
+      trace.TraceVerbose("There are {0} translated fields values", ht.Count);
+      return ht;
+    }
 
-      trace.Trace(TraceLevel.Verbose, "Calling ListItem Update...");
-      // called execute query and handles its own scope
-      UpdateItemResult result = item.UpdateItem(ht, options, trace); //, contextManage
+    /// <summary>
+    /// This one should be used instead of the one from ListItem because
+    /// this performs addtional checks against List.Fields info.
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="item"></param>
+    /// <param name="fieldValues"></param>
+    /// <param name="options"></param>
+    /// <param name="contextManager"></param>
+    /// <param name="trace"></param>
+    /// <returns></returns>
+    public static UpdateItemResult UpdateItem(this List list, ListItem item, Hashtable fieldValues, UpdateItemOptions options = null, WebContextManager contextManager = null, ITrace trace = null) {
+      if (item == null)
+        throw new ArgumentNullException("item");
+      if (options == null)
+        throw new ArgumentNullException("options");
+      if (contextManager == null)
+        throw new ArgumentNullException("contextManager");
+      if (fieldValues == null)
+        throw new ArgumentNullException("fieldValues");
+      if (trace == null) trace = NullTrace.Default;
 
+      // found that after refactoring sometimes properties hadn't been loaded
+      // its honestly better to get it out of the way all at once anyway
+      list.Fields.LoadKeyProperties();
+
+      // commented out becuase it was never being used
+      /*
+      // Sometimes actually goes to CSOM, so left outside scope
+      string nameOrTitle = item.GetNameOrTitle(fieldValues, options, trace);
+      */
+
+      // TODO we never did anything with this???
+      //trace.Trace(TraceLevel.Verbose, "Setting extended field values...");
+      //CoreMetadataInfo metaData = new CoreMetadataInfo(item);
+
+      Hashtable ht = list.TranslateFieldValues(fieldValues, options, contextManager, trace);
+      UpdateItemResult result = UpdateItemResult.NoResult;
+      if (ht.Count > 0) {
+        trace.TraceVerbose("Calling Item Update...");
+        // called execute query and handles its own scope
+        result = item.UpdateItem(ht, options, trace); //, contextManage
+      } else {
+        trace.TraceVerbose("Skipping Item Update; nothing to do.");
+        result = UpdateItemResult.UpdateOK;
+      }
       return result;
     }
 

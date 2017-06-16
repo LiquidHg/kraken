@@ -33,7 +33,7 @@
     <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
     <Id>Kraken.SPSandboxLibrary</Id>
     <Title>Kraken SharePoint Sanbox Solution Library</Title>
-    <Version>0.2.5</Version>
+    <Version>0.2.6-alpha01</Version>
     <Tags>SharePoint Sandbox WSP</Tags>
     <ReleaseNotes>v0.2.5: Ensured update to latest CSOM</ReleaseNotes>
     <!--

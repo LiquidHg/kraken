@@ -167,7 +167,7 @@
       //UploadResult result = UploadResult.Unknown;
       System.IO.FileInfo fi = new System.IO.FileInfo(localFilePath);
       double estimatedSeconds = EstimateUploadTime(fi);
-      trace.Trace(TraceLevel.Info, "File size is {0:0} KBytes; Estimated upload time {1:0} Seconds", fi.Length / 1024, estimatedSeconds);
+      trace.Trace(TraceLevel.Verbose, "File size is {0:0} KBytes; Estimated upload time {1:0} Seconds", fi.Length / 1024, estimatedSeconds);
       //bool doWebDAVUpload = (fi.Length > maxSize);
       //bool fileIsHuge = (fi.Length > hugeFileSize);
       UploadMethod um = ChooseUploadMethod(fi);
@@ -205,9 +205,9 @@
           throw webex;
         }
         if (retryCount < maxRetries) {
-          trace.Trace(TraceLevel.Info, "Pausing a bit to give SharePoint server time to recover.");
+          trace.Trace(TraceLevel.Verbose, "Pausing a bit to give SharePoint server time to recover.");
           System.Threading.Thread.Sleep(retryPause);
-          trace.Trace(TraceLevel.Info, "Retrying... Attempt {0} out of {1}", retryCount + 1, maxRetries);
+          trace.Trace(TraceLevel.Warning, "Retrying... Attempt {0} out of {1}", retryCount + 1, maxRetries);
           result = folder.UploadFile(/* parentList, */ localFilePath, localFilPathFieldName, overwrite, ctid, trace, tryWebDAVOnError, retryCount + 1);
         } else {
           trace.Trace(TraceLevel.Error, "maxRetries reached. I give up!");
@@ -215,7 +215,7 @@
         }
       }
       TimeSpan ts2 = DateTime.Now.Subtract(startTime);
-      trace.Trace(TraceLevel.Info, "Upload operation finished after {0}h:{1}m:{2:00}s.", ts2.Hours, ts2.Minutes, ts2.Seconds);
+      trace.Trace(TraceLevel.Verbose, "Upload operation finished after {0}h:{1}m:{2:00}s.", ts2.Hours, ts2.Minutes, ts2.Seconds);
       // TODO inform our estimates
       return result;
     }

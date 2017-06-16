@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SPSandboxLibrary</id>
-    <version>0.2.5</version>
+    <version>0.2.6-alpha01</version>
     <title>Kraken SharePoint Sanbox Solution Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -48,6 +48,7 @@
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Connector.dll" target="lib\net45\Microsoft.Office.Server.Search.Connector.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.Search.dll" target="lib\net45\Microsoft.SharePoint.Client.Search.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.Taxonomy.dll" target="lib\net45\Microsoft.SharePoint.Client.Taxonomy.dll" exclude="" />
     <file src="C:\Program Files (x86)\Microsoft.NET\ADOMD.NET\90\Microsoft.AnalysisServices.AdomdClient.dll" target="lib\net45\Microsoft.AnalysisServices.AdomdClient.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Excel.Server.WebServices.dll" target="lib\net45\Microsoft.Office.Excel.Server.WebServices.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.DocumentManagement.dll" target="lib\net45\Microsoft.Office.DocumentManagement.dll" exclude="" />

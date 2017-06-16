@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.86</version>
+    <version>0.2.87</version>
     <title>Kraken SharePoint Client Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,17 +12,17 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.86: Additional fixes to support Info Architecture import functions after massive changes to site column methods. Specifically, the method for loading key properties for fields was not including all properties as speicifed, because CSOM is a total P.o.S.</releaseNotes>
+    <releaseNotes>v0.2.87: Stable and tested. Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of just id.</releaseNotes>
     <copyright>Copyright ©2007-2017 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
     <dependencies>
       <group targetFramework="net45">
-        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.6420.1200" />
-        <dependency id="Kraken.DotNet.Core" version="0.2.5" />
-        <dependency id="log4net" version="2.0.7" />
+        <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.6518.1200" />
+        <dependency id="Kraken.DotNet.Core" version="0.2.6" />
+        <dependency id="log4net" version="2.0.8" />
         <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
         <dependency id="RestSharpSigned" version="105.2.3" />
         <dependency id="AngleSharp" version="0.9.9" />
         <dependency id="AppForSharePointOnlineWebToolkit" version="3.1.5" />
@@ -41,7 +41,7 @@
         <dependency id="Microsoft.NETCore.Platforms" version="1.1.0" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="SharePointPnP.IdentityModel.Extensions" version="1.2.2" />
-        <dependency id="SharePointPnPCoreOnline" version="2.14.1704.0" />
+        <dependency id="SharePointPnPCoreOnline" version="2.16.1706.0" />
         <dependency id="System.Collections" version="4.3.0" />
         <dependency id="System.Collections.Concurrent" version="4.3.0" />
         <dependency id="System.ComponentModel" version="4.3.0" />
@@ -82,9 +82,9 @@
         <dependency id="WindowsAzure.Storage" version="8.1.1" />
       </group>
       <group>
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
         <dependency id="RestSharpSigned" version="105.2.3" />
-        <dependency id="log4net" version="2.0.6" />
+        <dependency id="log4net" version="2.0.8" />
       </group>
     </dependencies>
   </metadata>
@@ -174,9 +174,9 @@
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FileExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\FolderExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ICredentialExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ICredentialExtensions.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ItemExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ItemExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListCollectionExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListCollectionExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListExtensions.cs" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ListItemExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ListItemExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\NavigationExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\NavigationExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\SiteExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\SiteExtensions.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Extensions\ViewExtensions.cs" target="src\Kraken.SharePoint.Client\Extensions\ViewExtensions.cs" exclude="" />

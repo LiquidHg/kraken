@@ -85,3 +85,4 @@ R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.Caml.
 R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary.csproj.GenerateResource.Cache
 R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.SandboxTrust.dll
 R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP16_45\Microsoft.SharePoint.Client.Taxonomy.dll

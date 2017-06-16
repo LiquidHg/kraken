@@ -19,9 +19,9 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.2.86</Version>
+    <Version>0.2.87</Version>
     <Title>Kraken SharePoint Client Library</Title>
-    <ReleaseNotes>v0.2.86: Additional fixes to support Info Architecture import functions after massive changes to site column methods. Specifically, the method for loading key properties for fields was not including all properties as speicifed, because CSOM is a total P.o.S.</ReleaseNotes>
+    <ReleaseNotes>v0.2.87: Stable and tested. Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of just id.</ReleaseNotes>
     <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
@@ -39,17 +39,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Dependency Include="Microsoft.SharePointOnline.CSOM">
-      <Version>16.1.5903.1200</Version>
+      <Version>16.1.6518.1200</Version>
       <TargetFramework>net45</TargetFramework>
     </Dependency>
     <Dependency Include="Newtonsoft.Json">
-      <Version>9.0.1</Version>
+      <Version>10.0.2</Version>
     </Dependency>
     <Dependency Include="RestSharpSigned">
       <Version>105.2.3</Version>
     </Dependency>
     <Dependency Include="log4net">
-      <Version>2.0.6</Version>
+      <Version>2.0.8</Version>
     </Dependency>
   </ItemGroup>
   <ItemGroup>

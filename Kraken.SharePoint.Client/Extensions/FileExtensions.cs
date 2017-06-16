@@ -24,8 +24,7 @@
       var ctx = file.Context;
       Folder folder = null;
       try {
-        file.EnsureProperty(null, f => f.ListItemAllFields);
-        ListItem fileItem = file.ListItemAllFields;
+        ListItem fileItem = file.EnsureProperty(f => f.ListItemAllFields).ListItemAllFields;
         folder = fileItem.GetListItemFolder();
       } catch (Microsoft.SharePoint.Client.ServerException ex) {
 
