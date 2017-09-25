@@ -207,7 +207,7 @@ namespace Microsoft.SharePoint.Client {
         throw new ArgumentNullException("web");
       if (parentTermFriendlyUrl == null)
         throw new ArgumentNullException("parentTermFriendlyUrl");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)web.Context;
 
       if (existingFriendlyUrl != null && existingFriendlyUrl.IsAbsoluteUri)

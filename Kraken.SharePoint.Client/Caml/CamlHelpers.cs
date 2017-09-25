@@ -74,18 +74,29 @@ namespace Kraken.SharePoint.Client.Caml {
     /// provided by ensureFields. Adds all fields
     /// in order.
     /// </summary>
-    /// <param name="order"></param>
+    /// <param name="fields"></param>
     /// <param name="ensureFields"></param>
     /// <returns></returns>
-    public static string[] AddEnsureFieldsToOrderBy(Hashtable order, string[] ensureFields = null) {
-      if (order == null)
-        return null;
-      ensureFields = new string[order.Keys.Count];
+    public static string[] GetEnsureFieldsInOrder(Hashtable fields, string[] existingFields = null) {
+      // adjusted this so it does what the documentation claims it does
+      if (fields == null)
+        return existingFields;
+      Collections.AutoSortArrayList ensureFields = new Collections.AutoSortArrayList();
+      if (existingFields != null)
+        ensureFields.AddRange(existingFields);
+      foreach (string f in fields.Keys) {
+        if (!ensureFields.Contains(f))
+          ensureFields.Add(f);
+      }
+      return (string[])ensureFields.ToArray(typeof(string));
+      /*
+      string[] ensureFields = new string[order.Keys.Count];
       int i = 0;
       foreach (string f in order.Keys) {
         ensureFields[i] = f; i++;
       }
       return ensureFields;
+      */
     }
 
     /// <summary>
@@ -107,8 +118,30 @@ namespace Kraken.SharePoint.Client.Caml {
       return orderXml;
     }
 
+
+    /* example CAML
+     * you get 1 Collapse and 1 GroupLimit
+     * you specify a list of field ref which are similar
+     * to OrderBy 
+    <GroupBy Collapse="TRUE" GroupLimit="50"><FieldRef Name = "Author" />
+      <FieldRef Name="Editor" Ascending="FALSE" /></GroupBy>
+    */
+
+    public static string GetGroupXml(Hashtable groupSort, bool collapse = false, uint groupLimit = KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT) {
+      string groupXml = string.Empty;
+      if (groupSort != null && groupSort.Count > 0) {
+        Dictionary<string, CAML.SortType> groupBy = CamlHelpers.ConvertToOrderBy(groupSort);
+        StringBuilder fields = new StringBuilder();
+        foreach (string fieldName in groupBy.Keys) {
+          fields.Append(CAML.FieldRef(fieldName, groupBy[fieldName]));
+        }
+        groupXml = CAML.GroupBy(fields.ToString(), collapse, groupLimit);
+      }
+      return groupXml;
+    }
+
     public static List<string> GetDefaultQueryFields(this List list, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       bool isDocLib = (list != null && list.IsDocumentLibrary(trace));
       List<string> viewFields = new List<string>();
       viewFields.Add(isDocLib ? ViewFieldShorthandConstants.DefaultDocLib : ViewFieldShorthandConstants.DefaultLists);
@@ -118,7 +151,7 @@ namespace Kraken.SharePoint.Client.Caml {
       return ResolveQueryFields(viewFields.ToList(), ensureFields, list, trace);
     }
     public static List<string> ResolveQueryFields(List<string> viewFields, string[] ensureFields, List list = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (viewFields == null)
         viewFields = GetDefaultQueryFields(list, trace);
       if (viewFields.Count == 1) {
@@ -141,7 +174,7 @@ namespace Kraken.SharePoint.Client.Caml {
     }
 
     public static string GetCamlViewFieldsXml(this List<string> viewFields, List list = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (viewFields == null)
         viewFields = GetDefaultQueryFields(list, trace);
       else if (viewFields.Count == 1 && string.Equals(viewFields[0], ViewFieldShorthandConstants.All, StringComparison.InvariantCultureIgnoreCase)) {

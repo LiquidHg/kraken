@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SharePoint.Client</id>
-    <version>0.2.87</version>
+    <version>0.2.88-alpha14</version>
     <title>Kraken SharePoint Client Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,17 +12,17 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing client applications (CSOM) including some non-SharePoint utilities designed to run in a partial trust policy and some that require full trust. This package includes those components which use CSOM that can be referenced from a client or SharePoint provider hosted app.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.87: Stable and tested. Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of just id.</releaseNotes>
+    <releaseNotes>v0.2.88: Alpha. Fixed issue with illegal char like ampersand in field CHOICES causing exception; fixed issue with weird CSOM list property SetExemptFromBlockDownloadOfNonViewableFiles causing 'method not found' exception when it is set. Add support for GroupBy to CAML library/helpers. Refactored view CAML to use unsigned int for all row limits. Made RowLimit an optional parameter in IHasCamlViewParameters.</releaseNotes>
     <copyright>Copyright ©2007-2017 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</tags>
     <dependencies>
       <group targetFramework="net45">
         <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.6518.1200" />
-        <dependency id="Kraken.DotNet.Core" version="0.2.6" />
+        <dependency id="Kraken.DotNet.Core" version="0.2.8-alpha02" />
         <dependency id="log4net" version="2.0.8" />
         <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
-        <dependency id="Newtonsoft.Json" version="10.0.2" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" />
         <dependency id="RestSharpSigned" version="105.2.3" />
         <dependency id="AngleSharp" version="0.9.9" />
         <dependency id="AppForSharePointOnlineWebToolkit" version="3.1.5" />
@@ -90,11 +90,36 @@
   </metadata>
   <files>
     <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.dll" target="lib\net45\Kraken.SharePoint.Cloud.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.dll" target="lib\net45\Microsoft.SharePoint.dll" exclude="" />
+    <file src="C:\Program Files\Microsoft SDKs\Azure\.NET SDK\v2.9\bin\plugins\Diagnostics\Microsoft.Web.Administration.dll" target="lib\net45\Microsoft.Web.Administration.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.ServerRuntime.dll" target="lib\net45\Microsoft.SharePoint.Client.ServerRuntime.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.dll" target="lib\net45\Microsoft.SharePoint.Search.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Web.CommandUI.dll" target="lib\net45\Microsoft.Web.CommandUI.dll" exclude="" />
+    <file src="C:\Program Files\Reference Assemblies\Microsoft\Microsoft Identity Extensions\1.0\Microsoft.IdentityModel.Extensions.dll" target="lib\net45\Microsoft.IdentityModel.Extensions.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.BusinessData.dll" target="lib\net45\Microsoft.BusinessData.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Security.dll" target="lib\net45\Microsoft.SharePoint.Security.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.dll" target="lib\net45\Microsoft.Office.Server.Search.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Taxonomy.dll" target="lib\net45\Microsoft.SharePoint.Taxonomy.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.dll" target="lib\net45\Microsoft.Office.Server.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Portal.dll" target="lib\net45\Microsoft.SharePoint.Portal.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Publishing.dll" target="lib\net45\Microsoft.SharePoint.Publishing.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.UserProfiles.dll" target="lib\net45\Microsoft.Office.Server.UserProfiles.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Applications.dll" target="lib\net45\Microsoft.Office.Server.Search.Applications.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft.NET\Primary Interop Assemblies\Microsoft.mshtml.dll" target="lib\net45\Microsoft.mshtml.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Connector.dll" target="lib\net45\Microsoft.Office.Server.Search.Connector.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft.NET\ADOMD.NET\90\Microsoft.AnalysisServices.AdomdClient.dll" target="lib\net45\Microsoft.AnalysisServices.AdomdClient.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Excel.Server.WebServices.dll" target="lib\net45\Microsoft.Office.Excel.Server.WebServices.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.DocumentManagement.dll" target="lib\net45\Microsoft.Office.DocumentManagement.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Policy.dll" target="lib\net45\Microsoft.Office.Policy.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.SecureStoreService.Server.Security.dll" target="lib\net45\Microsoft.Office.SecureStoreService.Server.Security.dll" exclude="" />
+    <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Excel.Server.Udf.dll" target="lib\net45\Microsoft.Office.Excel.Server.Udf.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.pdb" target="lib\net45\Kraken.SharePoint.Cloud.pdb" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Cloud\bin\DebugSP16_45\Kraken.SharePoint.Cloud.XmlSerializers.dll" target="lib\net45\Kraken.SharePoint.Cloud.XmlSerializers.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.dll" target="lib\net45\Kraken.SharePoint.Client.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\bin\DebugSP16_45\Kraken.SharePoint.Client.pdb" target="lib\net45\Kraken.SharePoint.Client.pdb" exclude="" />
-    <file src="C:\Program Files\Reference Assemblies\Microsoft\Microsoft Identity Extensions\1.0\Microsoft.IdentityModel.Extensions.dll" target="lib\net45\Microsoft.IdentityModel.Extensions.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb" target="lib\net45\Kraken.SharePoint.OfficeDevPnP.pdb" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client.Nuget2\Readme.txt" target="" exclude="" />
@@ -201,6 +226,7 @@
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\FPRPC\HashUtil.cs" target="src\Kraken.SharePoint.Client\Helpers\FPRPC\HashUtil.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\LinqReflectionUtility.cs" target="src\Kraken.SharePoint.Client\Helpers\LinqReflectionUtility.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\LookupFieldProvisioner.cs" target="src\Kraken.SharePoint.Client\Helpers\LookupFieldProvisioner.cs" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\TransferTimeEstimator.cs" target="src\Kraken.SharePoint.Client\Helpers\TransferTimeEstimator.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\Utils.cs" target="src\Kraken.SharePoint.Client\Helpers\Utils.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\Helpers\XmlSerialization.cs" target="src\Kraken.SharePoint.Client\Helpers\XmlSerialization.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SharePoint.Client\PropertyClasses\ContentTypeProperties.cs" target="src\Kraken.SharePoint.Client\PropertyClasses\ContentTypeProperties.cs" exclude="" />

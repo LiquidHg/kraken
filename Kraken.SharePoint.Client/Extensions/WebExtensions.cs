@@ -71,7 +71,7 @@
         ClientContext context = (ClientContext)web.Context;
         web.LoadBasicProperties(context.IsSP2013AndUp(), execute, trace);
       } catch (ServerException ex) { // ex.Message == "Field or property "Url" does not exist."
-        if (trace == null) trace = NullTrace.Default;
+        if (trace == null) trace = DiagTrace.Default;
         trace.TraceError(ex);
         trace.TraceVerbose("Falling back on legacy (SP2010) method for web.Url");
         web.LoadBasicProperties(false, execute, trace);
@@ -79,7 +79,7 @@
     }
     public static void LoadBasicProperties(this Web web, bool isSP2013OrBetter, bool execute = true, ITrace trace = null) {
       if (trace == null)
-        trace = NullTrace.Default;
+        trace = DiagTrace.Default;
       ClientContext context = (ClientContext)web.Context;
 #if !DOTNET_V35
       if (isSP2013OrBetter) {
@@ -295,11 +295,11 @@
     }
 
     public static List CreateList(this Web web, ListOptions props, WebContextManager cm = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (props == null)
         throw new ArgumentNullException("props");
       props.Validate((ClientContext)web.Context, true, true, trace);
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)web.Context;
       List list = null;
       if (web.TryGetList(props.Title, out list)) {
@@ -402,7 +402,7 @@
     }
 
     public static ContentType GetContentType(this Web web, string contentTypeName, WebContextManager cm = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       web.LoadBasicProperties(true, false, trace);
       ContentTypeCache ctc = (cm == null) ? null : cm.ContentTypeCache;
       if (ctc != null)
@@ -461,7 +461,7 @@
     /// <param name="ctc"></param>
     /// <returns></returns>
     public static ContentType GetContentType(this Web web, string contentTypeName, bool recurseAllParentWebs = true, WebContextManager cm = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (recurseAllParentWebs && cm == null)
         throw new InvalidOperationException("You must provide a client context manager object when using recurseAllParentWebs.");
       //ContentTypeCache ctc = (cm == null) ? null : cm.ContentTypeCache;
@@ -589,7 +589,7 @@
     /// <param name="trace"></param>
     /// <returns>A List<Field> object with all the erequested fields</returns>
     public static IEnumerable<Field> GetSiteColumns(this Web web, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       trace.Enter(System.Reflection.MethodBase.GetCurrentMethod());
       ClientContext context = (ClientContext)web.Context;
       web = context.Web;
@@ -608,7 +608,7 @@
     }
 
     public static IEnumerable<Field> GetSiteColumnsInGroup(this Web web, string groupName, bool recursParentWebs = true, bool excludeBuiltInFields = false, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       trace.Enter(System.Reflection.MethodBase.GetCurrentMethod());
       ClientContext context = (ClientContext)web.Context;
       web = context.Web;
@@ -627,7 +627,7 @@
     }
 
     public static Field GetSiteColumn(this Web web, string siteColumnName, FieldFindMethod findMethod = FieldFindMethod.Any, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       //object scc = (contextManager == null) ? null : contextManager.SiteColumnCache;
       //trace.TraceVerbose("Getting site column from web cache...");
       web.LoadBasicProperties(true, false, trace);
@@ -641,7 +641,7 @@
     // TODO implement site column caching
     // TODO recurse parent webs can be simplified here
     public static Field GetSiteColumn(this Web web, string siteColumnName, FieldFindMethod findMethod = FieldFindMethod.Any, bool recurseAllParentWebs = true, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (recurseAllParentWebs && contextManager == null)
         throw new InvalidOperationException("You must provide a client context manager object when using recurseAllParentWebs.");
       Field webField = web.GetSiteColumn(siteColumnName, findMethod, contextManager, trace);
@@ -724,7 +724,7 @@
       bool recursParentWebs = true,
       bool excludeBuiltInFields = false,
       ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       IEnumerable<Field> fields =
           (string.IsNullOrEmpty(groupName))
           ? web.GetSiteColumns(recursParentWebs, excludeBuiltInFields, trace)
@@ -738,7 +738,7 @@
     #endregion
 
     public static Web GetParentWeb(this Web web, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext ctx = (ClientContext)web.Context;
       if (web != null
         && web.ParentWeb != null

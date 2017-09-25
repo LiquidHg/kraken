@@ -62,7 +62,7 @@
     }
 
     public static FieldProperties CreateProperties(this Field field, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       return FieldProperties.Deserialize(field.EnsureProperty(trace, f => f.SchemaXml).SchemaXml);
     }
 
@@ -100,7 +100,7 @@
     #endregion
 
     public static void Update(this Field existingField, FieldProperties properties, bool execute = true, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)existingField.Context;
       if (properties.IsLookupField) {
         LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
@@ -133,7 +133,7 @@
     }
 
     public static void Update(this Field existingField, string schemaXml, bool pushToLists, bool execute = true, ITrace trace = null) {
-      //if (trace == null) trace = NullTrace.Default;
+      //if (trace == null) trace = DiagTrace.Default;
       try {
         ClientContext context = (ClientContext)existingField.Context;
         existingField.SchemaXml = schemaXml;

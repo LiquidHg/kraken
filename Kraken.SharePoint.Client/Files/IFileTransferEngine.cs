@@ -9,13 +9,13 @@ namespace Kraken.SharePoint.Client.Files
 {
     public interface IFileTransferEngine
     {
-        void Upload(Folder targetFolder);
+        void Upload(Folder targetFolder, ITransferTimeEstimator estimator);
 
-        void Upload(File targetFile);
+        void Upload(File targetFile, ITransferTimeEstimator estimator);
 
-        void Download(File file);
+        void Download(File file, ITransferTimeEstimator estimator);
 
-        void Download(Folder folder);
+        void Download(Folder folder, ITransferTimeEstimator estimator);
 
     }
 }

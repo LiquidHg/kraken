@@ -24,9 +24,9 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.DotNet.Core</Id>
-    <Version>0.2.6</Version>
+    <Version>0.2.8-alpha02</Version>
     <Title>Kraken Core .NET Library</Title>
-    <ReleaseNotes>v0.2.6: Fixed some odd behaviors in SimpleTrace.TraceError</ReleaseNotes>
+    <ReleaseNotes>v0.2.8: Fixed some odd behaviors in SimpleTrace.TraceError; Added a DiagTrace so that NullTrace is not longer our only/default option when a trace engine isn't provided.</ReleaseNotes>
     <Tags>Kraken SharePoint DotNet Security</Tags>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>

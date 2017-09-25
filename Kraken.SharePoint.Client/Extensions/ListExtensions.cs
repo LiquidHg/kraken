@@ -120,7 +120,7 @@
       return Utils.CombineUrl(webUrl, rootFolderUrl);
     }
 
-#region Folders
+    #region Folders
 
     public static IEnumerable<Folder> GetFoldersAtTopLevel(this List list) {
       ClientContext context = (ClientContext)list.Context;
@@ -163,7 +163,7 @@
         context.ExecuteQuery();
         existingFolder = list.RootFolder;
       } else {
-        string folderUrl = (folderName.StartsWith("/")) 
+        string folderUrl = (folderName.StartsWith("/"))
           ? folderName // don't reformat when actually a server relative URL was passed in
           : string.Format("{0}/{1}", list.RootFolder.ServerRelativeUrl, folderName);
         if (folderName.Contains("/")) {
@@ -202,7 +202,7 @@
     existingFolder = listItems.FirstOrDefault().Folder;
      */
 
-#endregion
+    #endregion
 
 
     /// <summary>
@@ -225,7 +225,7 @@
     /// <param name="trace"></param>
     /// <returns>True if DocLib, false if List</returns>
     public static bool IsDocumentLibrary(this List list, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       bool isDocLib = false;
       if (list != null) {
         if (list.EnsureProperty(l => l.BaseType).BaseType == BaseType.DocumentLibrary)
@@ -267,7 +267,7 @@
       List<string> viewFields = null, 
       int pageSize = -1, 
       */
-      int pageIndex = 0,
+      uint pageIndex = 0,
       ITrace trace = null
     ) {
       // TODO match needs testing to see if properties are missing
@@ -298,10 +298,10 @@
     /// <param name="trace"></param>
     /// <returns>Collection of CSOM list items</returns>
     public static ListItemCollection GetItemsPage(
-      this List list, 
-      string fieldName, 
-      string fieldValue, 
-      CAML.Operator op = CAML.Operator.Eq, 
+      this List list,
+      string fieldName,
+      string fieldValue,
+      CAML.Operator op = CAML.Operator.Eq,
       string fieldType = "TEXT",
       QueryItemOptions options = null,
       /*
@@ -310,7 +310,7 @@
       List<string> viewFields = null, 
       int pageSize = -1, 
       */
-      int pageIndex = 0, 
+      uint pageIndex = 0,
       ITrace trace = null
     ) {
       string where = CAML.Where(op, fieldName, fieldType, fieldValue);
@@ -327,7 +327,7 @@
     /// <param name="trace"></param>
     /// <returns>Collection of CSOM list items</returns>
     public static ListItemCollection GetItemsPage(
-      this List list, 
+      this List list,
       string whereXml = "",
       QueryItemOptions options = null,
       /*
@@ -336,10 +336,10 @@
       List<string> viewFields = null,
       int pageSize = -1,
       */
-      int pageIndex = 0, 
+      uint pageIndex = 0,
       ITrace trace = null
     ) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       // note that in both viewFields and orderBy cases below,
       // null behaves differently than an empty collection.
       string viewFieldsXml = options.ViewFields.GetCamlViewFieldsXml(list, trace);
@@ -365,17 +365,17 @@
     public static ListItemCollection GetItemsPage(
       this List list,
       string whereXml = "",
-      int pageIndex = 0,
+      uint pageIndex = 0,
       ITrace trace = null,
       // query options long form
-      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll, 
+      CAML.ViewScope scope = CAML.ViewScope.RecursiveAll,
       string viewFieldsXml = "",
       string orderXml = "",
-      int pageSize = -1
+      uint pageSize = LISTITEM_LIMIT_USEDEFAULT
     ) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (pageSize == LISTITEM_LIMIT_USEDEFAULT)
-        pageSize = DEFAULT_LISTITEM_PAGE_SIZE;
+        pageSize = LISTITEM_LIMIT_DEFAULT_PAGE_SIZE;
       // TODO eliminate options that require hard CAML string encoding
       ClientContext context = (ClientContext)list.Context;
       // TODO make sure there are no other basetype that will throw an error with the default setting
@@ -384,7 +384,7 @@
         trace.TraceWarning("GetItemsPage: CAML scope of RecursiveAll or Recursive was used on a List. Reverting to All.");
       }
       CamlQuery camlQuery = new CamlQuery();
-      int skipHowMany = (pageIndex * pageSize); // " - pageSize " removed because our index is zero based
+      uint skipHowMany = (pageIndex * pageSize); // " - pageSize " removed because our index is zero based
       if (skipHowMany > 0) {
         ListItemCollectionPosition itemPosition = new ListItemCollectionPosition();
         trace.TraceVerbose(string.Format("skipHowMany = {0}", skipHowMany));
@@ -392,9 +392,9 @@
         camlQuery.ListItemCollectionPosition = itemPosition;
       }
       string viewXml = CAML.View(
-        scope, 
-        CAML.Query(whereXml, orderXml), 
-        viewFieldsXml, 
+        scope,
+        CAML.Query(whereXml, orderXml),
+        viewFieldsXml,
         CAML.RowLimit(pageSize)
       );
       if (!string.IsNullOrEmpty(viewXml)) {
@@ -424,7 +424,7 @@
         Dictionary<string, object> fv = items[0].FieldValues;
         foreach (string field in fv.Keys) {
           //if (fv[field] != null) // this didn't make sense
-            trace.TraceVerbose("  " + field);
+          trace.TraceVerbose("  " + field);
         }
       }
       return items;
@@ -446,10 +446,12 @@
     }
 
     // this can take a long time to run a query
-    public const int DEFAULT_LISTITEM_PAGE_SIZE = 4000;
-    public const int LISTITEM_LIMIT_USEDEFAULT = -1;
-    public const int LISTITEM_LIMIT_NOLIMIT = -2;
-
+    public const uint LISTITEM_LIMIT_DEFAULT_PAGE_SIZE = 4000;
+    // so can this
+    public const uint LISTITEM_LIMIT_NOLIMIT = 0;
+    // special value needed to indicate use of default
+    public const uint LISTITEM_LIMIT_USEDEFAULT = 1000000;
+    public const uint LISTITEM_LIMIT_MAXITEMS = 2147483647;
 
     /// <summary>
     /// Gets all items matching a query, using pagination
@@ -466,35 +468,35 @@
       string whereXml = "",
       QueryItemOptions options = null,
       ITrace trace = null
-      /*
-      , CAML.ViewScope scope = CAML.ViewScope.RecursiveAll
-      , Dictionary<string, CAML.SortType> orderBy = null
-      , List<string> viewFields = null
-      , int pageSize = -1
-      */
+    /*
+    , CAML.ViewScope scope = CAML.ViewScope.RecursiveAll
+    , Dictionary<string, CAML.SortType> orderBy = null
+    , List<string> viewFields = null
+    , int pageSize = -1
+    */
     ) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (options == null) options = new QueryItemOptions();
       if (!options.UsePagination) {
         trace.TraceWarning("Call being made without pagination support; if the list is over 5,000 items (or configured throttle limit) the operation will fail.");
 #pragma warning disable 618
-        ListItemCollection getItems = list.GetItemsNoPaging( whereXml, options, trace );
+        ListItemCollection getItems = list.GetItemsNoPaging(whereXml, options, trace);
 #pragma warning restore 618
         List<ListItem> getItemsAsList = new List<ListItem>(getItems.Count);
         getItemsAsList.AddRange(getItems);
         return getItemsAsList;
       }
       if (options.PageSize == LISTITEM_LIMIT_USEDEFAULT)
-        options.PageSize = DEFAULT_LISTITEM_PAGE_SIZE;
+        options.PageSize = LISTITEM_LIMIT_DEFAULT_PAGE_SIZE;
       ClientContext context = (ClientContext)list.Context;
-      int numPages = (list.ItemCount / options.PageSize) + 1;
+      uint numPages = (uint)(list.ItemCount / options.PageSize) + 1;
       // pre-allocate the list to hold the number of references we'll need
       int sizeOfList = list.ItemCount * 8; // hope this is not too big!
-      List < ListItem> allItems = new List<ListItem>(sizeOfList);
+      List<ListItem> allItems = new List<ListItem>(sizeOfList);
       TraceLevel level = (numPages > 1) ? TraceLevel.Info : TraceLevel.Verbose;
       trace.Trace(level, "{0} total items; page size {1}; iterating through {2} pages.", list.ItemCount, options.PageSize, numPages);
       int itemNumber = 0;
-      for (int pageNum = 0; pageNum < numPages; pageNum++) {
+      for (uint pageNum = 0; pageNum < numPages; pageNum++) {
         trace.Trace(level, "Processing page number {0}.", pageNum);
         trace.Trace(TraceLevel.Verbose, "Getting SharePoint List data...");
         ListItemCollection items = list.GetItemsPage(
@@ -539,18 +541,18 @@
       QueryItemOptions options = null,
       ITrace trace = null
     ) {
-      if (trace == null) trace = NullTrace.Default;
-      int rowLimit = options.PageSize;
+      if (trace == null) trace = DiagTrace.Default;
+      uint rowLimit = options.PageSize;
       if (rowLimit == LISTITEM_LIMIT_USEDEFAULT)
-        rowLimit = DEFAULT_LISTITEM_PAGE_SIZE;
+        rowLimit = LISTITEM_LIMIT_DEFAULT_PAGE_SIZE;
       string viewFieldsXml = options.ViewFields.GetCamlViewFieldsXml(list, trace);
       string orderByXml = GetOrderXml(options);
       CamlQuery camlQuery = new CamlQuery();
       camlQuery.ViewXml = CAML.View(
-        options.Scope, 
+        options.Scope,
         CAML.Query(whereXml, orderByXml),
         viewFieldsXml,
-        (rowLimit == LISTITEM_LIMIT_NOLIMIT) ? string.Empty : CAML.RowLimit(rowLimit)
+        CAML.RowLimit(rowLimit)
       );
       ListItemCollection items = list.GetItems(camlQuery);
       // this didn't make sense, since no property expressions were passed in
@@ -631,12 +633,12 @@
         list = clientContext.Web.Lists.GetByTitle(listName);
       }
        */
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext clientContext = (ClientContext)list.Context;
       if (options.LookupFieldType != "Text"
         && options.LookupFieldType != "Choice"
         && options.LookupFieldType != "Counter") {
-          trace.TraceWarning("The provided lookupFieldName='{0}'  and lookupFieldType='{1}' is not supported for ShowField of a lookup field target. This is not necessarily an error, but the caller should be aware. ", options.LookupFieldName, options.LookupFieldType);
+        trace.TraceWarning("The provided lookupFieldName='{0}'  and lookupFieldType='{1}' is not supported for ShowField of a lookup field target. This is not necessarily an error, but the caller should be aware. ", options.LookupFieldName, options.LookupFieldType);
       }
 
       if (list == null)
@@ -657,7 +659,7 @@
         };
         QueryItemOptions qo = new QueryItemOptions() {
           ViewFields = fields,
-          PageSize = options.AllowMultipleResults ? 100 : 5 // limit to 5 results, 2 is one too many
+          PageSize = (uint)(options.AllowMultipleResults ? 100 : 5) // limit to 5 results, 2 is one too many
         };
 #pragma warning disable 618
         ListItemCollection listItems = list.GetItemsNoPaging(match, qo, trace);
@@ -684,7 +686,7 @@
             trace.TraceWarning("Lookup query returned multiple items. Provide a different value or modify the list data so it's unique. value: {0}", value);
             return null;
           }
-          return listItems; 
+          return listItems;
         }
       } catch (Exception ex) {
         trace.TraceVerbose("Could not find lookup value '{0}' for field '{1}'(type={2}) in list '{3}' at web '{4}'. ", value, options.LookupFieldName, options.LookupFieldType, list.Title, list.ParentWebUrl);
@@ -694,7 +696,7 @@
     }
 
     public static FieldLookupValue GetLookupValue(this List list, string value, ResolveLookupOptions options = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (options == null) options = new ResolveLookupOptions();
       FieldLookupValue lookupValue = null;
       IEnumerable<ListItem> items = list.GetLookupItem(value, options, trace);
@@ -724,9 +726,9 @@
       return null;
     }
 
-#endregion
+    #endregion
 
-#region Item Creation
+    #region Item Creation
 
     private static ListItemCreationInformation CreateItemCreationInfo(this List list, ListItemHandlingType type) {
       return CreateItemCreationInfo(list, type, null, string.Empty);
@@ -751,7 +753,7 @@
 
     public static ListItem CreateItem(this List list, Hashtable fieldValues, CreateItemOptions options = null, WebContextManager contextManager = null, ITrace trace = null) {
       if (options == null) options = new CreateItemOptions();
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)list.Context;
       trace.TraceVerbose("CreateItem overload 1...");
       options.EnsureDefaultValues(list.IsDocumentLibrary(trace)); // checks that options.TitleInternalFieldName has a value
@@ -801,7 +803,7 @@
     }
 
     public static ListItem CreateItem(this List list, string titleValue, string titleInternalFieldName = "", Folder parentFolder = null, CoreMetadataInfo metaData = null, string contentTypeName = "", WebContextManager contextManager = null, ExecuteQueryFrequency doExecute = ExecuteQueryFrequency.Once, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       trace.TraceVerbose("CreateItem overload 2...");
 
       ContentTypeCache ctc = (contextManager == null) ? null : contextManager.ContentTypeCache;
@@ -834,7 +836,7 @@
             if (metaData != null)
               metaData.SetListItemMetadata(item);
             if (!string.IsNullOrEmpty(titleInternalFieldName) && !string.IsNullOrEmpty(titleValue))
-            item[titleInternalFieldName] = titleValue;
+              item[titleInternalFieldName] = titleValue;
             if (!string.IsNullOrEmpty(ctid))
               item["ContentTypeId"] = ctid;
             item.Update();
@@ -908,9 +910,9 @@
       return item;
     }
 
-#endregion
+    #endregion
 
-#region Update Item
+    #region Update Item
 
     private static Hashtable TranslateFieldValues(this List list, Hashtable fieldValues, UpdateItemOptions options, WebContextManager contextManager, ITrace trace) {
       if (list == null)
@@ -921,7 +923,7 @@
         throw new ArgumentNullException("options");
       if (fieldValues == null)
         throw new ArgumentNullException("fieldValues");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
 
       // transform and reality check items
       trace.Trace(TraceLevel.Verbose, "Checking Provided Fields...");
@@ -1000,7 +1002,7 @@
         throw new ArgumentNullException("contextManager");
       if (fieldValues == null)
         throw new ArgumentNullException("fieldValues");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
 
       // found that after refactoring sometimes properties hadn't been loaded
       // its honestly better to get it out of the way all at once anyway
@@ -1194,8 +1196,20 @@
       }
       if (props.ExemptFromBlockDownloadOfNonViewableFiles.HasValue) {
         trace.TraceVerbose("Setting list property '{0}' = '{1}'", "ExemptFromBlockDownloadOfNonViewableFiles", props.ExemptFromBlockDownloadOfNonViewableFiles.Value);
-        //list.ExemptFromBlockDownloadOfNonViewableFiles = props.ExemptFromBlockDownloadOfNonViewableFiles.Value;
-        list.SetExemptFromBlockDownloadOfNonViewableFiles(props.ExemptFromBlockDownloadOfNonViewableFiles.Value);
+        try {
+          list.ExemptFromBlockDownloadOfNonViewableFiles = props.ExemptFromBlockDownloadOfNonViewableFiles.Value;
+        } catch (Exception ex) {
+          Trace.TraceWarning("Setting list.ExemptFromBlockDownloadOfNonViewableFiles threw exception; error was: ", ex);
+          try {
+            // not clear why above was commented out in favor of below,
+            // but we'll reverse that now because we got error :
+            // Exception Message: Method not found: 'Void Microsoft.SharePoint.Client.List.SetExemptFromBlockDownloadOfNonViewableFiles(Boolean)'.
+            // maybe becuase older version of CSOM... or weird changes between versions
+            list.SetExemptFromBlockDownloadOfNonViewableFiles(props.ExemptFromBlockDownloadOfNonViewableFiles.Value);
+          } catch (Exception ex2) {
+            Trace.TraceWarning("Calling list.SetExemptFromBlockDownloadOfNonViewableFiles threw exception; error was: ", ex2);
+          }
+        }
       }
       if (props.IrmEnabled.HasValue) {
         trace.TraceVerbose("Setting list property '{0}' = '{1}'", "IrmEnabled", props.IrmEnabled.Value);
@@ -1292,7 +1306,7 @@
     /// <returns></returns>
     public static bool SetDefaultContentType(this List list, string ContentTypeName, ITrace trace) {
       if (trace == null)
-        trace = NullTrace.Default;
+        trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list");
       ClientContext context = (ClientContext)list.Context;
@@ -1328,7 +1342,7 @@
       return false;
     }
 
-#region List Content Types
+    #region List Content Types
 
     public static void ResolveContentTypeId(this List list, Hashtable fieldValues, WebContextManager contextManager = null, ITrace trace = null) {
       if (!fieldValues.ContainsKey("ContentType"))
@@ -1394,7 +1408,7 @@
     }
 
     private static ContentType EnsureContentTypeInner(this List list, string contentTypeName, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (string.IsNullOrEmpty(contentTypeName))
         throw new ArgumentNullException("contentTypeName");
       ClientContext context = (ClientContext)list.Context;
@@ -1438,14 +1452,14 @@
     /// <param name="cm"></param>
     /// <returns></returns>
     public static ContentType EnsureContentType(this List list, string contentTypeName, WebContextManager cm = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (string.IsNullOrEmpty(contentTypeName))
         throw new ArgumentNullException("contentTypeName");
       if (contentTypeName.Contains("|")) {
         throw new NotImplementedException("Please split your delimited array and call the overload of this method that allows for multiple content types.");
         //string[] contentTypes = contentTypeName.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
       }
-      
+
       ClientContext context = (ClientContext)list.Context;
       bool isDocSetCT = false;
 
@@ -1489,19 +1503,19 @@
       WebContextManager cm = null,
       ITrace trace = null
     ) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientRuntimeContext context = list.Context;
       List<ContentType> newCts = new List<ContentType>();
       if (cm == null)
         trace.TraceWarning("EnsureContentTypes called without a WebContextManager; Content type cache can't be leveraged which may significantly impact performance.");
       if (contentTypes == null)
         trace.TraceVerbose("contentTypes was null; nothing to do.");
-      foreach (string ctName in contentTypes) { 
+      foreach (string ctName in contentTypes) {
         trace.TraceVerbose(string.Format("Adding content type name '{0}' to list.", ctName));
         ContentType newCt = null;
         try {
           if (!string.IsNullOrEmpty(ctName))
-            newCt = list.EnsureContentType(ctName, cm, trace); 
+            newCt = list.EnsureContentType(ctName, cm, trace);
         } catch (Exception ex) {
           trace.TraceError(ex);
           //cmd.WriteError(new ErrorRecord(ex, "LISTCT_ADD_ERROR", ErrorCategory.NotSpecified, list));
@@ -1510,7 +1524,7 @@
         if (newCt != null)
           newCts.Add(newCt);
       }
-      if (newCts.Count > 0 && !string.IsNullOrEmpty(removeContentType)) { 
+      if (newCts.Count > 0 && !string.IsNullOrEmpty(removeContentType)) {
         list.RemoveContentType(removeContentType, trace);
       }
     }
@@ -1536,12 +1550,12 @@
       return list.ContentTypes.AddContentType(properties, ctxMgr);
     }
 
-#endregion
+    #endregion
 
-#region Folders and DocSets
+    #region Folders and DocSets
 
     public static Folder CreateFolderOrDocumentSet(this List list, string folderContentTypeName, string folderName, string localFilePath, string localFilPathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       return list.CreateFolderOrDocumentSet(null, folderContentTypeName, folderName, localFilePath, localFilPathFieldName, contextManager, trace);
     }
     /// <summary>
@@ -1553,7 +1567,7 @@
     /// <param name="localFilePath"></param>
     /// <param name="localFilePathFieldName"></param>
     public static Folder CreateFolderOrDocumentSet(this List list, Folder parentFolder, string folderContentTypeName, string newFolderName, string localFilePath, string localFilePathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list", "You must specify a valid SharePoint List object.");
       if (string.IsNullOrEmpty(folderContentTypeName))
@@ -1603,7 +1617,7 @@
     /// <returns></returns>
     // TODO it would be good if CreateFolderOrDocSet would look for content type "Folder" and come back here
     public static Folder CreateFolder(this List list, Folder parentFolder, string newFolderName, string localFilePath, string localFilPathFieldName, ITrace trace) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list", "You must specify a valid SharePoint List object.");
       ClientContext context = (ClientContext)list.Context;
@@ -1624,11 +1638,11 @@
       return null; //HACK this will likely have unintended consequences since Folder was probably useful to the caller
 #endif
     }
-    
 
-#endregion
 
-#region Fields
+    #endregion
+
+    #region Fields
 
     public static Field EnsureField(this List list, string fieldName, string fieldTypeAsString) {
       if (string.IsNullOrEmpty(fieldName))
@@ -1700,9 +1714,9 @@
       return field;
     }
 
-#endregion
+    #endregion
 
-#region Views
+    #region Views
 
     public static bool TryGetView(this List list, string title, out View view, bool ignoreCase = true) {
       try {
@@ -1789,9 +1803,9 @@
       return result;
     }
 
-#endregion
+    #endregion
 
-#region Custom Properties
+    #region Custom Properties
 
     public static ClientObjectData GetObjectData(this List list) {
       //protected internal
@@ -1963,7 +1977,7 @@
     // StsSoap.dll ListSchemaImpl.UpdateProp makes it clear that only certain attributes are supported
     // here are a few that may work but aren't available in CSOM
     public static List SetLegacyAttribute(this List list, string propName, bool value, WebContextManager cm, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (cm == null) {
         trace.TraceWarning("Can't set '{0}' a WebConextManager. Operation skipped.", propName);
         return list;
@@ -1988,7 +2002,7 @@
       return list;
     }
     public static List SetLegacyAttribute(this List list, string propName, ulong value, WebContextManager cm, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (cm == null) {
         trace.TraceWarning("Can't set '{0}' a WebConextManager. Operation skipped.", propName);
         return list;
@@ -2025,7 +2039,7 @@
         trace.TraceWarning("Can't set NavigateForFormsPages without a WebConextManager. Operation skipped.");
         return;
       }
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       bool? current = list.GetNavigateForFormsPages();
       if (current.HasValue && current.Value == value) {
         trace.TraceVerbose("SetNavigateForFormsPages for list '{0}' had nothing to do and was skipped.", list.Title);
@@ -2062,39 +2076,69 @@
 
     #endregion
 
-#region Remote Event Receivers
+    #region Remote Event Receivers
 
-    /* Sorry, but event receivers are a new thing in CSOM */
-#if !DOTNET_V35
+#if !DOTNET_V35 // Sorry, but event receivers are a new thing in CSOM
 
     // with thanks to https://blogs.msdn.microsoft.com/kaevans/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web/
-    public static bool EnsureRemoteEvent(this List list, string receiverName, Uri receiverUrl, EventReceiverSynchronization sync, int seq, ITrace trace) {
-      if (trace == null) trace = NullTrace.Default;
-      ClientContext clientContext = (ClientContext)list.Context;
-      foreach (var rer in list.EventReceivers) {
-        if (rer.ReceiverName == receiverName) {
-          trace.TraceVerbose("Found existing {0} receiver at {1}. Exiting. ", receiverName, rer.ReceiverUrl);
-          return false;
+    public static bool BindRemoteEvent(this List list, bool doExecute, string receiverName, Uri receiverUrl, EventReceiverType eventType, EventReceiverSynchronization sync = EventReceiverSynchronization.DefaultSynchronization, int sequence = 10000, bool force = false, ITrace trace = null) {
+      if (trace == null) trace = DiagTrace.Default;
+      try {
+        ClientContext clientContext = (ClientContext)list.Context;
+        list.EnsureProperty(p => p.EventReceivers);
+        foreach (var rer in list.EventReceivers) {
+          if (rer.ReceiverName == receiverName) {
+            if (force) {
+              trace.TraceWarning("Found existing {0} receiver at {1} with force option. Trying to Unbind the receiver. ", receiverName, rer.ReceiverUrl);
+              list.UnbindRemovteEvent(receiverName);
+            } else {
+              trace.TraceWarning("Found existing {0} receiver at {1}. Exiting. ", receiverName, rer.ReceiverUrl);
+              return false;
+            }
+          }
         }
+
+        EventReceiverDefinitionCreationInformation receiver =
+          new EventReceiverDefinitionCreationInformation() {
+            EventType = eventType,
+            ReceiverUrl = receiverUrl.ToString(),
+            ReceiverName = receiverName,
+            /*
+              eventReceiver.ReceiverAssembly = Assembly.GetExecutingAssembly().FullName;
+              eventReceiver.ReceiverClass = "HTools_EventReceiver";
+              eventReceiver.ReceiverName = "HTools_EventReceiver";
+             */
+            Synchronization = sync,
+            SequenceNumber = sequence
+          };
+        list.EventReceivers.Add(receiver);
+        trace.TraceInfo("Adding receiver {0} at {1}", receiverName, receiverUrl);
+        if (doExecute)
+          clientContext.ExecuteQuery();
+      } catch (Exception ex) {
+        trace.TraceInfo("Error assing receiver {0} at {1}", receiverName, receiverUrl);
+        trace.TraceError(ex);
+        return false;
       }
-
-      EventReceiverDefinitionCreationInformation receiver =
-          new EventReceiverDefinitionCreationInformation();
-      receiver.EventType = EventReceiverType.ItemAdded;
-      //Get WCF URL where this message was handled
-
-      receiver.ReceiverUrl = receiverUrl.ToString();
-      receiver.ReceiverName = receiverName;
-      receiver.Synchronization = sync;
-      receiver.SequenceNumber = seq;
-      list.EventReceivers.Add(receiver);
-      clientContext.ExecuteQuery();
-      trace.TraceInfo("Added {0} receiver at {1}", receiverName, receiverUrl);
       return true;
+    }
+    public static void UnbindRemovteEvent(this List list, string receiverName, ITrace trace = null) {
+      if (trace == null) trace = DiagTrace.Default;
+      ClientContext context = (ClientContext)list.Context;
+      list.EnsureProperty(p => p.EventReceivers);
+      EventReceiverDefinition rer = list.EventReceivers.Where(e => e.ReceiverName == receiverName).FirstOrDefault();
+      if (rer != null) {
+        trace.TraceInfo("Removing receiver {0} of type {1} at {2}", receiverName, rer.EventType, rer.ReceiverUrl);
+        //This will fail when deploying via F5, but works when deployed to production
+        rer.DeleteObject();
+        context.ExecuteQuery();
+      } else {
+        trace.TraceWarning("Receiver {0} not found; skipping remove operation", receiverName);
+      }
     }
 
 #endif
-#endregion
+    #endregion
 
   }
 

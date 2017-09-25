@@ -89,3 +89,4 @@ R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\ko\System.Spatial.resou
 R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\ru\System.Spatial.resources.dll
 R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\zh-Hans\System.Spatial.resources.dll
 R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\zh-Hant\System.Spatial.resources.dll
+R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP15_45\Microsoft.SharePoint.Client.Taxonomy.dll

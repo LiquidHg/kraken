@@ -83,7 +83,8 @@ join the team.
 
 Update History:
 
-v0.2.87: Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of just numeric ID.
+v0.2.88: Alpha. Fixed issue with illegal char like ampersand in field CHOICES causing exception; fixed issue with weird CSOM list property SetExemptFromBlockDownloadOfNonViewableFiles causing 'method not found' exception when it is set. Add support for GroupBy to CAML library/helpers. Refactored view CAML to use unsigned int for all row limits. Made RowLimit an optional parameter in IHasCamlViewParameters.
+v0.2.87: Stable and tested. Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of numeric ID.
 v0.2.86: Additional fixes to support Info Architecture import functions after massive changes to site column methods. Specifically, the method for loading key properties for fields was not including all properties as speicifed, because CSOM is a total P.o.S.
 v0.2.85: Fixed problems with FieldProperties not being loaded during canonicalization of formulas when creating site columns and in creation of extra fields for lookup columns; updated to make it more consistent and robust. Added some useful methods to FieldUtility class. Made some changes to CSOM query optimization so that not as many calls to the server get made.
 v0.2.84-alpha01: Fixed an issue with scope in file upload utility.
@@ -145,7 +146,7 @@ v0.2.29: Added CredUtil managed overloads to CredRead and CredWrite which are po
 v0.2.28: Added embedded c# code from CredMan.ps1 to Kraken.Core.Security so that we can call it directly from WebContextManager to save creds for future use.
 v0.2.27: Added class ParsableOptions with collection for reporting parse errors; made classes that have Hashtable constructors derive from it. Added logging to report fields returned from GetItemsWithPaging. Refactored named of GetAllItems and GetItemsWith... extension methods.
 v0.2.26: Fix - Disconnected trace params in some overloads of GetAllItemsWithPaging; CamlFieldToValueMatchOptions hashtable constructor had invalid foreach loops that would cause type conversion errors if used.
-v0.2.25: Fix - CamlHelper had a couple places where ITrace trace was null and shoul dhave defaulted to NullTrace.Default to prevent NullReferenceException.
+v0.2.25: Fix - CamlHelper had a couple places where ITrace trace was null and shoul dhave defaulted to DiagTrace.Default to prevent NullReferenceException.
 v0.2.24: Extended ListItemIdentifier to include a multi-purpose item finder with intent to leverage this is pipe binders and other find utilities downstream.
 v0.2.23: Moved SimpleTarget/SimpleMatch to ListItemIdentifier from CamlMatchOptions.
 v0.2.22: Added IListItemIdentifier and methods to support uniform retrieval of items by their identifying characateristics to CamlMatchOptions (not sure if this is the best perma-home; maybe it belongs in ListExtensions).

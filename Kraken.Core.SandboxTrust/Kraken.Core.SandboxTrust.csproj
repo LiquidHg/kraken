@@ -63,7 +63,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=100.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
@@ -96,6 +96,7 @@
     <Compile Include="System\ObjectExtensions.cs" />
     <Compile Include="Trace\ITrace.cs" />
     <Compile Include="Trace\NullTrace.cs" />
+    <Compile Include="Trace\DiagTrace.cs" />
     <Compile Include="Trace\SimpleTrace.cs" />
     <Compile Include="Trace\StopwatchTrace.cs" />
     <Compile Include="Trace\TraceExtensions.cs" />

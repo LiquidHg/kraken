@@ -83,6 +83,7 @@ join the team.
 
 Update History:
 
+v0.2.15: Ensures latest updates all underlying WSP and DLL versions
 v0.2.14: Fix - KLS TryGetLocal caught in infinite recovery loop due to SecurityException under very rare pre-login circumstances.
 v0.2.13: Fix - KLS CreateNew fail-safes have been reengineered to prevent circular references in claim providers.
 v0.2.12: Small tweaks to KLS to reduce how often it needs to use fail-safe log recovery mode; now reference Kraken.SPSandboxLibrary via Nuget instead of project reference; AssemblyVersion compiler directives reversed to make v4.5/v15.0 the default and v3.5/v14 only when .NET 3.5 is set.

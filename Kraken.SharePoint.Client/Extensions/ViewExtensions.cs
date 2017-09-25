@@ -185,7 +185,7 @@
     /// <param name="trace"></param>
     /// <returns></returns>
     public static bool Update(this View view, ViewProperties props, bool skipCreateProperties, string listTitle, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (props.Validate(trace))
         return false;
       bool updateNeeded = false;

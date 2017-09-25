@@ -33,5 +33,30 @@ namespace Microsoft.SharePoint.Client {
     }
 #endif
 
+    public static void EnforceAuditSettings(Site site, string auditLogDocLib = "/Audit Logs") {
+      site.EnsureProperty(s => s.TrimAuditLog, s => s.AuditLogTrimmingRetention, s => s.Audit);
+      site.TrimAuditLog = true;
+      site.AuditLogTrimmingRetention = 90;
+
+      site.Audit.AuditFlags = AuditMaskType.All;
+      site.Audit.Update();
+
+      Web web = site.RootWeb;
+      web.EnsureProperty(w => w.AllProperties);
+      web.LoadBasicProperties();
+
+      PropertyValues allProperties = web.AllProperties;
+      // thank you https://sharepoint.stackexchange.com/questions/153185/how-to-set-site-audit-report-document-library-location-via-csom
+      allProperties["_auditlogreportstoragelocation"] = auditLogDocLib; //"/site/LibraryName";
+
+      // there is no site upodate
+      web.Update();
+      web.Context.ExecuteQuery();
+    }
+    public static void GenerateAuditReport(Site site) {
+      //site.Audit.GetEntries doesn't exist
+    }
+
+
   }
 }

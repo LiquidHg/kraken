@@ -27,7 +27,7 @@
     /// <param name="loadedProperties">An array of properties that were actually loaded</param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, string propertyName, out string[] loadedProperties) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       return clientObject.EnsureProperty(trace, new string[] { propertyName }, out loadedProperties);
     }
     /// <summary>
@@ -40,7 +40,7 @@
     /// <param name="trace"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, string propertyName) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       string[] loadedProperties; // ve vill bury you! ;-)
       return clientObject.EnsureProperty(trace, propertyName, out loadedProperties);
     }
@@ -56,7 +56,7 @@
     /// <param name="loadedProperties">An array of properties that were actually loaded</param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, string[] propertyNames, out string[] loadedProperties) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)clientObject.Context;
       loadedProperties = context.LoadIfRequired(clientObject, propertyNames/* , ExecuteQueryFrequency.Once */, false, trace);
       if (loadedProperties.Length > 0)
@@ -74,7 +74,7 @@
     /// <param name="propertyNames"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, string[] propertyNames) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       string[] loadedProperties; // ve vill bury you! ;-)
       return clientObject.EnsureProperty(trace, propertyNames, out loadedProperties);
     }
@@ -86,7 +86,7 @@
     /// <param name="propertyNames"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, string[] propertyNames) where T : ClientObject {
-      return clientObject.EnsureProperty(NullTrace.Default, propertyNames);
+      return clientObject.EnsureProperty(DiagTrace.Default, propertyNames);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@
     /// <param name="propertyExpressions"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, params Expression<Func<T, object>>[] propertyExpressions) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)clientObject.Context;
       if (propertyExpressions == null || propertyExpressions.Length == 0) {
         // not really sure it makes sense to be ensuring an item with no properties
@@ -121,7 +121,7 @@
     /// <param name="propertyExpressions"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, params Expression<Func<T, object>>[] propertyExpressions) where T : ClientObject {
-      return clientObject.EnsureProperty(NullTrace.Default, propertyExpressions);
+      return clientObject.EnsureProperty(DiagTrace.Default, propertyExpressions);
     }
 
     /// <summary>
@@ -135,7 +135,7 @@
     /// <param name="force"></param>
     /// <returns></returns>
     public static T EnsureProperty<T>(this T clientObject, ITrace trace, bool force) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)clientObject.Context;
       if (force) {
         trace.TraceVerbose("Forced load of client object");
@@ -163,7 +163,7 @@
     /// </remarks>
     /// <returns>Return true is the property is available or instantiated.</returns>
     public static bool IsLoaded<T>(this T clientObject, ITrace trace, Expression<Func<T, object>> propertyExpr) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (clientObject == null)
         return false;
       var expression = propertyExpr.Body;
@@ -201,7 +201,7 @@
     /// <param name="properties"></param>
     /// <returns></returns>
     public static bool IsLoaded<T>(this T clientObject, ITrace trace, params Expression<Func<T, object>>[] propertyExpressions) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       bool allLoaded = true;
       foreach (var propertyExpr in propertyExpressions) {
         allLoaded &= clientObject.IsLoaded(trace, propertyExpr);

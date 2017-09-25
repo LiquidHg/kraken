@@ -15,7 +15,7 @@ namespace Kraken.SharePoint.Client {
     private ITrace Trace { get; set; }
 
     public CoreMetadataInfo(ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       this.Trace = trace;
       if (string.IsNullOrEmpty(DefaultLocalFilePathFieldName))
         DefaultLocalFilePathFieldName = "MetadataSourceURL";

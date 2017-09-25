@@ -31,7 +31,7 @@
     /// <param name="trace"></param>
     /// <returns></returns>
     public static Field Add(this FieldCollection fields, FieldProperties properties, bool execute = true, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)fields.Context;
       if (properties.IsLookupField) {
         LookupFieldProvisioner lookupFieldProvisioner = new LookupFieldProvisioner(context, trace);
@@ -60,7 +60,7 @@
     }
 
     public static Field Add(this FieldCollection fields, string schemaXml, bool execute, ITrace trace = null) {
-      //if (trace == null) trace = NullTrace.Default;
+      //if (trace == null) trace = DiagTrace.Default;
       try {
         AddFieldOptions options = AddFieldOptions.AddFieldInternalNameHint | AddFieldOptions.DefaultValue;
         ClientContext context = (ClientContext)fields.Context;
@@ -307,7 +307,7 @@
     /// <param name="trace"></param>
     /// <returns>The formula string with display values replaced by internal names</returns>
     public static string CanonicalizeFormula(this FieldCollection fields, string formula, List<Field> fieldRefs, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (fieldRefs == null)
         throw new ArgumentNullException("fieldRefs");
       if (string.IsNullOrWhiteSpace(formula))
@@ -382,7 +382,7 @@
     /// allows us to pass in a collection of mixed names, titles, and ids
     /// </remarks>
     public static List<Field> GetLookupSupportedFields(this FieldCollection fields, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       // apparently hidden fields are never allowed?
       List<Field> supportedFields = fields.Where(f => f.IsLookupSupported()).ToList();
       foreach (Field field in fields) {

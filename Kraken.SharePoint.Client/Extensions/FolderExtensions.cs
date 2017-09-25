@@ -17,14 +17,7 @@
     private const int maxSize = 1600000; // really 2097152 but let's give it some margin;
     private const int maxRetries = 2;
     private const int retryPause = 2000;
-    private const int hugeFileSize = 36700160; // about 35MB
-    private const double hugeFileTimeOutMultiplier = 1.5; // 1.25 was good for a while, but when things get slow it causes significant timeouts
     //private const int hugeFileTimeOut = 300000; // 5 minutes!
-
-    /// <summary>
-    /// A typical number of MB/second on O365; used to calculate timeouts
-    /// </summary>
-    private const int office365KBPerSecond = 250;
 
     #region Sub-folders
 
@@ -80,7 +73,7 @@
       if (string.IsNullOrEmpty(newFolderName))
         throw new ArgumentNullException("newFolderName");
       // TODO we can't really do this for content types like doc set yet
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)parentFolder.Context;
       CoreMetadataInfo metaData = new CoreMetadataInfo(localFilePath, trace) {
         LocalFilePathFieldName = localFilPathFieldName
@@ -161,22 +154,24 @@
     }
      */
 
-    public static File UploadFile(this Folder folder/*, List parentList */, string localFilePath, string localFilPathFieldName, bool overwrite, string ctid, ITrace trace = null, bool tryWebDAVOnError = true, int retryCount = 0) {
-      if (trace == null) trace = NullTrace.Default;
+    public static File UploadFile(this Folder folder/*, List parentList */, string localFilePath, string localFilPathFieldName, bool overwrite, string ctid, ITransferTimeEstimator estimator = null, ITrace trace = null, bool tryWebDAVOnError = true, int retryCount = 0) {
+      if (trace == null) trace = DiagTrace.Default;
       File result = null;
       //UploadResult result = UploadResult.Unknown;
       System.IO.FileInfo fi = new System.IO.FileInfo(localFilePath);
-      double estimatedSeconds = EstimateUploadTime(fi);
-      trace.Trace(TraceLevel.Verbose, "File size is {0:0} KBytes; Estimated upload time {1:0} Seconds", fi.Length / 1024, estimatedSeconds);
+      if (estimator == null)
+        estimator = new SimpleTransferTimeEstimator();
+      estimator.FileKB = (fi.Length / 1024);
+      trace.TraceVerbose(estimator.ToString());
       //bool doWebDAVUpload = (fi.Length > maxSize);
       //bool fileIsHuge = (fi.Length > hugeFileSize);
       UploadMethod um = ChooseUploadMethod(fi);
       if (um == UploadMethod.DirectClone)
-        trace.Trace(TraceLevel.Warning, "File is {0:0}MB or bigger. Using the huge file workaround. Upload timeout extended to {1:0.00} minutes. Prepare yourself! This operation may take a long time.", hugeFileSize / (1024 * 1024), ((double)estimatedSeconds) / 60);
+        trace.Trace(TraceLevel.Warning, "File is {0:0}MB or bigger. Using the huge file workaround. Upload timeout extended to {1:0.00} minutes. Prepare yourself! This operation may take a long time.", hugeFileSize / (1024 * 1024), (estimator?.EstimatedMinutes).GetValueOrDefault());
       DateTime startTime = DateTime.Now;
 
       try {
-        result = folder.UploadFileInternals(um, HashAlgorithmType.None, localFilePath, localFilPathFieldName, overwrite, ctid, trace);
+        result = folder.UploadFileInternals(um, HashAlgorithmType.None, localFilePath, localFilPathFieldName, overwrite, ctid, estimator, trace);
         //result = UploadResult.Uploaded;
       } catch (Microsoft.SharePoint.Client.ServerException ex) { // .InvalidClientQueryException
         //result = UploadResult.NotUploaded;
@@ -187,7 +182,7 @@
           && !alreadyExistsError) {
           trace.Trace(TraceLevel.Warning, "Upload of file triggered exception. Handling exception for large files in CSOM.");
           try {
-            result = folder.UploadFileInternals(UploadMethod.Direct, HashAlgorithmType.None, localFilePath, localFilPathFieldName, overwrite, ctid, trace);
+            result = folder.UploadFileInternals(UploadMethod.Direct, HashAlgorithmType.None, localFilePath, localFilPathFieldName, overwrite, ctid, estimator, trace);
             //result = UploadResult.Uploaded;
           } catch (Exception) {
             //result = UploadResult.NotUploaded;
@@ -208,7 +203,7 @@
           trace.Trace(TraceLevel.Verbose, "Pausing a bit to give SharePoint server time to recover.");
           System.Threading.Thread.Sleep(retryPause);
           trace.Trace(TraceLevel.Warning, "Retrying... Attempt {0} out of {1}", retryCount + 1, maxRetries);
-          result = folder.UploadFile(/* parentList, */ localFilePath, localFilPathFieldName, overwrite, ctid, trace, tryWebDAVOnError, retryCount + 1);
+          result = folder.UploadFile(/* parentList, */ localFilePath, localFilPathFieldName, overwrite, ctid, estimator, trace, tryWebDAVOnError, retryCount + 1);
         } else {
           trace.Trace(TraceLevel.Error, "maxRetries reached. I give up!");
           throw webex;
@@ -221,7 +216,7 @@
     }
 
 		public static bool Rename(this Folder folder, string newTitle, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       var ctx = folder.Context;
 			try {
 #if !DOTNET_V35
@@ -241,13 +236,11 @@
 			}
 		}
 
-    public static double EstimateUploadTime(double fileKiloBytes) {
-      double estimatedSeconds = (fileKiloBytes * hugeFileTimeOutMultiplier / office365KBPerSecond);
-      return estimatedSeconds;
-    }
-    public static double EstimateUploadTime(System.IO.FileInfo fi) {
-      return EstimateUploadTime(fi.Length / 1024);
-    }
+    #region Estimators
+
+    private const int hugeFileSize = 36700160; // about 35MB
+
+    #endregion
 
     private static UploadMethod ChooseUploadMethod(System.IO.FileInfo fi) {
       if (fi.Length <= maxSize)
@@ -257,8 +250,8 @@
       return UploadMethod.DirectClone;
     }
 
-    public static File UploadFileInternals(this Folder folder, /* List parentList, */ UploadMethod uploadMethod, HashAlgorithmType hashMethod, string localFilePath, string localFilPathFieldName, bool overwrite, string ctid, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+    public static File UploadFileInternals(this Folder folder, /* List parentList, */ UploadMethod uploadMethod, HashAlgorithmType hashMethod, string localFilePath, string localFilPathFieldName, bool overwrite, string ctid, ITransferTimeEstimator estimator, ITrace trace = null) {
+      if (trace == null) trace = DiagTrace.Default;
       System.IO.FileInfo fi = new System.IO.FileInfo(localFilePath);
       // TODO support files with lengths > int can support
       if (fi.Length > int.MaxValue)
@@ -310,11 +303,17 @@
 
       string fn = System.IO.Path.GetFileName(localFilePath);
       string fileUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, fn);
+      // commented because it is calle din UploadFile
+      /*
       // TODO move the size calculation to here
+      trace.TraceVerbose("Using upload method {0}", uploadMethod);
       double estimatedSeconds = EstimateUploadTime(fi);
+      trace.TraceVerbose(string.Format("Estimated {0} seconds.", estimatedSeconds));
       int estTimeOut = (int)(estimatedSeconds * 1000 * 2); // HACK x2 added because stuff was timing out too often
-      trace.TraceInfo("Using upload method {0}", uploadMethod);
-      trace.TraceInfo(string.Format("Estimated {0} seconds.", estimatedSeconds));
+      */
+      ulong estTimeOut = 300; // five minutes without estimator, yuck
+      if (estimator != null) // calc on ticks
+        estTimeOut = estimator.TimeOutTicks;
 
       byte[] buffer = null;
       if (uploadMethod == UploadMethod.CSOM)
@@ -408,14 +407,14 @@
       return baseUri.AbsoluteUri;
     }
 
-    public static void SaveBinaryDirect(this ClientContext context, int timeOut, string serverRelativeUrl, System.IO.Stream stream, bool overwriteIfExists) {
+    public static void SaveBinaryDirect(this ClientContext context, ulong timeOut, string serverRelativeUrl, System.IO.Stream stream, bool overwriteIfExists) {
       SaveBinary(context, timeOut, serverRelativeUrl, stream, null, overwriteIfExists, SaveBinaryCheckMode.Overwrite);
     }
-    public static void SaveBinaryDirect(this ClientContext context, int timeOut, string serverRelativeUrl, System.IO.Stream stream, string etag) {
+    public static void SaveBinaryDirect(this ClientContext context, ulong timeOut, string serverRelativeUrl, System.IO.Stream stream, string etag) {
       SaveBinary(context, timeOut, serverRelativeUrl, stream, etag, false, SaveBinaryCheckMode.ETag);
     }
 
-    private static void SaveBinary(ClientContext context, int timeOut, string serverRelativeUrl, System.IO.Stream stream, string etag, bool overwriteIfExists, SaveBinaryCheckMode checkMode) {
+    private static void SaveBinary(ClientContext context, ulong timeOut, string serverRelativeUrl, System.IO.Stream stream, string etag, bool overwriteIfExists, SaveBinaryCheckMode checkMode) {
       if (context == null) {
         throw new ArgumentNullException("context");
       }
@@ -424,7 +423,7 @@
       }
       string requestUrl = MakeFullUrl(context, serverRelativeUrl);
       WebRequestExecutor webRequestExecutor = context.WebRequestExecutorFactory.CreateWebRequestExecutor(context, requestUrl);
-      webRequestExecutor.WebRequest.Timeout = timeOut;
+      webRequestExecutor.WebRequest.Timeout = (int)timeOut;
       webRequestExecutor.RequestMethod = "PUT";
       if (checkMode == SaveBinaryCheckMode.ETag) {
         if (!string.IsNullOrEmpty(etag)) {

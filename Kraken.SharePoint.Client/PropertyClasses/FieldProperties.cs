@@ -1189,12 +1189,15 @@ namespace Kraken.SharePoint.Client {
           if (this.MappedChoices != null && this.MappedChoices.Count() > 0 && FieldUtility.IsChoiceFieldType(this.Type)) {
             sb.Append("<CHOICES>");
             foreach (string choice in this.MappedChoices.Values) {
-              sb.AppendFormat("<CHOICE>{0}</CHOICE>", choice);
+              sb.AppendFormat("<CHOICE>{0}</CHOICE>"
+                , StringBuilderXmlExtensions.XmlEscape(choice));
             }
             sb.Append("</CHOICES>");
             sb.Append("<MAPPINGS>");
             foreach (string key in this.MappedChoices.Keys) {
-              sb.AppendFormat("<MAPPING Value=\"{0}\">{1}</MAPPING>", key, this.MappedChoices[key]);
+              sb.AppendFormat("<MAPPING Value=\"{0}\">{1}</MAPPING>"
+                , StringBuilderXmlExtensions.XmlEscape(key)
+                , StringBuilderXmlExtensions.XmlEscape(this.MappedChoices[key]));
             }
             sb.Append("</MAPPINGS>");
           } else {
@@ -1202,36 +1205,46 @@ namespace Kraken.SharePoint.Client {
             if (this.Choices != null && this.Choices.Count() > 0 && FieldUtility.IsChoiceFieldType(this.Type)) {
               sb.Append("<CHOICES>");
               foreach (string choice in Choices) {
-                sb.AppendFormat("<CHOICE>{0}</CHOICE>", choice);
+                sb.AppendFormat("<CHOICE>{0}</CHOICE>"
+                  , StringBuilderXmlExtensions.XmlEscape(choice));
               }
               sb.Append("</CHOICES>");
             }
           }
           // TODO what if the defaultValue is not contained in choices???
           if (!string.IsNullOrEmpty(Formula))
-            sb.AppendFormat("<Formula>{0}</Formula>", this.Formula);
+            sb.AppendFormat("<Formula>{0}</Formula>"
+              , StringBuilderXmlExtensions.XmlEscape(this.Formula));
 #if !DOTNET_V35
           if (this.DefaultValue != null && !string.IsNullOrWhiteSpace(this.DefaultValue.ToString()))
 #else
           // TODO an extension method for 3.5 support of IsNullOrWhiteSpace would be a nice thing to have
           if (this.DefaultValue != null && !StringTools.IsNullOrWhiteSpace(this.DefaultValue.ToString()))
 #endif
-            sb.AppendFormat("<Default>{0}</Default>", this.DefaultValue);
+            sb.AppendFormat("<Default>{0}</Default>"
+              , StringBuilderXmlExtensions.XmlEscape(this.DefaultValue.ToString()));
           if (!string.IsNullOrEmpty(DefaultFormula))
-            sb.AppendFormat("<DefaultFormula>{0}</DefaultFormula>", this.DefaultFormula);
+            sb.AppendFormat("<DefaultFormula>{0}</DefaultFormula>"
+              , StringBuilderXmlExtensions.XmlEscape(this.DefaultFormula));
           // ex: >=OR([ExpirationDate]&gt;TODAY(), [ExpirationDate]=0)
           if (!string.IsNullOrEmpty(this.ValidationFormula) && !string.IsNullOrEmpty(this.ValidationMessage)) {
             string scriptAttrib = string.Empty;
             if (!string.IsNullOrEmpty(this.ValidationEcmaScript))
-              scriptAttrib = string.Format(" Script=\"{0}\"", this.ValidationEcmaScript);
+              scriptAttrib = string.Format(" Script=\"{0}\""
+                , StringBuilderXmlExtensions.XmlEscape(this.ValidationEcmaScript));
             // TODO HtmlFormat the value of the formula
-            sb.AppendFormat("<Validation Message=\"{0}\" {1}>{2}</Validation>", this.ValidationMessage, scriptAttrib, this.ValidationFormula);
+            sb.AppendFormat("<Validation Message=\"{0}\" {1}>{2}</Validation>"
+              , StringBuilderXmlExtensions.XmlEscape(this.ValidationMessage)
+              , StringBuilderXmlExtensions.XmlEscape(scriptAttrib)
+              , StringBuilderXmlExtensions.XmlEscape(this.ValidationFormula));
           }
           if (this.FieldRefs != null && this.FieldRefs.Count > 0) {
             sb.Append("<FieldRefs>");
             foreach (Field f in this.FieldRefs) {
               // TODO sb.Append(Caml.CAML.FieldRef());
-              sb.AppendFormat("<FieldRefs Name=\"{0}\" ID=\"{1}\" />", f.InternalName, f.Id);
+              sb.AppendFormat("<FieldRefs Name=\"{0}\" ID=\"{1}\" />"
+                , f.InternalName
+                , f.Id);
             }
             sb.Append("</FieldRefs>");
           }
@@ -1241,7 +1254,11 @@ namespace Kraken.SharePoint.Client {
           schemaXml = sb.ToString();
           break;
         case FieldSchemaGenerationMethod.Simple:
-          schemaXml = string.Format("<Field DisplayName='{0}' Name='{1}' Group='{2}' Type='{3}' />", this.DisplayName, this.InternalName, this.Group, this.Type);
+          schemaXml = string.Format("<Field DisplayName='{0}' Name='{1}' Group='{2}' Type='{3}' />"
+            , StringBuilderXmlExtensions.XmlEscape(this.DisplayName)
+            , StringBuilderXmlExtensions.XmlEscape(this.InternalName)
+            , StringBuilderXmlExtensions.XmlEscape(this.Group)
+            , StringBuilderXmlExtensions.XmlEscape(this.Type));
           break;
         default:
           throw new NotImplementedException(string.Format("FieldSchemaGenerationMethod.{0} is not yet implemented.", method.ToString()));

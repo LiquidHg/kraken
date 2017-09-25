@@ -245,19 +245,32 @@ namespace Kraken.SharePoint.Client.Caml {
     /// <param name="rightPart">the right expression</param>
     /// <returns>a new CAML GEQ element</returns>
     public static string Geq(string leftPart, string rightPart) { return Tag(CamlResources.Geq, null, null, leftPart + rightPart); }
-    /// <summary>
-    /// Identifies a field reference for grouping.
-    /// </summary>
-    /// <param name="fieldRefElement">a CAML FieldRef element</param>
-    /// <returns>a new CAML GroupBy element</returns>
-    public static string GroupBy(string fieldRefElement) { return GroupBy(fieldRefElement, false); }
+
+    #region Customized by LMS
     /// <summary>
     /// Identifies a field reference for grouping and specifies whether to collapse the group.
     /// </summary>
-    /// <param name="fieldRefElement">a CAML FieldRef element</param>
-    /// <param name="bCollapse">whether to collapse the group</param>
+    /// <param name="fieldRefElements">a CAML FieldRef element</param>
+    /// <param name="collapse">whether to collapse the group</param>
+    /// <param name="groupLimit">limit groups per page or 0 for no limit</param>
     /// <returns>a new CAML GroupBy element</returns>
-    public static string GroupBy(string fieldRefElement, bool bCollapse) { return Tag(CamlResources.GroupBy, CamlResources.Collapse, bCollapse ? "TRUE" : "FALSE", fieldRefElement); }
+    public static string GroupBy(string fieldRefElements, bool collapse = false, uint groupLimit = Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT) {
+      if (groupLimit <= /*0*/ Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT) {
+        // this is quirky version of Tag that puts a single attribute first
+        return Tag(
+          CamlResources.GroupBy,
+          CamlResources.Collapse, collapse.ToString().ToUpper(),
+          fieldRefElements
+        );
+      }
+      return Tag(
+        CamlResources.GroupBy, fieldRefElements, 
+        CamlResources.Collapse, collapse.ToString().ToUpper(),
+        CamlResources.GroupLimit, groupLimit
+      );
+    }
+    #endregion // Customized by LMS
+
     /// <summary>
     /// Tests whether the left expression is greater than the right.
     /// </summary>
@@ -541,10 +554,14 @@ namespace Kraken.SharePoint.Client.Caml {
       return Tag("Query", string.Empty, string.Empty, whereAndOrderElements);
     }
 
-    public static string RowLimit(int limit = 2000) {
+    // CUSTOMIZED
+    public static string RowLimit(uint limit = Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_DEFAULT_PAGE_SIZE) {
       if (limit <= 0)
         return string.Empty;
       return Tag("RowLimit", string.Empty, string.Empty, limit.ToString());
+    }
+    public static string RowLimit(int limit = (int)Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_DEFAULT_PAGE_SIZE) {
+      return RowLimit((uint)limit);
     }
 
     /// <summary>
@@ -556,7 +573,7 @@ namespace Kraken.SharePoint.Client.Caml {
       IHasCamlViewParameters parameters,
       Microsoft.SharePoint.Client.List list,
       Tracing.ITrace trace = null) {
-      if (trace == null) trace = Tracing.NullTrace.Default;
+      if (trace == null) trace = Tracing.DiagTrace.Default;
       string orderByXml = CamlHelpers.GetOrderXml(parameters.OrderBy);
       return parameters.WhereXml + orderByXml;
     }
@@ -566,18 +583,25 @@ namespace Kraken.SharePoint.Client.Caml {
       IHasCamlViewParameters parameters, 
       Microsoft.SharePoint.Client.List list, 
       Tracing.ITrace trace = null) {
-      if (trace == null) trace = Tracing.NullTrace.Default;
-      string[] ensureFields = CamlHelpers.AddEnsureFieldsToOrderBy(parameters.OrderBy);
-      List<string> vf = CamlHelpers.ResolveQueryFields(parameters.ViewFields, ensureFields, list, trace);
-      string viewFieldsXml = vf.GetCamlViewFieldsXml(list, trace);
+      if (trace == null) trace = Tracing.DiagTrace.Default;
+      // ensures OrderBy and GroupBy fields are in the requested view fields 
+      string[] ensureFields = CamlHelpers.GetEnsureFieldsInOrder(parameters.OrderBy);
+      ensureFields = CamlHelpers.GetEnsureFieldsInOrder(parameters.GroupBy, ensureFields);
+      // convert things like 'Default' or 'All' into what we really need here
+      List<string> vfList = CamlHelpers.ResolveQueryFields(parameters.ViewFields, ensureFields, list, trace);
+      // make sure ViewFields is properly adjusted and written back
+      parameters.ViewFields = (vfList == null) ? new string[] { } : vfList.ToArray();
+
+      string viewFieldsXml = vfList.GetCamlViewFieldsXml(list, trace);
       string orderByXml = CamlHelpers.GetOrderXml(parameters.OrderBy);
+      string groupByXml = CamlHelpers.GetGroupXml(parameters.GroupBy, parameters.GroupCollapse, parameters.GroupLimit);
+      if (parameters.RowLimit == Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_USEDEFAULT)
+        parameters.RowLimit = Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_DEFAULT_PAGE_SIZE;
       string viewXml = CAML.View(
         parameters.Scope,
-        CAML.Query(parameters.WhereXml, orderByXml),
+        CAML.Query(parameters.WhereXml, groupByXml + orderByXml),
         viewFieldsXml,
-        (parameters.RowLimit == Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT)
-        ? string.Empty
-        : CAML.RowLimit(parameters.RowLimit)
+        CAML.RowLimit(parameters.RowLimit.GetValueOrDefault(Microsoft.SharePoint.Client.KrakenListExtensions.LISTITEM_LIMIT_NOLIMIT))
       );
       return viewXml;
     }

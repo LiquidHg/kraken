@@ -27,7 +27,7 @@
     /// <param name="allOrNothing"></param>
     /// <param name="propertyExpressions"></param>
     public static void LoadIfRequired<T>(this ClientRuntimeContext context, T clientObject, ITrace trace, bool allOrNothing, params Expression<Func<T, object>>[] propertyExpressions) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       // fix for value does not fall within the expected range
       if (propertyExpressions == null || propertyExpressions.Count() == 0) {
         // there is not really much point to this, without any properties but...
@@ -80,7 +80,7 @@
     /// <returns></returns>
 		public static bool LoadIfRequired<T>(this ClientRuntimeContext context, T clientObject, PropertyInfo property, bool force = false, ITrace trace = null)
       where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (clientObject == null)
         return false; // can you load a null?? I don't think so
       if (property == null)
@@ -147,7 +147,7 @@
     }
 
     public static string[] LoadIfRequired<T>(this ClientRuntimeContext context, T clientObject, string[] propertyNames/*, ExecuteQueryFrequency executeQyery = ExecuteQueryFrequency.Once */, bool throwOnFail = false, ITrace trace = null) where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (clientObject == null) {
         trace.TraceWarning("Caller passed a null ClientObject of type '{0}'; the developer should learn to write better code. ", typeof(T).FullName);
         return new string[] { };
@@ -229,7 +229,7 @@
     public static string[] LoadAll<T>(this ClientRuntimeContext context, T clientObject/*, ExecuteQueryFrequency executeQyery = ExecuteQueryFrequency.Once */, bool allOrNothing = false, bool throwOnFail = false, ITrace trace = null)
       where T : ClientObject {
 
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       string[] propertyNames = GetAllPropertyNames(clientObject);
       if (!allOrNothing)
         context.GetUnloadedProperties(clientObject, propertyNames, trace);
@@ -277,7 +277,7 @@
     /// <returns></returns>
     public static string[] GetUnloadedProperties<T>(this ClientRuntimeContext context, T clientObject, IEnumerable<string> propertyNames, ITrace trace = null, bool superVerbose = false)
       where T : ClientObject {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (clientObject == null) {
         trace.TraceWarning("Caller passed a null ClientObject of type '{0}'; the developer should learn to write better code. ", typeof(T).FullName);
         return new string[] { };

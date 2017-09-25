@@ -49,7 +49,7 @@
     }
 
     public static Uri GetUrl(this ListItem item, List parentList = null, ListItemUrlType urlType = ListItemUrlType.FileRefUrl, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext ctx = ((parentList != null) ? parentList.Context : item.Context) as ClientContext;
       switch(urlType) {
         case ListItemUrlType.FileRefUrl:
@@ -88,7 +88,7 @@
     /// yourself, or use this only outside of exception scopes.
     /// </remarks>
     public static string GetNameOrTitle(this ListItem item, Hashtable fieldValues, UpdateItemOptions options = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (options == null) options = new UpdateItemOptions();
       trace.Trace(TraceLevel.Verbose, "Ensuring default options...");
       // Note that even if you've read BaseType for the list object that
@@ -214,6 +214,12 @@
 
     public const string FIELD_TOKEN_KEEP_CURRENT_VALUE = "[KEEP_VALUE]";
 
+    /// <summary>
+    /// Load fields in form item[fieldName]
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="fieldNames"></param>
+    /// <param name="trace"></param>
     public static void EnsureFields(this ListItem item, IEnumerable<string> fieldNames, ITrace trace) {
       ClientContext ctx = (ClientContext)item.Context;
       foreach (string fieldName in fieldNames) {
@@ -238,7 +244,7 @@
         throw new ArgumentNullException("fieldValues");
       if (options == null)
         throw new ArgumentNullException("options");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (!options.OverwriteExistingData) {
         // we need to be sure that all the requested fields are loaded so we can check their value
         if (item == null)
@@ -298,7 +304,7 @@
         throw new ArgumentNullException("options");
       if (fieldValues == null)
         throw new ArgumentNullException("fieldValues");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (fieldValues.Count == 0) {
         trace.TraceVerbose("Leaving because there are no entries in fieldValues");
         return UpdateItemResult.UpdateOK;
@@ -451,7 +457,7 @@
     }
     [Obsolete("You should probably use UpdateItem instead, since it supports scope and more options.")]
     public static bool TrySetFieldValue(this ListItem item, Hashtable fieldValues, UpdateItemOptions options = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (options == null) options = new UpdateItemOptions();
       trace.Trace(TraceLevel.Verbose, "Setting values for Item ID = {0}", item.Id);
       DateTime modified = (DateTime)item["Modified"];
@@ -479,7 +485,7 @@
     private static void ConditionalUpdate(this ListItem item, bool doUpdate, ITrace trace = null) {
       if (!doUpdate)
         return;
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       trace.Trace(TraceLevel.Verbose, "Updating Item ID = {0}", item.Id);
       item.Update();
       item.Context.ExecuteQuery();
@@ -507,7 +513,7 @@
       , UpdateItemOptions options = null
       , bool forceItemUpdate = false
       , ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       if (options == null) options = new UpdateItemOptions();
       // TODO set up some types with correct string conversions for parsing
       string valueAsText = fieldValue.ToString();
@@ -601,7 +607,7 @@
 
     // TODO get rid of this obnoxious crap - or prove it is useful
     public static T GetFieldValue<T>(this ListItem item, string fieldName, T defaultValue, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       object o = item[fieldName];
       if (o == null) return defaultValue;
 

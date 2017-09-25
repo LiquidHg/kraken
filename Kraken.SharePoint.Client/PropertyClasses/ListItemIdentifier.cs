@@ -30,7 +30,7 @@ namespace Kraken.SharePoint.Client {
       }
     }
 
-    public ITrace Trace { get; set; } = NullTrace.Default;
+    public ITrace Trace { get; set; } = DiagTrace.Default;
     public int? Id { get; set; }
     public Guid? UniqueIdentifier { get; set; }
     public string Name { get; set; }

@@ -63,7 +63,7 @@
     /// <param name="trace">Trace output for screen or logging</param>
     /// <returns>True if the query has been executed, false if no query was run</returns>
     public static bool RemoveFieldLink(this ContentType ct, string[] internalNameOrIds, bool updateChildTypes, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)ct.Context;
       foreach (string internalNameOrId in internalNameOrIds) {
         ct.RemoveFieldLink(internalNameOrId, updateChildTypes, false, trace);
@@ -88,7 +88,7 @@
     /// <param name="trace">Trace output for screen or logging</param>
     /// <returns>True if the query has been executed, false if no query was run</returns>
     public static bool RemoveFieldLink(this ContentType ct, string internalNameOrId, bool updateChildTypes, bool doExecuteQuery = true, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)ct.Context;
       trace.Trace(TraceLevel.Verbose, "Removing site column '{0}'...", internalNameOrId);
       //trace.Trace(TraceLevel.Verbose, sc.SchemaXml);
@@ -172,7 +172,7 @@
         throw new ArgumentNullException("properties.Field");
       if (ct == null)
         throw new ArgumentNullException("ct");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)lists.Context;
       trace.Trace(TraceLevel.Verbose, "Adding field link to list");
 
@@ -182,7 +182,7 @@
 
     public static FieldLink EnsureFieldLink(this ContentType ct, FieldLinkProperties properties, bool updateChildTypes, ITrace trace = null) {
       ClientContext context = (ClientContext)ct.Context;
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
 
       FieldLinkCollection fieldLinks = ct.FieldLinks;
       //context.Load(fieldLinks);
@@ -212,7 +212,7 @@
         throw new ArgumentNullException("properties.Field");
       if (ct == null)
         throw new ArgumentNullException("ct");
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)ct.Context;
       trace.Trace(TraceLevel.Verbose, "Adding site column to content type");
 
@@ -256,7 +256,7 @@
     }
 
     public static FieldLink AddSiteColumn(this ContentType ct, string internalNameOrId, bool updateChildTypes, FieldLinkRequireStatus flStatus, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = NullTrace.Default;
+      if (trace == null) trace = DiagTrace.Default;
       ClientContext context = (ClientContext)ct.Context;
       // TODO implement site column cache
       Web web = context.Web;

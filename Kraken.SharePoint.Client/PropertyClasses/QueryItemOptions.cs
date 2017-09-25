@@ -48,7 +48,7 @@
             this.Order = ((Hashtable)value);
             return true;
           case "pagesize":
-            this.PageSize = int.Parse(val);
+            this.PageSize = uint.Parse(val);
             return true;
           case "scope":
             this.Scope = (CAML.ViewScope)Enum.Parse(typeof(CAML.ViewScope), val);
@@ -94,7 +94,7 @@
     /// so that lists with more than 5,000 items are supported.
     /// Default value -1 translates to 4,000 items per page.
     /// </summary>
-    public int PageSize { get; set; } = KrakenListExtensions.DEFAULT_LISTITEM_PAGE_SIZE;
+    public uint PageSize { get; set; } = KrakenListExtensions.LISTITEM_LIMIT_DEFAULT_PAGE_SIZE;
 
     /// <summary>
     /// Determines the scope of the CAML query used to retrieve items.

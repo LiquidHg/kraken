@@ -23,13 +23,13 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SPFarmLibrary</Id>
-    <Version>0.2.14</Version>
+    <Version>0.2.15</Version>
     <Title>Kraken SharePoint Farm Solution Library</Title>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
     <Summary>Developer library for creating SharePoint farm WSP solution projects.</Summary>
     <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing farm WSP solutions that require full trust. Includes the sandbox library as a sub-set.</Description>
-    <ReleaseNotes>v0.2.14: Fix - KLS TryGetLocal caught in infinite recovery loop due to SecurityException under very rare pre-login circumstances.</ReleaseNotes>
+    <ReleaseNotes>v0.2.15: Ensures latest updates all underlying WSP and DLL versions</ReleaseNotes>
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
@@ -98,33 +98,23 @@
     <None Include="Language.nuspec" />
     <Content Include="lib\Deploy\Deploy_Sample.ps1" />
     <Content Include="lib\Deploy\RegisterKrakenLoggingEvents.ps1" />
-    <Content Include="lib\Deploy\RegisterKrakenLoggingEvents.reg" />
-    <Content Include="lib\Deploy\SP2010\Kraken.SPFarmLibrary.wsp" />
-    <Content Include="lib\Deploy\SP2010\Kraken.SPLoggingCategories.wsp" />
     <Content Include="lib\Deploy\SP2013\Kraken.SPFarmLibrary.wsp" />
     <Content Include="lib\Deploy\SP2013\Kraken.SPLoggingCategories.wsp" />
     <Content Include="lib\Deploy\SPDeployFunctions.ps1" />
-    <Content Include="lib\net35\Kraken.Core.FullTrust.dll" />
-    <Content Include="lib\net35\Kraken.Core.FullTrust.pdb" />
-    <Content Include="lib\net35\Kraken.Core.SandboxTrust.dll" />
-    <Content Include="lib\net35\Kraken.Core.SandboxTrust.pdb" />
-    <Content Include="lib\net35\Kraken.Security.dll" />
-    <Content Include="lib\net35\Kraken.Security.pdb" />
-    <Content Include="lib\net35\Kraken.SharePoint.FullTrust.dll" />
-    <Content Include="lib\net35\Kraken.SharePoint.FullTrust.pdb" />
-    <Content Include="lib\net35\Kraken.SharePoint.LoggingCategories.dll" />
-    <Content Include="lib\net35\Kraken.SharePoint.LoggingCategories.pdb" />
     <None Include="push.cmd" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kraken.SPFarmLibrary\Kraken.SPFarmLibrary.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Kraken.SPLoggingCategories\Kraken.SPLoggingCategories.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="content\" />
+    <Folder Include="lib\Deploy\SP2010\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kraken.SPFarmLibrary\Kraken.SPFarmLibrary.csproj">
+      <TargetSubdirectory>net45</TargetSubdirectory>
+    </ProjectReference>
+    <ProjectReference Include="..\Kraken.SPLoggingCategories\Kraken.SPLoggingCategories.csproj">
+      <TargetSubdirectory>net45</TargetSubdirectory>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>
