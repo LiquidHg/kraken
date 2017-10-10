@@ -806,7 +806,7 @@
       if (trace == null) trace = DiagTrace.Default;
       trace.TraceVerbose("CreateItem overload 2...");
 
-      ContentTypeCache ctc = (contextManager == null) ? null : contextManager.ContentTypeCache;
+      //ContentTypeCache ctc = (contextManager == null) ? null : contextManager.ContentTypeCache;
       if (string.IsNullOrEmpty(titleInternalFieldName))
         titleInternalFieldName = "Title";
       if (list == null)
@@ -1616,29 +1616,127 @@
     /// <param name="localFilPathFieldName"></param>
     /// <returns></returns>
     // TODO it would be good if CreateFolderOrDocSet would look for content type "Folder" and come back here
-    public static Folder CreateFolder(this List list, Folder parentFolder, string newFolderName, string localFilePath, string localFilPathFieldName, ITrace trace) {
+    public static Folder CreateFolder(this List list, Folder parentFolder, string newFolderName, string localFilePath, string localFilPathFieldName, ITrace trace, string contentTypeName = "Folder", bool doExecuteQuery = true) {
       if (trace == null) trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list", "You must specify a valid SharePoint List object.");
-      ClientContext context = (ClientContext)list.Context;
       CoreMetadataInfo metaData = new CoreMetadataInfo(localFilePath, list, !string.IsNullOrEmpty(localFilPathFieldName), trace) {
         LocalFilePathFieldName = localFilPathFieldName
       };
-      context.Load(list);
-      ListItemCreationInformation lci = list.CreateItemCreationInfo(ListItemHandlingType.Folder, parentFolder, newFolderName);
-      var item = list.AddItem(lci);
-      metaData.SetListItemMetadata(item);
-      item.Update();
-#if !DOTNET_V35
-      // load and return the folder object
-      context.Load(item.Folder, f => f.ServerRelativeUrl);
-      context.ExecuteQuery();
-      return item.Folder;
-#else
-      return null; //HACK this will likely have unintended consequences since Folder was probably useful to the caller
-#endif
-    }
+      ClientContext context = (ClientContext)list.Context;
 
+      // This is obviously going to make some server calls
+      WebContextManager contextManager = new WebContextManager(context, true);
+      string ctid = string.Empty;
+      if (!string.IsNullOrEmpty(contentTypeName)) {
+        ctid = list.ResolveContentTypeId(contentTypeName, contextManager, trace);
+        trace.TraceVerbose("contentTypeName = {0}", contentTypeName);
+        trace.TraceVerbose("ctid = {0}", ctid);
+      }
+
+      // This call is less circumlocutious than the
+      // version in FolderExtensions
+      // TODO maybe we can merge them
+      // differences:
+      //   This one uses LCI instead of Folders.Add
+      //   This one has lighter touch on core metadata
+      //   This one does not ensure the local path field is added to the parent list
+      //   Beyond that they are almost identical
+      //
+      // Even better, this is now almost identical to
+      // CreateItem which performs many of the same
+      // functions also...
+      ListItem item = null;
+      Folder newFolder = null;
+      Folder existingFolder = null;
+
+      context.Load(list);
+
+      if (parentFolder != null) {
+        trace.TraceVerbose("parentFolder exists");
+        context.Load(parentFolder);
+      }
+      trace.TraceVerbose("newFolderName = {0}", newFolderName);
+      ListItemCreationInformation lci = list.CreateItemCreationInfo(ListItemHandlingType.Folder, parentFolder, newFolderName);
+
+      if (doExecuteQuery) {
+        trace.TraceVerbose("Clearing context execution queue");
+        context.ExecuteQueryIfNeeded(); // clear the buffer!
+        trace.TraceVerbose("Creating ExceptionHandlingScope to create folder");
+        var scope = new ExceptionHandlingScope(context);
+        using (scope.StartScope()) {
+          using (scope.StartTry()) {
+            item = list.AddItem(lci);
+            metaData.SetListItemMetadata(item);
+            if (!string.IsNullOrEmpty(ctid))
+              item["ContentTypeId"] = ctid;
+            item.Update();
+            // also load and return the folder object
+            context.Load(item.Folder, f => f.ServerRelativeUrl);
+            newFolder = item.Folder;
+
+            // if we wanted to do more than one, it would go like this
+            /*
+            string[] namesArray = new string[] { "Folder1", "Folder2", "Folder3" };
+            Folder folder = parentFolder;
+            foreach (string name in namesArray) {
+              folder = folder.Folders.Add(name);
+            }
+            */
+          }
+          using (scope.StartCatch()) {
+            // most common error is "folder exists" so try this
+            // do not ignore case, do not execute the query yet
+            if (parentFolder != null) {
+              existingFolder = parentFolder.GetFolder(newFolderName, false, false);
+              // GetFolder loaded a lot but not the item
+              context.Load(existingFolder, f => f.ListItemAllFields);
+            }
+          }
+        } // scope start
+        context.ExecuteQuery();
+        // debugging and error handling
+        trace.TraceVerbose("item has value = {0}", item != null);
+        trace.TraceVerbose("newFolder has value = {0}", newFolder != null);
+        trace.TraceVerbose("existingFolder has value = {0}", existingFolder != null);
+        if (scope.HasException) {
+          string msg = string.Format("{0}: {1} -> {2}", scope.ServerErrorTypeName, scope.ErrorMessage, scope.ServerStackTrace);
+          trace.TraceError(msg);
+          if (scope.ServerErrorTypeName == "Microsoft.SharePoint.SPException" && scope.ErrorMessage.Contains("already exists")) {
+            // when an error happens on creation, it doesn't actually nullify objects
+            item = null;
+            newFolder = null;
+            // this ends up being toxic
+            /*
+            if (existingFolder == null)
+              throw new ArgumentNullException("existingFolder");
+            */
+          } else {
+            throw new Exception(string.Format("Unexpected error creating SharePoint folder: {0}", msg));
+          }
+        }
+
+        // TODO Is another exception scope needed here??
+
+        // This only has a value if we didn't have an error above
+        // which means the folder if new and we can update its metadata
+        //if (item != null) {
+        //  context.ExecuteQuery();
+        //}
+
+      } else {
+        trace.TraceVerbose("Piling query onto context");
+        item = list.AddItem(lci);
+        metaData.SetListItemMetadata(item);
+        if (!string.IsNullOrEmpty(ctid))
+          item["ContentTypeId"] = ctid;
+        item.Update();
+        // also load and return the folder object
+        context.Load(item.Folder, f => f.ServerRelativeUrl);
+        newFolder = item.Folder;
+      }
+      return newFolder ?? existingFolder;
+    }
 
     #endregion
 

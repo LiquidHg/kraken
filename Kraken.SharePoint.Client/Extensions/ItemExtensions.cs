@@ -146,7 +146,7 @@
       context.ExecuteQuery();
       // ServerException will throw on failure to be caught by caller
       if (scope.HasException) {
-        trace.TraceError(scope.ErrorMessage + " -> " + scope.ServerStackTrace);
+        trace.TraceError(scope.ServerErrorTypeName + ": " + scope.ErrorMessage + " -> " + scope.ServerStackTrace);
       }
     }
 
@@ -199,6 +199,26 @@
         item["MD5Hash"] = md5Hash;
       // TODO Unique Local FIle Sync ID
       // TODO Title
+    }
+
+    // TODO currently only called from CreateFolder; use me in update list item
+    public static void SetLocalFilePath(this ListItem item, CoreMetadataInfo metaData, bool doExecuteQuery = true) {
+      if (item != null) {
+        bool okToContinue = false;
+        if (!string.IsNullOrEmpty(metaData.LocalFilePathFieldName)) {
+          // easiest thing is to look in item, because [usually] we have all field values
+          okToContinue = item.FieldValues.ContainsKey(metaData.LocalFilePathFieldName);
+          // where query is allowed, we can add the field as needed to the list
+          if (doExecuteQuery && !okToContinue)
+            okToContinue = metaData.EnsureLocalFilePathField(item.ParentList);
+        }
+        if (okToContinue) {
+          metaData.SetListItemMetadata(item);
+          item.Update();
+          if (doExecuteQuery)
+            item.Context.ExecuteQueryIfNeeded();
+        }
+      }
     }
 
     #endregion

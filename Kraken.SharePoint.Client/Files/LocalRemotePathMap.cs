@@ -7,11 +7,31 @@ using System.Text;
 namespace Kraken.SharePoint.Client.Files {
   public class LocalRemotePathMap : Dictionary<string, string> {
 
-    public LocalRemotePathMap(string root) {
+    public LocalRemotePathMap(string root, string remotePrefix = "") {
       this.RootPath = root;
+      this.RemotePathPrefix = remotePrefix;
     }
 
     public string RootPath { get; set; }
+
+    private string _remotePathPrefix = string.Empty;
+    /// <summary>
+    /// You should supply a prefix if you want to
+    /// map to the subfolder of a library
+    /// </summary>
+    public string RemotePathPrefix {
+      get {
+        return _remotePathPrefix;
+      }
+      set {
+        _remotePathPrefix = value;
+        // always ends it with a / unless it is empty
+        if (!string.IsNullOrEmpty(_remotePathPrefix)) {
+          if (!_remotePathPrefix.EndsWith("/"))
+            _remotePathPrefix += "/";
+        }
+      }
+    }
 
     public string RootFolderPath {
       get {
@@ -65,6 +85,50 @@ namespace Kraken.SharePoint.Client.Files {
     }
 
     /// <summary>
+    /// Attempt to find the entry and return local path.
+    /// Optionally you can generate it using logic.
+    /// </summary>
+    /// <param name="remoteUrl">The [canonical] remote url</param>
+    /// <param name="convertIfNotFound">If true, will calculate it when not found</param>
+    /// <param name="found">True if found in collection</param>
+    /// <returns></returns>
+    public string TryGetLocalPath(string remoteUrl, bool convertIfNotFound, out bool found) {
+      IEnumerable<KeyValuePair<string, string>> kvp = this.Where(x => x.Value == remoteUrl);
+      if (kvp.Count() == 1) {
+        found = true;
+        return kvp.First().Key;
+      } else {
+        found = false;
+        if (convertIfNotFound)
+          return ConvertRelativeUrlToLocalPath(remoteUrl);
+      }
+      return string.Empty;
+    }
+
+    /// <summary>
+    /// Given a Uri (from a SharePoint ListItem)
+    /// will convert it to a format where you
+    /// can search for it in this collection.
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <param name="folderUrl">The server relative URL for the list root folder or subfolder.</param>
+    /// <returns></returns>
+    public string GetCanonicalUrl(Uri uri, string folderUrl) {
+      string url = string.Empty;
+      if (uri != null) {
+        url = uri.LocalPath; // has everything but host and schema
+        if (url.StartsWith(folderUrl))
+          url = url.Substring(folderUrl.Length + 1); // also remove final slash
+      }
+      // because the url is stored with its remote path
+      // but here we've just stripped that out
+      if (!string.IsNullOrEmpty(url)) {
+        url = this.RemotePathPrefix + url;
+      }
+      return url;
+    }
+
+    /// <summary>
     /// Uses a standardized technique to convert a folder structure on the local system into a relative URL
     /// </summary>
     /// <param name="rootFilePath"></param>
@@ -78,7 +142,19 @@ namespace Kraken.SharePoint.Client.Files {
       trimPath = trimPath.Replace("\\", "/");
       // get rid of any leading /
       if (trimPath.StartsWith("/"))
-        return trimPath.Substring(1);
+        trimPath = trimPath.Substring(1);
+      // prepend a root folder prefix - it should always end in /
+      if (!string.IsNullOrEmpty(this.RemotePathPrefix)) {
+        if (!string.IsNullOrEmpty(trimPath)) {
+          // return the trimPath with preprended root prefix
+          trimPath = this.RemotePathPrefix + trimPath;
+        } else {
+          // when trimPath is totally empty, return the root folder prefix without a trailing slash
+          trimPath = this.RemotePathPrefix;
+          if (!string.IsNullOrEmpty(trimPath) && trimPath.EndsWith("/"))
+            trimPath = trimPath.Substring(0, trimPath.Length - 1);
+        }
+      }
       return trimPath;
     }
 
@@ -88,6 +164,11 @@ namespace Kraken.SharePoint.Client.Files {
       if (lastSlash >= 0) {
         leafFileOrfolderName = url.Substring(lastSlash + 1);
         parentFolderPath = url.Substring(0, lastSlash);
+        // HACK sometimes when this.RemotePathPrefix has a value
+        // this will end up ending in a slash when it shouldn't
+        // TODO is this caused by bad data in RemoteUrl??
+        if (parentFolderPath.EndsWith("/"))
+          parentFolderPath = parentFolderPath.Substring(0, parentFolderPath.Length - 1);
       } else {
         leafFileOrfolderName = url;
       }

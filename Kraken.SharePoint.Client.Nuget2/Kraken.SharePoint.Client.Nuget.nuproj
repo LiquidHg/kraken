@@ -19,9 +19,9 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.2.88-alpha14</Version>
+    <Version>0.2.88-alpha32</Version>
     <Title>Kraken SharePoint Client Library</Title>
-    <ReleaseNotes>v0.2.88: Alpha. Fixed issue with illegal char like ampersand in field CHOICES causing exception; fixed issue with weird CSOM list property SetExemptFromBlockDownloadOfNonViewableFiles causing 'method not found' exception when it is set. Add support for GroupBy to CAML library/helpers. Refactored view CAML to use unsigned int for all row limits. Made RowLimit an optional parameter in IHasCamlViewParameters.</ReleaseNotes>
+    <ReleaseNotes>v0.2.88: Alpha. Fixed issue with illegal char like ampersand in field CHOICES causing exception; fixed issue with weird CSOM list property SetExemptFromBlockDownloadOfNonViewableFiles causing 'method not found' exception when it is set. Add support for GroupBy to CAML library/helpers. Refactored view CAML to use unsigned int for all row limits. Made RowLimit an optional parameter in IHasCamlViewParameters. Implemented ExceptionHandlingScope for all flavors of web.GetFolder/TryGetFolder/GetFile/TryGetFile/CreateFolder plus List.CreateFolder. Fix relative folder for local to remote path mappings when the root is a sub-folder.</ReleaseNotes>
     <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>

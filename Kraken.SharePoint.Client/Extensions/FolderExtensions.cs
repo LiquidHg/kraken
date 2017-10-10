@@ -21,27 +21,44 @@
 
     #region Sub-folders
 
-    public static Folder GetFolder(this Folder folder, string folderName, bool ignoreCase) {
+    /// <summary>
+    /// </summary>
+    /// <param name="parentFolder">
+    /// In older versions of CSOM, it was important to pass the parent folder.
+    /// Still plays a big role in case-insensitive folder searches.
+    /// Now it is largely used to calculate the server relative url based on folderName
+    /// </param>
+    /// <param name="folderName"></param>
+    /// <param name="ignoreCase"></param>
+    /// <param name="doExecuteQuery">If false, will use GetByUrl and will be case sensitive</param>
+    /// <returns></returns>
+    public static Folder GetFolder(this Folder parentFolder, string folderName, bool ignoreCase, bool doExecuteQuery = true) {
       if (string.IsNullOrEmpty(folderName))
-        return folder;
-      ClientContext context = (ClientContext)folder.Context;
-
+        return parentFolder;
+      ClientContext context = (ClientContext)parentFolder.Context;
       Folder existingFolder = null;
-      string folderUrl = string.Format("{0}/{1}", folder.ServerRelativeUrl, folderName);
-      IEnumerable<Folder> existingFolders = context.LoadQuery(
-        (ignoreCase)
-#if !DOTNET_V35
-        ? folder.Folders.Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount)
-        : folder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount)
-#else
-        ? folder.Folders.Include(f => f.ServerRelativeUrl) // TimeCreated and TimeLastModified not supported in older CSOM
-        : folder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl)
-#endif
-);
-      context.ExecuteQuery();
-      // in the case of !ignoreCase there should only be one item
-      existingFolder = existingFolders.FirstOrDefault(
-        f => f.ServerRelativeUrl.ToLower() == folderUrl.ToLower());
+      string folderUrl = string.Format("{0}/{1}", parentFolder.ServerRelativeUrl, folderName);
+      if (ignoreCase && doExecuteQuery) {
+        IEnumerable<Folder> existingFolders = context.LoadQuery(
+          parentFolder.Folders.Include(f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount)
+        );
+        /*#if DOTNET_V35
+         (ignoreCase)
+           ? parentFolder.Folders.Include(f => f.ServerRelativeUrl) // TimeCreated and TimeLastModified not supported in older CSOM
+           : parentFolder.Folders.Where(f => f.ServerRelativeUrl == folderUrl).Include(f => f.ServerRelativeUrl)
+        #endif
+        */
+        context.ExecuteQuery();
+        // we may have multiples so take the first one
+        existingFolder = existingFolders.FirstOrDefault(
+          f => f.ServerRelativeUrl.ToLower() == folderUrl.ToLower());
+      } else {
+        // in the case of !ignoreCase there should only be one item
+        existingFolder = parentFolder.Folders.GetByUrl(folderUrl);
+        context.Load(existingFolder, f => f.ServerRelativeUrl, f => f.TimeCreated, f => f.TimeLastModified, f => f.ItemCount);
+        if (doExecuteQuery)
+          context.ExecuteQuery();
+      }
       return existingFolder;
     }
 
@@ -72,38 +89,78 @@
         throw new ArgumentNullException("parentFolder");
       if (string.IsNullOrEmpty(newFolderName))
         throw new ArgumentNullException("newFolderName");
+
       // TODO we can't really do this for content types like doc set yet
+
       if (trace == null) trace = DiagTrace.Default;
-      ClientContext context = (ClientContext)parentFolder.Context;
+
+      // set the created/modified datetime and local path
       CoreMetadataInfo metaData = new CoreMetadataInfo(localFilePath, trace) {
         LocalFilePathFieldName = localFilPathFieldName
       };
-      context.Load(parentFolder);
-      Folder newFolder = parentFolder.Folders.Add(newFolderName);
-      // if we wanted to do more than one, it would go like this
-      /*
-      string[] namesArray = new string[] { "Folder1", "Folder2", "Folder3" };
-      Folder folder = parentFolder;
-      foreach (string name in namesArray) {
-        folder = folder.Folders.Add(name);
-      }
-      */
-      ListItem item = null;
+
+      Folder newFolder = null;
+      Folder existingFolder = null;
+      ClientContext context = (ClientContext)parentFolder.Context;
       if (doExecuteQuery) {
+        var scope = new ExceptionHandlingScope(context);
+        using (scope.StartScope()) {
+          using (scope.StartTry()) {
+            context.Load(parentFolder);
+            newFolder = parentFolder.Folders.Add(newFolderName);
+            context.Load(newFolder, f => f.ListItemAllFields);
+            // if we wanted to do more than one, it would go like this
+            /*
+            string[] namesArray = new string[] { "Folder1", "Folder2", "Folder3" };
+            Folder folder = parentFolder;
+            foreach (string name in namesArray) {
+              folder = folder.Folders.Add(name);
+            }
+            */
+          }
+          using (scope.StartCatch()) {
+            // most common error is "folder exists" so try this
+            // do not ignore case, do not execute the query yet
+            existingFolder = parentFolder.GetFolder(newFolderName, false, false);
+            // GetFolder loaded a lot but not the item
+            context.Load(existingFolder, f => f.ListItemAllFields);
+          }
+        } // scope start
         context.ExecuteQuery();
+        // debugging and error handling
+        //trace.TraceVerbose("item has value = {0}", item != null);
+        trace.TraceVerbose("newFolder has value = {0}", newFolder != null);
+        trace.TraceVerbose("existingFolder has value = {0}", existingFolder != null);
+        if (scope.HasException) {
+          string msg = string.Format("{0}: {1} -> {2}", scope.ServerErrorTypeName, scope.ErrorMessage, scope.ServerStackTrace);
+          trace.TraceError(msg);
+          if (scope.ServerErrorTypeName == "Microsoft.SharePoint.SPException" && scope.ErrorMessage.Contains("already exists")) {
+            // when an error happens on creation, it doesn't actually nullify objects
+            newFolder = null;
+            /*
+            if (existingFolder == null)
+              throw new ArgumentNullException("existingFolder");
+            */
+          } else {
+            throw new Exception(string.Format("Unexpected error creating SharePoint folder: {0}", msg));
+          }
+        }
+      } else {
+        // we can't do any error correction if we're batching calls
+        context.Load(parentFolder);
+        newFolder = parentFolder.Folders.Add(newFolderName);
+        context.Load(newFolder, f => f.ListItemAllFields);
+      }
+      // none of this is possible in SP2010 / early CSOM
 #if !DOTNET_V35
-        item = newFolder.ListItemAllFields;
+      if (newFolder != null) {
+        ListItem item = newFolder.ListItemAllFields;
+        // note this may execute a query in EnsureLocalFilePathField
+        if (item != null)
+          item.SetLocalFilePath(metaData, doExecuteQuery);
+      }
 #endif
-      }
-      if (item != null) {
-        if (!string.IsNullOrEmpty(localFilPathFieldName))
-          metaData.EnsureLocalFilePathField(item.ParentList);
-        metaData.SetListItemMetadata(item);
-        item.Update();
-        if (doExecuteQuery)
-          context.ExecuteQuery();
-      }
-      return newFolder;
+      return newFolder ?? existingFolder;
     }
 
     #endregion

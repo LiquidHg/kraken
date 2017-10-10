@@ -130,36 +130,71 @@
       return list.GetFolder(folderName, ignoreCase);
     }
 
-    public static Folder GetFolder(this Web web, Uri serverRelativeUrl) {
-      if (serverRelativeUrl.IsAbsoluteUri)
-        throw new ArgumentException("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. ", "serverRelativeUrl");
-      return web.GetFolder(serverRelativeUrl.ToString());
-    }
-
     /// <summary>
     /// Get a folder from Web object using server relative URL.
-    /// Performs a treatment on the url string so that if it doesn't
+    /// Performs a treatment on the url so that if it doesn't
     /// start with a '/' the web's serverRelativeUrl will be prepended.
-    /// Executes query and does load (init) of the resulting folder object.
+    /// Executes query and does load of the resulting folder object.
     /// </summary>
     /// <param name="web">CSOM Web object</param>
-    /// <param name="serverRelativeUrl">Example: "/sites/web1/library1/subfolder1/subfolder2"</param>
+    /// <param name="webRootOrServerRelativeUrl">
+    /// A server relative Url or a Url relative to the root folder of the web.
+    /// <code>
+    /// "/sites/web1/library1/subfolder1/subfolder2"
+    /// "library1/subfolder1/subfolder2"
+    /// </code>
+    /// </param>
     /// <returns>Null if not found, otherwise Folder object</returns>
     [System.Diagnostics.DebuggerNonUserCode]
-    public static Folder GetFolder(this Web web, string serverRelativeUrl) {
-      ClientContext context = (ClientContext)web.Context;
-      if (string.IsNullOrEmpty(serverRelativeUrl) && !serverRelativeUrl.StartsWith("/"))
-        serverRelativeUrl = string.Format("{0}/{1}", web.RootFolder.ServerRelativeUrl, serverRelativeUrl);
-      if (string.IsNullOrEmpty(serverRelativeUrl))
-        serverRelativeUrl = web.RootFolder.ServerRelativeUrl;
+    public static Folder GetFolder(this Web web, string webRootOrServerRelativeUrl) {
+      if (web == null)
+        throw new ArgumentNullException("web");
+      webRootOrServerRelativeUrl = web.CanonicalizeRelativeUrl(webRootOrServerRelativeUrl);
+
       Folder folder = null;
-      try {
-        folder = web.GetFolderByServerRelativeUrl(serverRelativeUrl);
-        if (folder != null) {
-          //context.Load(folder);
-          folder.EnsureProperty(f => f.ServerRelativeUrl);
+      // Updated 9/25/2017:
+      // It is interesting that this worked OK in many
+      // past iterations of CSOM, but recently we had
+      // to implement server side exception handing here.
+      // https://www.red-gate.com/simple-talk/blogs/managing-clientcontext-executequery-errors-in-sharepoint-csom/
+      var scope = new ExceptionHandlingScope(web.Context);
+      using (scope.StartScope()) {
+        using (scope.StartTry()) {
+          folder = web.GetFolderByServerRelativeUrl(webRootOrServerRelativeUrl);
+          // This will trigger File Not Found exception
+          // no error happens until we call ExecuteQuery
+          if (folder != null)
+            web.Context.Load(folder, f => f.ServerRelativeUrl);
         }
+        using (scope.StartCatch()) {
+          // Run Error Handling Code Here
+          // DO NOT SET folder = null here!
+          // This will always run; it just gets loaded to the CSOM engine differently
+        }
+        using (scope.StartFinally()) {
+          // always runs, even after catch
+        }
+      } // scope start
+      web.Context.ExecuteQuery();
+      // This combines load and execute, so it is not a good fit for exception scope
+      //folder.EnsureProperty(f => f.ServerRelativeUrl);
+      if (scope.HasException) {
+        //if (ex.Message.Equals("File Not Found.", StringComparison.InvariantCultureIgnoreCase))
+        if (scope.ServerErrorTypeName == "System.IO.FileNotFoundException")
+          return null;
+        // did you mean to get a file and got a folder instead?
+        if (scope.ErrorMessage == "Unknown Error")
+          return null;
+        throw new Exception("Enexpected SharePoint Server Error" + scope.ErrorMessage);
+      }
+      // We used to do it this way, but the errors
+      // get *stuck* and the CSOM context can't run
+      // anything new after it fails.
+      /*
+      try {
+        // what is in in StartTry was here before
       } catch (ServerException ex) {
+        // StartCatch was modified to make the code below work with scope
         //if (ex.Message.Equals("File Not Found.", StringComparison.InvariantCultureIgnoreCase))
         if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
           return null;
@@ -169,55 +204,204 @@
         }
         throw;
       }
+      */
       return folder;
+    }
+    /// <summary>
+    /// Get a folder from Web object using server relative URL.
+    /// Performs a treatment on the url so that if it doesn't
+    /// start with a '/' the web's serverRelativeUrl will be prepended.
+    /// Executes query and does load of the resulting folder object.
+    /// </summary>
+    /// <param name="web">CSOM Web object</param>
+    /// <param name="webRootOrServerRelativeUrl">
+    /// A server relative Url or a Url relative to the root folder of the web.
+    /// <code>
+    /// "/sites/web1/library1/subfolder1/subfolder2"
+    /// "library1/subfolder1/subfolder2"
+    /// </code>
+    /// </param>
+    /// <returns>Null if not found, otherwise Folder object</returns>
+    public static Folder GetFolder(this Web web, Uri webRootOrServerRelativeUrl) {
+      if (webRootOrServerRelativeUrl.IsAbsoluteUri) //  || !serverRelativeUrl.ToString().StartsWith("/")
+        throw new ArgumentException(string.Format("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. value={0}", webRootOrServerRelativeUrl), "serverRelativeUrl");
+      return web.GetFolder(webRootOrServerRelativeUrl.ToString());
     }
 
     #endregion
 
     /// <summary>
-    /// Tries to get a folder from Web object using server relative URL.
+    /// Tries to get a folder from Web object using web or server relative URL.
     /// Calls underlying extension method web.GetFolder and has same behaviors.
+    /// Masks all exceptions, regardless of the reason.
     /// </summary>
-    /// <param name="web"></param>
-    /// <param name="serverRelativeUrl">Example: "/sites/web1/library1/subfolder1/subfolder2"</param>
-    /// <param name="folder"></param>
-    /// <returns></returns>
-    public static bool TryGetFolder(this Web web, string serverRelativeUrl, out Folder folder) {
-      var ctx = web.Context;
+    /// <param name="web">CSOM Web object</param>
+    /// <param name="webRootOrServerRelativeUrl">
+    /// A server relative Url or a Url relative to the root folder of the web.
+    /// <code>
+    /// "/sites/web1/library1/subfolder1/subfolder2"
+    /// "library1/subfolder1/subfolder2"
+    /// </code>
+    /// </param>
+    /// <param name="folder">Null if not found, otherwise Folder object</param>
+    /// <returns>Boolean true if successful</returns>
+    public static bool TryGetFolder(this Web web, string webRootOrServerRelativeUrl, out Folder folder) {
       try {
-        folder = web.GetFolder(serverRelativeUrl);
-        return true;
-      } catch (Microsoft.SharePoint.Client.ServerException ex) {
-        if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
-          folder = null;
-          return false;
-        } else
-          throw;
+        // this extension uses exception handling scope
+        folder = web.GetFolder(webRootOrServerRelativeUrl);
+        return (folder != null);
+      } catch (Exception) {
+        // here doesn't really matter what the error is
+        // we've been told to hide the user from all errors
+        folder = null;
+        return false;
       }
     }
-    public static bool TryGetFolder(this Web web, Uri serverRelativeUrl, out Folder folder) {
-      if (serverRelativeUrl.IsAbsoluteUri)
-        throw new ArgumentException("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. ", "serverRelativeUrl");
-      return web.TryGetFolder(serverRelativeUrl.ToString(), out folder);
+
+    /// <summary>
+    /// Tries to get a folder from Web object using web or server relative URL.
+    /// Calls underlying extension method web.GetFolder and has same behaviors.
+    /// Masks all exceptions, regardless of the reason.
+    /// </summary>
+    /// <param name="web">CSOM Web object</param>
+    /// <param name="webRootOrServerRelativeUrl">
+    /// A server relative Url or a Url relative to the root folder of the web.
+    /// <code>
+    /// "/sites/web1/library1/subfolder1/subfolder2"
+    /// "library1/subfolder1/subfolder2"
+    /// </code>
+    /// </param>
+    /// <param name="folder">Null if not found, otherwise Folder object</param>
+    /// <returns>Boolean true if successful</returns>
+    public static bool TryGetFolder(this Web web, Uri webRootOrServerRelativeUrl, out Folder folder) {
+      string url = webRootOrServerRelativeUrl.ToString();
+      if (webRootOrServerRelativeUrl.IsAbsoluteUri) // || !url.StartsWith("/")
+        throw new ArgumentException(string.Format("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. value={0}", webRootOrServerRelativeUrl), "serverRelativeUrl");
+      return web.TryGetFolder(url, out folder);
     }
 
     #endregion
 
+    /// <summary>
+    /// Convert a web or server relative URL into a
+    /// server relative URL. If the string is empty
+    /// uses the server relative url for the web.
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="webRootOrServerRelativeUrl"></param>
+    /// <returns>A server relative url</returns>
+    public static string CanonicalizeRelativeUrl(this Web web, string webRootOrServerRelativeUrl) {
+      // if already canonical, don't need to do anything
+      if (!string.IsNullOrEmpty(webRootOrServerRelativeUrl)
+        && webRootOrServerRelativeUrl.StartsWith("/"))
+        return webRootOrServerRelativeUrl;
+      // we have to make a server call, probably
+      web.EnsureProperty(w => w.RootFolder, w => w.RootFolder.ServerRelativeUrl);
+      string webRoot = web.RootFolder.ServerRelativeUrl;
+      if (string.IsNullOrEmpty(webRootOrServerRelativeUrl))
+        webRootOrServerRelativeUrl = webRoot;
+      else if (!webRootOrServerRelativeUrl.StartsWith("/"))
+        webRootOrServerRelativeUrl = string.Format("{0}/{1}", webRoot, webRootOrServerRelativeUrl);
+      return webRootOrServerRelativeUrl;
+    }
+
     #region Files
 
-    public static bool TryGetFile(this Web web, string serverRelativeUrl, out Microsoft.SharePoint.Client.File file) {
-      var ctx = web.Context;
+    #region GetFile
+
+    public static File GetFile(this Web web, string webRootOrServerRelativeUrl) {
+      if (web == null)
+        throw new ArgumentNullException("web");
+      webRootOrServerRelativeUrl = web.CanonicalizeRelativeUrl(webRootOrServerRelativeUrl);
+
+      File file = null;
+      // Updated 9/25/2017:
+      // It is interesting that this worked OK in many
+      // past iterations of CSOM, but recently we had
+      // to implement server side exception handing here.
+      // https://www.red-gate.com/simple-talk/blogs/managing-clientcontext-executequery-errors-in-sharepoint-csom/
+      var scope = new ExceptionHandlingScope(web.Context);
+      using (scope.StartScope()) {
+        using (scope.StartTry()) {
+          file = web.GetFileByServerRelativeUrl(webRootOrServerRelativeUrl);
+          // This will trigger File Not Found exception
+          // no error happens until we call ExecuteQuery
+          if (file != null)
+            web.Context.Load(file, f => f.ServerRelativeUrl, f => f.ListId);
+        }
+        using (scope.StartCatch()) {
+          // Run Error Handling Code Here
+          // DO NOT SET folder = null here!
+          // This will always run; it just gets loaded to the CSOM engine differently
+        }
+        using (scope.StartFinally()) {
+          // always runs, even after catch
+        }
+      } // scope start
+      web.Context.ExecuteQuery();
+      // This combines load and execute, so it is not a good fit for exception scope
+      //folder.EnsureProperty(f => f.ServerRelativeUrl);
+      if (scope.HasException) {
+        //if (ex.Message.Equals("File Not Found.", StringComparison.InvariantCultureIgnoreCase))
+        if (scope.ServerErrorTypeName == "System.IO.FileNotFoundException")
+          return null;
+        // did you mean to get a file and got a folder instead?
+        if (scope.ErrorMessage == "Unknown Error")
+          return null;
+        throw new Exception("Enexpected SharePoint Server Error" + scope.ErrorMessage);
+      }
+      // We used to do it this way, but the errors
+      // get *stuck* and the CSOM context can't run
+      // anything new after it fails.
+      /*
       try {
+        // this is now scope.StartTry
         file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
         file.EnsureProperty(null, true);
         return true;
       } catch (Microsoft.SharePoint.Client.ServerException ex) {
+        // this is now scope.StartCatch
         if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException") {
           file = null;
           return false;
         } else
           throw;
       }
+       */
+      return file;
+    }
+    public static File GetFile(this Web web, Uri webRootOrServerRelativeUrl) {
+      if (webRootOrServerRelativeUrl.IsAbsoluteUri) //  || !serverRelativeUrl.ToString().StartsWith("/")
+        throw new ArgumentException(string.Format("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. value={0}", webRootOrServerRelativeUrl), "serverRelativeUrl");
+      return web.GetFile(webRootOrServerRelativeUrl.ToString());
+    }
+
+    #endregion
+
+    public static bool TryGetFile(this Web web, string webRootOrServerRelativeUrl, out File file) {
+      try {
+        // uses exception handling scope
+        file = web.GetFile(webRootOrServerRelativeUrl);
+        return (file != null);
+      } catch (Exception) {
+        // here doesn't really matter what the error is
+        // we've been told to hide the user from all errors
+        file = null;
+        return false;
+      }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="web"></param>
+    /// <param name="webRootOrServerRelativeUrl"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static bool TryGetFile(this Web web, Uri webRootOrServerRelativeUrl, out File file) {
+      string url = webRootOrServerRelativeUrl.ToString();
+      if (webRootOrServerRelativeUrl.IsAbsoluteUri) // || !url.StartsWith("/")
+        throw new ArgumentException(string.Format("A server relative Url (starts with the leading '/' immediately after the hostname and port) is required. value={0}", webRootOrServerRelativeUrl), "serverRelativeUrl");
+      return web.TryGetFile(url, out file);
     }
 
     #endregion
@@ -372,20 +556,20 @@
     }
     public static List CreateList(this Web web, string listTitle, string description, bool isQuickLaunch, string customTemplateName, bool throwIfExists = true) {
       ListOptions options = new ListOptions() {
-				Title = listTitle,
-				Description = description,
+        Title = listTitle,
+        Description = description,
         OnQuickLaunch = isQuickLaunch,
         TemplateTypeCustom = customTemplateName,
         ThrowOnError = throwIfExists
-			};
+      };
       return CreateList(web, options);
     }
 
-#endregion
+    #endregion
 
     #region Content Types
 
-		/// <summary>
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="web"></param>
@@ -509,7 +693,7 @@
       } else {
         trace.TraceVerbose("Getting content type from ROOT site web cache...");
         ClientContext context = (ClientContext)web.Context;
-        webContentType = context.Site.RootWeb.GetContentType(contentTypeName, cm, trace); 
+        webContentType = context.Site.RootWeb.GetContentType(contentTypeName, cm, trace);
       }
       return webContentType;
     }
@@ -560,7 +744,7 @@
       return web.ContentTypes.AddContentType(properties, ctxMgr);
     }
 
-#endregion
+    #endregion
 
     #region Site Columns
 
@@ -772,7 +956,7 @@
       HttpWebRequest request = contextManager.CreateExecutorWebRequest(slnPageUrl);
 
       // gets all the input tags from the page HTML
-		  // add them to a dictionary used for post
+      // add them to a dictionary used for post
       Dictionary<string, string> inputs = new Dictionary<string, string>();
       using (WebResponse response = request.GetResponse()) {
         // decompress web response headers where needed
@@ -813,7 +997,7 @@
         response.Close();
       }
       StringBuilder post = new StringBuilder();
-	    // Format inputs as postback data string, but ignore the one that ends with iidIOGoBack
+      // Format inputs as postback data string, but ignore the one that ends with iidIOGoBack
       foreach (string key in inputs.Keys) {
         if (!string.IsNullOrEmpty(key) && !key.EndsWith("iidIOGoBack")) {
           if (post.Length > 0)
@@ -849,7 +1033,7 @@
       return true;
     }
 
-#endregion
+    #endregion
 
   } // class
 

@@ -38,8 +38,8 @@ namespace Kraken.SharePoint.Client.Caching {
       if (cache.ContainsKey(serverRelativeUrl))
         return cache[serverRelativeUrl];
       else {
-        // TODO get folder
-        Folder folder = web.GetFolder(serverRelativeUrl);
+        Folder folder = null;
+        web.TryGetFolder(serverRelativeUrl, out folder);
         if (folder != null)
           Add(folder);
         return folder;
