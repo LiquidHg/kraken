@@ -1,7 +1,9 @@
-using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
-using Microsoft.IdentityModel.Tokens;
+//using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+//using Microsoft.IdentityModel.Tokens;
 using Microsoft.SharePoint.Client;
+using SharePointPnP.IdentityModel.Extensions.S2S.Protocols.OAuth2;
 using System;
+using System.IdentityModel.Tokens;
 using System.Net;
 using System.Security.Principal;
 using System.Web;

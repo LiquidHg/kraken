@@ -74,7 +74,6 @@ R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\ko\System.Spatia
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\ru\System.Spatial.resources.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\zh-Hans\System.Spatial.resources.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\zh-Hant\System.Spatial.resources.dll
-R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.pdb
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Extensions.DependencyInjection.Abstractions.dll
@@ -93,3 +92,11 @@ R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Runtime.C
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\System.Text.Encodings.Web.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\AngleSharp.dll
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\AngleSharp.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Graph.Core.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Graph.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Graph.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Graph.Core.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.IdentityModel.Clients.ActiveDirectory.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\OfficeDevPnP.Core.xml
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csprojResolveAssemblyReference.cache

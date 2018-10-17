@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.DotNet.Core</id>
-    <version>0.2.8-alpha02</version>
+    <version>0.3.1-alpha02</version>
     <title>Kraken Core .NET Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for .NET development that fall outside the scope of SharePoint itself. Both partial-trust and full-trust libraries are included; trim references if you need this in a partial trust environment.</description>
     <summary>Developer library for creating SharePoint client (CSOM) projects and apps.</summary>
-    <releaseNotes>v0.2.6: Fixed some odd behaviors in SimpleTrace.TraceError; Added a DiagTrace so that NullTrace is not longer our only/default option when a trace engine isn't provided.</releaseNotes>
+    <releaseNotes>v0.2.9: Alpha. Version to update nuget packages.</releaseNotes>
     <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>Kraken SharePoint DotNet Security</tags>
@@ -25,7 +25,7 @@
       <group targetFramework="net45">
         <dependency id="log4net" version="2.0.8" />
         <dependency id="Microsoft.Bcl.Build" version="1.0.21" />
-        <dependency id="Newtonsoft.Json" version="10.0.3" />
+        <dependency id="Newtonsoft.Json" version="11.0.2" />
         <dependency id="RestSharpSigned" version="105.2.3" />
       </group>
     </dependencies>

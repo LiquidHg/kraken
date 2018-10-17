@@ -1,6 +1,6 @@
 ﻿REM For developers with rights to publish packages to Nuget...
 REM TODO on new release, update the function below to match the package file name with version
-SET NUGET_PUSH_FN = .\bin\Release\Kraken.SharePoint.Apps.0.1.7.symbols.nupkg
+SET NUGET_PUSH_FN=".\bin\Debug\Kraken.SharePoint.Apps.0.1.8.symbols.nupkg"
 nuget push %NUGET_PUSH_FN% -Source "Misc (private)" -ApiKey VSTS
 nuget push %NUGET_PUSH_FN% -Source https://api.nuget.org/v3/index.json -ApiKey %NUGET_APIKEY_KRAKEN%
 REM This is the v2 api which seems a bit buggy now

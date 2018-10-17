@@ -174,10 +174,10 @@ namespace Kraken.SharePoint.Client.Connections {
         if (credentials == null)
           throw new ArgumentNullException("You must specify user credentials.");
         this.Context.Credentials = credentials;
+        if (credentials is SharePointCredential) {
+          ((SharePointCredential)credentials).ConfigureContext(this.Context);
+        }
         // TODO should we test the connection here? We're doing more in Init.
-
-        ClientContextAuthentication.Configure(this.Context, Credentials.AuthType);
-
       } else {
         WriteTrace(TraceLevel.Info, "Using provided SharePoint client context");
       }

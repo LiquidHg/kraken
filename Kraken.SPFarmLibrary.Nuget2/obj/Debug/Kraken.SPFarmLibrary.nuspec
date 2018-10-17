@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SPFarmLibrary</id>
-    <version>0.2.15</version>
+    <version>0.2.7</version>
     <title>Kraken SharePoint Farm Solution Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing farm WSP solutions that require full trust. Includes the sandbox library as a sub-set.</description>
     <summary>Developer library for creating SharePoint farm WSP solution projects.</summary>
-    <releaseNotes>v0.2.15: Ensures latest updates all underlying WSP and DLL versions</releaseNotes>
+    <releaseNotes>v0.2.7</releaseNotes>
     <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
     <language>en-US</language>
     <tags>SharePoint WSP</tags>
@@ -32,8 +32,8 @@
         <dependency id="SharePoint.Taxonomy" version="15.0.0" />
         <dependency id="Microsoft.Office.Server" version="15.0.0" />
         <dependency id="Microsoft.Office.Server.UserProfiles" version="15.0.0" />
-        <dependency id="Kraken.DotNet.Core" version="0.2.6" />
-        <dependency id="Kraken.SPSandboxLibrary" version="0.2.4" />
+        <dependency id="Kraken.DotNet.Core" version="0.2.8" />
+        <dependency id="Kraken.SPSandboxLibrary" version="0.2.7" />
         <dependency id="log4net" version="2.0.8" />
         <dependency id="Microsoft.Bcl" version="1.1.10" />
         <dependency id="Microsoft.Bcl.Build" version="1.0.21" />

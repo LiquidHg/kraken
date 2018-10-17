@@ -10,6 +10,14 @@ namespace Kraken.SharePoint.Client.Connections {
 
   public class SharePointCredential : ICredentials {
 
+    #region Needed for claims authentication
+
+    private static object cookiesSyncLock = new object();
+
+    private static CookieContainer cookies;
+
+    #endregion
+
     public SharePointCredential() { }
     public SharePointCredential(string user, SecureString pass, ClientAuthenticationType authType) {
       this.UserName = user;
@@ -61,6 +69,11 @@ namespace Kraken.SharePoint.Client.Connections {
         return this.UnderlyingCredentials;
       //if (webUri == null)
       //  throw new ArgumentNullException("Can't establish credentials without SharePoint web URL.");
+      // Auto-detect need for SharePointOnlineCredentials
+      if (this.AuthType == ClientAuthenticationType.Unknown
+        && webUri.Authority.ToLower().Contains(".sharepoint.com")) {
+        this.AuthType = ClientAuthenticationType.SPOCredentials;
+      }
       switch (this.AuthType) {
         case ClientAuthenticationType.SPOCredentials:
           Validate();
@@ -71,6 +84,7 @@ namespace Kraken.SharePoint.Client.Connections {
           throw new NotSupportedException("SharePointOnlineCredentials is not supported in this version of CSOM.");
 #endif
         case ClientAuthenticationType.SharePointNTLMUserPass:
+        case ClientAuthenticationType.SharePointForms:
         case ClientAuthenticationType.SharePointClaims:
           Validate();
 #if !DOTNET_V35
@@ -81,11 +95,14 @@ namespace Kraken.SharePoint.Client.Connections {
           }
 #endif
           break;
-        // TODO based on certain authtype user name or password may not be needed here
+        case ClientAuthenticationType.SharePointNTLMCurrentUser:
+          Validate();
+          this.UnderlyingCredentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+          break;
+        //case ClientAuthenticationType.SPOCustomCookie:
         // TODO support various SharePoint authentication schemes here
-        // TODO can we support claims and FBA also??
         default:
-          throw new NotImplementedException(string.Format("The supplied client authentication type is not yet implemented. authType={0}", this.AuthType.ToString()));
+          throw new NotImplementedException(string.Format("The supplied client authentication type is not implemented. authType={0}", this.AuthType.ToString()));
       }
       return UnderlyingCredentials;
     }
@@ -145,6 +162,79 @@ namespace Kraken.SharePoint.Client.Connections {
         response.Close();
       }
       return cookieHeader;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// http://www.sharepoint-reference.com/Blog/Lists/Posts/Post.aspx?ID=34
+    /// </remarks>
+    /// <param name="ctx"></param>
+    public void ConfigureContext(ClientContext ctx) {
+      if (ctx == null)
+        throw new ArgumentNullException("ctx");
+      switch (this.AuthType) {
+        case ClientAuthenticationType.SharePointClaims:
+          var baseSiteUrl = ctx.Url;
+
+          // Configure anonymous authentication, because we will use FedAuth cookie instead
+          ctx.AuthenticationMode = ClientAuthenticationMode.Anonymous;
+
+          // Register an anonymous delegate to the ExecutingWebRequest event handler
+          ctx.ExecutingWebRequest += new EventHandler<WebRequestEventArgs>((s, e) => {
+
+            // If we do not have a cookies variable, which will be a shared instance of a CookieContainer 
+            if (null == cookies) {
+              lock (cookiesSyncLock) {
+                if (null == cookies) {
+                  // Let’s create the CookieContainer instance
+                  cookies = new CookieContainer();
+
+                  // Make a “fake” request to the /_windows/default.aspx page
+                  // emulating the flow previously illustrated
+                  Uri baseUri = new Uri(baseSiteUrl);
+                  var baseServerUrl = baseUri.AbsoluteUri.TrimEnd(baseUri.AbsolutePath.ToCharArray());
+
+                  HttpWebRequest request = WebRequest.Create(
+                      baseServerUrl + "/_windows/default.aspx?ReturnUrl=%2f_layouts%2fAuthenticate.aspx%3fSource%3d%252FDefault%252Easpx&Source=%2FDefault.aspx") as HttpWebRequest;
+
+                  // Provide a set of Windows credentials (default or explicit)
+                  request.Credentials = ctx.Credentials;
+                  request.Method = "GET";
+
+                  // Assign the CookieContainer object
+                  request.CookieContainer = cookies;
+                  request.AllowAutoRedirect = false;
+
+                  // Execute the HTTP request
+                  HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                  if (null != response) {
+                    // The following variable simply holds the FedAuth cookie value, but that value
+                    // is not used directly
+                    var fedAuthCookieValue = response.Cookies["FedAuth"].Value;
+                  }
+                }
+              }
+            }
+
+            // Grab the CookieContainer, which now holds the FedAuth cookie, and configure
+            // it into the WebRequest that the ClientContext is going to execute and …
+            // you have done all you need!
+            e.WebRequestExecutor.WebRequest.CookieContainer = cookies;
+          });
+          break;
+
+        case ClientAuthenticationType.SharePointForms:
+          ctx.AuthenticationMode = ClientAuthenticationMode.FormsAuthentication;
+          using (Kraken.Core.Security.SecureStringMarshaller sm = new Core.Security.SecureStringMarshaller(this.UserPassword)) {
+            if (!sm.IsDecrypted) sm.Decrypt();
+            ctx.FormsAuthenticationLoginInfo = new FormsAuthenticationLoginInfo(this.UserName, sm.ToString());
+          }
+          break;
+      }
+
     }
 
   }

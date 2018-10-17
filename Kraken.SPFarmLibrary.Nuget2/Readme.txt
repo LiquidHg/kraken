@@ -83,6 +83,7 @@ join the team.
 
 Update History:
 
+v0.2.16: Updates to underlying dependencies.
 v0.2.15: Ensures latest updates all underlying WSP and DLL versions
 v0.2.14: Fix - KLS TryGetLocal caught in infinite recovery loop due to SecurityException under very rare pre-login circumstances.
 v0.2.13: Fix - KLS CreateNew fail-safes have been reengineered to prevent circular references in claim providers.

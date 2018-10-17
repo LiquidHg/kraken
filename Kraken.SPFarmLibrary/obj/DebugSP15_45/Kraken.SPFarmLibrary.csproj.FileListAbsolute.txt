@@ -83,3 +83,5 @@ R:\Repos\kraken\Kraken.SPFarmLibrary\obj\DebugSP15_45\Kraken.SharePoint.FullTrus
 R:\Repos\kraken\Kraken.SPFarmLibrary\obj\DebugSP15_45\Kraken.SharePoint.FullTrust.pdb
 R:\Repos\kraken\Kraken.SPFarmLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.dll
 R:\Repos\kraken\Kraken.SPFarmLibrary\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.SPFarmLibrary\obj\DebugSP15_45\Kraken.SPFarmLibrary.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.SPFarmLibrary\bin\DebugSP15_45\Microsoft.SharePoint.Client.Taxonomy.dll

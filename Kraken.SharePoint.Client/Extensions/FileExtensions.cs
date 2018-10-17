@@ -8,6 +8,15 @@
 
 	public static class KrakenFileExtensions {
 
+    public static void MoveTo(this File file, Uri uri) {
+      // TODO validate that the URL is a valid one
+      // TODO reflection to determine what is being done in the back end?
+      string newUrl = uri.ToString();
+      //ResourcePath p = new ResourcePath();
+      //file.CopyToUsingPath()
+      file.MoveTo(newUrl, MoveOperations.AllowBrokenThickets);
+    }
+
 		public static void Rename(this File file, string newTitle) {
 			var ctx = file.Context;
 			try {

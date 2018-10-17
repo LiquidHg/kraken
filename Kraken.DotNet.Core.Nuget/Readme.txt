@@ -83,6 +83,7 @@ join the team.
 
 Update History:
 
+v0.2.9: Alpha. Version to update nuget packages.
 v0.2.8: Fixed some odd behaviors in SimpleTrace.TraceError; Added a DiagTrace so that NullTrace is not longer our only/default option when a trace engine isn't provided.
 v0.2.6 - v0.2.7: Fighting with DLL version conflicts between interdependent Nuget projects
 v0.2.5: AssemblyVersion for Kraken.Security should be set to auto-number without AssemblyFileVersion

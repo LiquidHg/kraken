@@ -1554,9 +1554,11 @@
 
     #region Folders and DocSets
 
-    public static Folder CreateFolderOrDocumentSet(this List list, string folderContentTypeName, string folderName, string localFilePath, string localFilPathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
-      if (trace == null) trace = DiagTrace.Default;
-      return list.CreateFolderOrDocumentSet(null, folderContentTypeName, folderName, localFilePath, localFilPathFieldName, contextManager, trace);
+    [Obsolete("Use CreateFolder instead.")]
+    public static Folder CreateFolderOrDocumentSet(this List list, string folderContentTypeName, string folderName, string localFilePath, string localFilePathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
+      return list.CreateFolder(null, folderName, folderContentTypeName, localFilePath, localFilePathFieldName, true, trace);
+      //if (trace == null) trace = DiagTrace.Default;
+      //return list.CreateFolderOrDocumentSet(null, folderContentTypeName, folderName, localFilePath, localFilPathFieldName, contextManager, trace);
     }
     /// <summary>
     /// Creates a document set or folder content type based on a folder in the local filesystem
@@ -1566,7 +1568,19 @@
     /// <param name="newFolderName"></param>
     /// <param name="localFilePath"></param>
     /// <param name="localFilePathFieldName"></param>
-    public static Folder CreateFolderOrDocumentSet(this List list, Folder parentFolder, string folderContentTypeName, string newFolderName, string localFilePath, string localFilePathFieldName, WebContextManager contextManager = null, ITrace trace = null) {
+    [Obsolete("Use CreateFolder instead.")]
+    public static Folder CreateFolderOrDocumentSet(
+      this List list, 
+      Folder parentFolder, 
+      string folderContentTypeName, 
+      string newFolderName, 
+      string localFilePath, 
+      string localFilePathFieldName, 
+      WebContextManager contextManager = null, 
+      ITrace trace = null
+    ) {
+      return list.CreateFolder(parentFolder, newFolderName, folderContentTypeName, localFilePath, localFilePathFieldName, true, trace);
+      /*
       if (trace == null) trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list", "You must specify a valid SharePoint List object.");
@@ -1589,6 +1603,7 @@
       // Date fields don't seem to stick under doc set when we set them here
       metaData.SetListItemMetadata(item);
       item.Update();
+      list.Update();
       context.ExecuteQuery();
       context.Load(item);
       // force the creation and modification dates to be *more* correct
@@ -1603,11 +1618,12 @@
 #else
       return null; //HACK this will likely have unintended consequences since Folder was probably useful to the caller
 #endif
+      */
     }
 
     /// <summary>
-    /// Creates an empty folder.
-    /// This code is almost the same as CreateFolderOrDocSet.
+    /// Creates an empty folder; now supports document sets too.
+    /// This code is *almost* the same as CreateFolderOrDocSet.
     /// </summary>
     /// <param name="list"></param>
     /// <param name="parentFolder">Assumes no parent folder means we want the root folder</param>
@@ -1615,11 +1631,35 @@
     /// <param name="localFilePath"></param>
     /// <param name="localFilPathFieldName"></param>
     /// <returns></returns>
-    // TODO it would be good if CreateFolderOrDocSet would look for content type "Folder" and come back here
-    public static Folder CreateFolder(this List list, Folder parentFolder, string newFolderName, string localFilePath, string localFilPathFieldName, ITrace trace, string contentTypeName = "Folder", bool doExecuteQuery = true) {
+    /// <remarks>
+    /// This call is less circumlocutious than the
+    /// version in FolderExtensions
+    /// TODO should we merge them?
+    ///
+    /// differences:
+    ///   This one uses LCI instead of Folders.Add
+    ///   This one has lighter touch on core metadata
+    ///   This one does not pre-check that local path field is added to the parent list
+    ///   Beyond that they are almost identical
+    ///
+    /// Even better, this is now almost identical to
+    /// CreateItem which also performs many of the same functions.
+    /// </remarks>
+    public static Folder CreateFolder(
+      this List list,
+      Folder parentFolder,
+      string newFolderName,
+      string contentTypeName = "Folder",
+      string localFilePath = "", 
+      string localFilPathFieldName = "",
+      bool doExecuteQuery = true,
+      ITrace trace = null
+    ) {
       if (trace == null) trace = DiagTrace.Default;
       if (list == null)
         throw new ArgumentNullException("list", "You must specify a valid SharePoint List object.");
+      if (string.IsNullOrEmpty(contentTypeName))
+        contentTypeName = "Folder";
       CoreMetadataInfo metaData = new CoreMetadataInfo(localFilePath, list, !string.IsNullOrEmpty(localFilPathFieldName), trace) {
         LocalFilePathFieldName = localFilPathFieldName
       };
@@ -1633,19 +1673,21 @@
         trace.TraceVerbose("contentTypeName = {0}", contentTypeName);
         trace.TraceVerbose("ctid = {0}", ctid);
       }
+      // TODO do we want to bring this back??
+      /*
+      ContentType targetContentType = list.EnsureContentType(contentTypeName, contextManager);
+      */
 
-      // This call is less circumlocutious than the
-      // version in FolderExtensions
-      // TODO maybe we can merge them
-      // differences:
-      //   This one uses LCI instead of Folders.Add
-      //   This one has lighter touch on core metadata
-      //   This one does not ensure the local path field is added to the parent list
-      //   Beyond that they are almost identical
-      //
-      // Even better, this is now almost identical to
-      // CreateItem which performs many of the same
-      // functions also...
+      // check and make sure we are following the rules and not using an invalid content type
+      // check parentFolder and make sure we aren't creating a Document Set in a sub-folder
+      // if we try to create a docset in a sub-folder, we should bomb out
+      if ((parentFolder != null && parentFolder != list.RootFolder) && IsDocumentSet(ctid)) {
+        throw new ArgumentException("Can't specify a document set content type except in the root folder.", "parentFolder/contentTypeName");
+      }
+      // We really don't care if parentFolder is null because our call to create LCI accounts for this
+      /* if (parentFolder == null && list != null)
+        parentFolder = list.RootFolder; */
+
       ListItem item = null;
       Folder newFolder = null;
       Folder existingFolder = null;
@@ -1666,23 +1708,7 @@
         var scope = new ExceptionHandlingScope(context);
         using (scope.StartScope()) {
           using (scope.StartTry()) {
-            item = list.AddItem(lci);
-            metaData.SetListItemMetadata(item);
-            if (!string.IsNullOrEmpty(ctid))
-              item["ContentTypeId"] = ctid;
-            item.Update();
-            // also load and return the folder object
-            context.Load(item.Folder, f => f.ServerRelativeUrl);
-            newFolder = item.Folder;
-
-            // if we wanted to do more than one, it would go like this
-            /*
-            string[] namesArray = new string[] { "Folder1", "Folder2", "Folder3" };
-            Folder folder = parentFolder;
-            foreach (string name in namesArray) {
-              folder = folder.Folders.Add(name);
-            }
-            */
+            newFolder = CreateFolderInternals(list, lci, ctid, metaData);
           }
           using (scope.StartCatch()) {
             // most common error is "folder exists" so try this
@@ -1695,6 +1721,7 @@
           }
         } // scope start
         context.ExecuteQuery();
+
         // debugging and error handling
         trace.TraceVerbose("item has value = {0}", item != null);
         trace.TraceVerbose("newFolder has value = {0}", newFolder != null);
@@ -1712,30 +1739,76 @@
               throw new ArgumentNullException("existingFolder");
             */
           } else {
-            throw new Exception(string.Format("Unexpected error creating SharePoint folder: {0}", msg));
+            throw new Exception(string.Format("Unexpected error creating SharePoint folder '{0}': {1}", newFolderName, msg));
           }
         }
-
-        // TODO Is another exception scope needed here??
-
         // This only has a value if we didn't have an error above
-        // which means the folder if new and we can update its metadata
-        //if (item != null) {
-        //  context.ExecuteQuery();
-        //}
-
+        // which means the folder is new and we can update its metadata
+        /*
+        if (item != null) {
+          context.ExecuteQuery();
+        }
+        */
       } else {
         trace.TraceVerbose("Piling query onto context");
-        item = list.AddItem(lci);
-        metaData.SetListItemMetadata(item);
-        if (!string.IsNullOrEmpty(ctid))
-          item["ContentTypeId"] = ctid;
-        item.Update();
-        // also load and return the folder object
-        context.Load(item.Folder, f => f.ServerRelativeUrl);
-        newFolder = item.Folder;
+        newFolder = CreateFolderInternals(list, lci, ctid, metaData);
       }
       return newFolder ?? existingFolder;
+    }
+
+    private static Folder CreateFolderInternals(
+      List list,
+      ListItemCreationInformation lci,
+      string ctid,
+      CoreMetadataInfo metaData = null
+      ) {
+      // another way to create a docset...
+      //DocumentSet.Create(context, list.RootFolder, lci.LeafName, ctid);
+
+      ListItem item = null;
+      Folder newFolder = null;
+      ClientContext context = (ClientContext)list.Context;
+      item = list.AddItem(lci);
+      // TODO consider implementing IsDocumentSet helper
+      if (!string.IsNullOrEmpty(ctid)) {
+        //item["Title"] = lci.LeafName;
+        item["ContentTypeId"] = ctid;
+        if (IsDocumentSet(ctid))
+          item["HTML_x0020_File_x0020_Type"] = "SharePoint.DocumentSet";
+      }
+      if (metaData != null)
+        metaData.SetListItemMetadata(item);
+      item.Update();
+      // this was added because the operation failed without it
+      // it might only be required on docsets
+      list.Update();
+
+#if !DOTNET_V35
+      // also load and return the folder object
+      // note that if item.Update/list.Update fail then this will too
+      context.Load(item.Folder, f => f.ServerRelativeUrl);
+      newFolder = item.Folder;
+#else
+      //HACK this will likely have unintended consequences since Folder was probably useful to the caller
+#endif
+      return newFolder;
+
+      // if we wanted to do more than one, it would go like this
+      // note the example here does not use LCI so it is more limited
+      /*
+      string[] namesArray = new string[] { "Folder1", "Folder2", "Folder3" };
+      Folder folder = parentFolder;
+      foreach (string name in namesArray) {
+        folder = folder.Folders.Add(name);
+      }
+      */
+    }
+
+    private static bool IsFolderNotDocumentSet(string ctid) {
+      return (ctid.StartsWith("0x0120") && !IsDocumentSet(ctid));
+    }
+    private static bool IsDocumentSet(string ctid) {
+      return (ctid.StartsWith("0x0120D520"));
     }
 
     #endregion

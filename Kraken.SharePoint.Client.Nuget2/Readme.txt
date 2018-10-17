@@ -83,6 +83,8 @@ join the team.
 
 Update History:
 
+v0.3.01: Alpha. Added connection manager support for more authentication types; NTLM and FBA supported now.
+v0.3: All changes from previous version 0.2.88 are now stable; some minor fixes to LocalToRemoteFileMapping dictionary in support of CloudPower doc sync commands.
 v0.2.88: Alpha. Fixed issue with illegal char like ampersand in field CHOICES causing exception; fixed issue with weird CSOM list property SetExemptFromBlockDownloadOfNonViewableFiles causing 'method not found' exception when it is set. Add support for GroupBy to CAML library/helpers. Refactored view CAML to use unsigned int for all row limits. Made RowLimit an optional parameter in IHasCamlViewParameters. Implemented ExceptionHandlingScope for all flavors of web.GetFolder/TryGetFolder/GetFile/TryGetFile/CreateFolder plus List.CreateFolder. Fix relative folder for local to remote path mappings when the root is a sub-folder.
 v0.2.87: Stable and tested. Fixes to WebExtensions.GetFolder; fixes for EnsureProperty when no property expressions are passed with the object. Implemented client object "chaining" for EnsureProperty; changes to allow finding setting a list item based on its title instead of numeric ID.
 v0.2.86: Additional fixes to support Info Architecture import functions after massive changes to site column methods. Specifically, the method for loading key properties for fields was not including all properties as speicifed, because CSOM is a total P.o.S.

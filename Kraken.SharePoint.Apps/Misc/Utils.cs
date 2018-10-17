@@ -1,6 +1,6 @@
 ﻿using Kraken.SharePoint.Apps.Models;
 //using ChimeraAzure.Models;
-using Microsoft.IdentityModel.S2S.Tokens;
+//using Microsoft.IdentityModel.S2S.Tokens;
 using Microsoft.Owin;
 using Microsoft.SharePoint.Client.Utilities;
 using System;

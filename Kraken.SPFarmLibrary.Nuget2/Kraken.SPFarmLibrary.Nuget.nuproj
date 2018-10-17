@@ -23,13 +23,13 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SPFarmLibrary</Id>
-    <Version>0.2.15</Version>
+    <Version>0.2.7</Version>
     <Title>Kraken SharePoint Farm Solution Library</Title>
     <Authors>Liquid-Hg.com</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>
     <Summary>Developer library for creating SharePoint farm WSP solution projects.</Summary>
     <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries for developing farm WSP solutions that require full trust. Includes the sandbox library as a sub-set.</Description>
-    <ReleaseNotes>v0.2.15: Ensures latest updates all underlying WSP and DLL versions</ReleaseNotes>
+    <ReleaseNotes>v0.2.7</ReleaseNotes>
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>

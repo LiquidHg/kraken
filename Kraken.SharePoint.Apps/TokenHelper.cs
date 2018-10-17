@@ -1,7 +1,8 @@
 using Microsoft.IdentityModel;
-using Microsoft.IdentityModel.SecurityTokenService;
-using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
-using Microsoft.IdentityModel.S2S.Tokens;
+//using Microsoft.IdentityModel.SecurityTokenService;
+//using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+//using Microsoft.IdentityModel.S2S.Tokens;
+using MIT = Microsoft.IdentityModel.Tokens;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using System;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using SIT=System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,10 +22,15 @@ using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
+/*
 using AudienceRestriction = Microsoft.IdentityModel.Tokens.AudienceRestriction;
 using AudienceUriValidationFailedException = Microsoft.IdentityModel.Tokens.AudienceUriValidationFailedException;
 using SecurityTokenHandlerConfiguration = Microsoft.IdentityModel.Tokens.SecurityTokenHandlerConfiguration;
 using X509SigningCredentials = Microsoft.IdentityModel.SecurityTokenService.X509SigningCredentials;
+*/
+using SharePointPnP.IdentityModel.Extensions.S2S.Tokens;
+using SharePointPnP.IdentityModel.Extensions.S2S.Protocols.OAuth2;
+using Microsoft.IdentityModel.SecurityTokenService;
 
 namespace Kraken.SharePoint.Apps
 {
@@ -721,7 +728,7 @@ namespace Kraken.SharePoint.Apps
         private static readonly string ClientSigningCertificatePath = WebConfigurationManager.AppSettings.Get("ClientSigningCertificatePath");
         private static readonly string ClientSigningCertificatePassword = WebConfigurationManager.AppSettings.Get("ClientSigningCertificatePassword");
         private static readonly X509Certificate2 ClientCertificate = (string.IsNullOrEmpty(ClientSigningCertificatePath) || string.IsNullOrEmpty(ClientSigningCertificatePassword)) ? null : new X509Certificate2(ClientSigningCertificatePath, ClientSigningCertificatePassword);
-        private static readonly X509SigningCredentials SigningCredentials = (ClientCertificate == null) ? null : new X509SigningCredentials(ClientCertificate, SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
+        private static readonly SIT.X509SigningCredentials SigningCredentials = (ClientCertificate == null) ? null : new SIT.X509SigningCredentials(ClientCertificate, SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
 
         #endregion
 
@@ -770,8 +777,8 @@ namespace Kraken.SharePoint.Apps
         private static JsonWebSecurityTokenHandler CreateJsonWebSecurityTokenHandler()
         {
             JsonWebSecurityTokenHandler handler = new JsonWebSecurityTokenHandler();
-            handler.Configuration = new SecurityTokenHandlerConfiguration();
-            handler.Configuration.AudienceRestriction = new AudienceRestriction(AudienceUriMode.Never);
+            handler.Configuration = new MIT.SecurityTokenHandlerConfiguration();
+            handler.Configuration.AudienceRestriction = new MIT.AudienceRestriction(AudienceUriMode.Never);
             handler.Configuration.CertificateValidator = X509CertificateValidator.None;
 
             List<byte[]> securityKeys = new List<byte[]>();

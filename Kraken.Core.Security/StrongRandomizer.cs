@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Security;
 
 namespace Kraken.Core.Security {
 
@@ -65,6 +66,27 @@ namespace Kraken.Core.Security {
       return result + random.Next(16).ToString("X");
     }
 
-  }
+    /// <summary>
+    /// Generates a random Base64 encoded string
+    /// such as those which might be used for an
+    /// OAuth secret.
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    public static string GetRandomBase64String(int length) {
+      RandomNumberGenerator rng = new RNGCryptoServiceProvider();
+      byte[] buffer = new byte[length];
+      rng.GetBytes(buffer);
+      string uniq = Convert.ToBase64String(buffer);
+      return uniq;
+    }
+    public static SecureString GetRandomBase64SecureString(int length) {
+      RandomNumberGenerator rng = new RNGCryptoServiceProvider();
+      byte[] buffer = new byte[length];
+      rng.GetBytes(buffer);
+      SecureString uniq = SecureStringMarshaller.ConvertToSecureString(Convert.ToBase64String(buffer));
+      return uniq;
+    }
 
+  }
 }

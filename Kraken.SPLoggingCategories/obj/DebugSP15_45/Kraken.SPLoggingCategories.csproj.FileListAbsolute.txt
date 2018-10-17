@@ -92,3 +92,4 @@ R:\Repos\kraken\Kraken.SPLoggingCategories\obj\DebugSP15_45\Kraken.SPLoggingCate
 R:\Repos\kraken\Kraken.SPLoggingCategories\obj\DebugSP15_45\Kraken.SharePoint.LoggingCategories.dll
 R:\Repos\kraken\Kraken.SPLoggingCategories\obj\DebugSP15_45\Kraken.SharePoint.LoggingCategories.pdb
 R:\Repos\kraken\Kraken.SPLoggingCategories\bin\DebugSP15_45\Kraken.SharePoint.SandboxTrust.pdb
+R:\Repos\kraken\Kraken.SPLoggingCategories\bin\DebugSP15_45\Microsoft.SharePoint.Client.Taxonomy.dll
