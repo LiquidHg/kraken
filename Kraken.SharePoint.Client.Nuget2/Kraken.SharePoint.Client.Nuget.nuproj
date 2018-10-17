@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Client</Id>
-    <Version>0.3.1-alpha02</Version>
+    <Version>0.3.1-alpha05</Version>
     <Title>Kraken SharePoint Client Library</Title>
     <ReleaseNotes>v0.3.01: Alpha. Added connection manager support for more authentication types; NTLM and FBA supported now.</ReleaseNotes>
     <Tags>SharePoint Client CSOM Kraken OfficeDevPnp Office365</Tags>

@@ -15,7 +15,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Kraken.SharePoint.Apps</Id>
-    <Version>0.3.1-alpha02</Version>
+    <Version>0.3.1-alpha05</Version>
     <Title>Kraken SharePoint Apps Library</Title>
     <Authors>Thomas Carpe and Liquid Mercury Solutions</Authors>
     <Owners>Thomas Carpe and Liquid Mercury Solutions</Owners>

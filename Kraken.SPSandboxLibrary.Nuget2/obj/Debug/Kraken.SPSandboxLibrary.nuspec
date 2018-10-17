@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Kraken.SPSandboxLibrary</id>
-    <version>0.3.1-alpha02</version>
+    <version>0.3.1-alpha05</version>
     <title>Kraken SharePoint Sanbox Solution Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
