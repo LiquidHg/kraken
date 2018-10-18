@@ -1,24 +1,23 @@
-<?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
-  <metadata>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="3.0">
     <id>Kraken.SPSandboxLibrary</id>
     <version>0.3.1-alpha05</version>
     <title>Kraken SharePoint Sanbox Solution Library</title>
     <authors>Liquid-Hg.com</authors>
     <owners>Thomas Carpe and Liquid Mercury Solutions</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://opensource.org/licenses/LGPL-3.0</licenseUrl>
     <projectUrl>http://www.liquid-hg.com/apps/kraken</projectUrl>
     <iconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries useful for developing sandbox solutions and SharePoint configurations with limited trust. Note that it is also included in SPFarmLibrary, so you don't need to reference it seperately.</description>
     <summary>Developer library for creating SharePoint Sandbox Solutions.</summary>
     <releaseNotes>v0.2.5: Ensured update to latest CSOM</releaseNotes>
     <copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</copyright>
-    <language>en-US</language>
     <tags>SharePoint Sandbox WSP</tags>
     <dependencies>
-      <group targetFramework="net45">
-        <dependency id="Kraken.DotNet.Core" />
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Kraken.DotNet.Core" version="0.3.1" />
         <dependency id="SharePoint" version="15.0.0" />
       </group>
     </dependencies>
@@ -45,7 +44,7 @@
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.ResourceStorage.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Applications.dll" target="lib\net45\Microsoft.Office.Server.Search.Applications.dll" exclude="" />
-    <file src="C:\Program Files (x86)\Microsoft.NET\Primary Interop Assemblies\Microsoft.mshtml.dll" target="lib\net45\Microsoft.mshtml.dll" exclude="" />
+    <file src="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PublicAssemblies\Microsoft.mshtml.dll" target="lib\net45\Microsoft.mshtml.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" target="lib\net45\Microsoft.SharePoint.Search.Extended.Administration.Common.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.Office.Server.Search.Connector.dll" target="lib\net45\Microsoft.Office.Server.Search.Connector.dll" exclude="" />
     <file src="C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\15\ISAPI\Microsoft.SharePoint.Client.Search.dll" target="lib\net45\Microsoft.SharePoint.Client.Search.dll" exclude="" />
@@ -62,9 +61,7 @@
     <file src="C:\Program Files (x86)\Microsoft WCF Data Services\5.0\bin\.NETFramework\de\System.Spatial.resources.dll" target="lib\net45\System.Spatial.resources.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP16_45\Kraken.SharePoint.SandboxTrust.dll" target="lib\net45\Kraken.SharePoint.SandboxTrust.dll" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP16_45\Kraken.SharePoint.SandboxTrust.pdb" target="lib\net45\Kraken.SharePoint.SandboxTrust.pdb" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\Language.nuspec" target="" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\push.cmd" target="" exclude="" />
-    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\Readme.txt" target="" exclude="" />
+    <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary.Nuget2\Readme.txt" target="Readme.txt" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Caml\CAML.cs" target="src\Caml\CAML.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Caml\CamlResources.Designer.cs" target="src\Caml\CamlResources.Designer.cs" exclude="" />
     <file src="R:\Repos\kraken\Kraken.SPSandboxLibrary\Events\ReadInfoPathListItemEventReceiver.cs" target="src\Events\ReadInfoPathListItemEventReceiver.cs" exclude="" />

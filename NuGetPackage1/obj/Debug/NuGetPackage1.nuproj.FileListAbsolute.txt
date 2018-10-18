@@ -1,0 +1,6 @@
+R:\Repos\kraken\NuGetPackage1\obj\Debug\NuGetPackage1.nuproj.CoreCompileInputs.cache
+R:\Repos\kraken\NuGetPackage1\bin\Debug\NuGetPackage1.1.0.0.nupkg
+R:\Repos\kraken\NuGetPackage1\bin\Debug\NuGetPackage1.1.0.0.symbols.nupkg
+R:\Repos\kraken\NuGetPackage1\obj\Debug\NuGetPackage1.nuspec
+R:\Repos\kraken\NuGetPackage1\obj\Debug\NuGetPackage1.1.0.0.nupkg
+R:\Repos\kraken\NuGetPackage1\obj\Debug\NuGetPackage1.1.0.0.symbols.nupkg

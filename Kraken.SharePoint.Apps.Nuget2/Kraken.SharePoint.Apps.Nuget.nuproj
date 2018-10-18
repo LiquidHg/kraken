@@ -10,7 +10,8 @@
     <ProjectGuid>0614bfd7-bf18-4512-a231-6787ae679277</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">..\packages\NuProj.0.20.4-beta\tools\</NuProjPath>
+    <!--NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath-->
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
@@ -29,15 +30,19 @@
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
     <EmbedSourceFiles>false</EmbedSourceFiles>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <MinClientVersion>3.0</MinClientVersion>
+    <DefaultLanguage>en-us</DefaultLanguage>
+    <Language>en-us</Language>
   </PropertyGroup>
   <ItemGroup>
     <Dependency Include="Kraken.DotNet.Core">
-      <Version>0.3.1,0.3.99</Version>
+      <Version>0.3.1</Version>
       <TargetFramework>net45</TargetFramework>
     </Dependency>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
+    <None Include="Push.cmd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kraken.Core.SandboxTrust\Kraken.Core.SandboxTrust.csproj" />

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NuGetPackage1</id>
+    <version>1.0.0</version>
+    <title>NuGetPackage1</title>
+    <authors>thomas.carpe</authors>
+    <owners>thomas.carpe</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NuGetPackage1</description>
+    <summary>NuGetPackage1</summary>
+    <copyright>Copyright © thomas.carpe</copyright>
+    <tags>NuGetPackage1</tags>
+  </metadata>
+  <files>
+    <file src="R:\Repos\kraken\NuGetPackage1\Readme.txt" target="Readme.txt" exclude="" />
+  </files>
+</package>

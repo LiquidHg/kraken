@@ -1,0 +1,24 @@
+{
+  "commands": {
+    "Kraken.DotNet.Core.Nuget": {
+      "fileName": "Push.cmd",
+      "workingDirectory": ".\\Kraken.DotNet.Core.Nuget",
+      "arguments": ""
+    },
+    "Kraken.SharePoint.Apps.Nuget": {
+      "fileName": "Push.cmd",
+      "workingDirectory": ".\\Kraken.SharePoint.Apps.Nuget2",
+      "arguments": ""
+    },
+    "Kraken.SharePoint.Client.Nuget": {
+      "fileName": "Push.cmd",
+      "workingDirectory": ".\\Kraken.SharePoint.Client.Nuget2",
+      "arguments": ""
+    },
+    "Kraken.SPSandboxLibrary.Nuget": {
+      "fileName": "push.cmd",
+      "workingDirectory": ".\\Kraken.SPSandboxLibrary.Nuget2",
+      "arguments": ""
+    }
+  }
+}

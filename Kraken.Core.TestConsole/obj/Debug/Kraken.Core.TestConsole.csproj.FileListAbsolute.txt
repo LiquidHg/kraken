@@ -36,3 +36,8 @@ R:\Repos\kraken\Kraken.Core.TestConsole\bin\Debug\Kraken.SharePoint.Cloud.XmlSer
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.csprojResolveAssemblyReference.cache
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.exe
 R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.pdb
+R:\Repos\kraken\Kraken.Core.TestConsole\bin\Debug\Kraken.Core.FullTrust.dll.config
+R:\Repos\kraken\Kraken.Core.TestConsole\bin\Debug\Kraken.SharePoint.Client.dll.config
+R:\Repos\kraken\Kraken.Core.TestConsole\bin\Debug\Kraken.SharePoint.Cloud.dll.config
+R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.csproj.CoreCompileInputs.cache
+R:\Repos\kraken\Kraken.Core.TestConsole\obj\Debug\Kraken.Core.TestConsole.csproj.CopyComplete

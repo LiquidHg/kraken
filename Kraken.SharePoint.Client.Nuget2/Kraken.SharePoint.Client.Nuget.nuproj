@@ -14,7 +14,8 @@
     <ProjectGuid>e90b8dfe-10b0-4aed-9239-231525055d29</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">..\packages\NuProj.0.20.4-beta\tools\</NuProjPath>
+    <!--NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath-->
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
@@ -30,16 +31,18 @@
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
     <DefaultLanguage>en-us</DefaultLanguage>
+    <Language>en-us</Language>
     <Copyright>Copyright ©2007-2017 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</Copyright>
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <EmbedSourceFiles>true</EmbedSourceFiles>
     <GenerateSymbolPackage>true</GenerateSymbolPackage>
-    <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
+    <!--NuSpecTemplate>Language.nuspec</NuSpecTemplate-->
+    <MinClientVersion>3.0</MinClientVersion>
   </PropertyGroup>
   <ItemGroup>
     <Dependency Include="Kraken.DotNet.Core">
-      <Version>0.3.1,0.3.99</Version>
+      <Version>0.3.1</Version>
       <TargetFramework>net45</TargetFramework>
     </Dependency>
     <Dependency Include="Microsoft.SharePointOnline.CSOM">
@@ -58,9 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Language.nuspec" />
+    <!--None Include="Language.nuspec" /-->
     <None Include="Push.cmd" />
   </ItemGroup>
   <!--

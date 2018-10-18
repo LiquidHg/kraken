@@ -86,3 +86,5 @@ R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary
 R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.SandboxTrust.dll
 R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SharePoint.SandboxTrust.pdb
 R:\Repos\kraken\Kraken.SPSandboxLibrary\bin\DebugSP16_45\Microsoft.SharePoint.Client.Taxonomy.dll
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary.csproj.CoreCompileInputs.cache
+R:\Repos\kraken\Kraken.SPSandboxLibrary\obj\DebugSP16_45\Kraken.SPSandboxLibrary.csproj.CopyComplete

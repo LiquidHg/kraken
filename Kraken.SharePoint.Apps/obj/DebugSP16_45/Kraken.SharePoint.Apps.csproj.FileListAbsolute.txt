@@ -129,3 +129,8 @@ R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Microsoft.IdentityModel.
 R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Microsoft.IdentityModel.Tokens.pdb
 R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Microsoft.IdentityModel.Tokens.xml
 R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\System.IdentityModel.Tokens.Jwt.xml
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.Core.FullTrust.dll.config
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.Client.dll.config
+R:\Repos\kraken\Kraken.SharePoint.Apps\bin\DebugSP16_45\Kraken.SharePoint.Cloud.dll.config
+R:\Repos\kraken\Kraken.SharePoint.Apps\obj\DebugSP16_45\Kraken.SharePoint.Apps.csproj.CoreCompileInputs.cache
+R:\Repos\kraken\Kraken.SharePoint.Apps\obj\DebugSP16_45\Kraken.SharePoint.Apps.csproj.CopyComplete

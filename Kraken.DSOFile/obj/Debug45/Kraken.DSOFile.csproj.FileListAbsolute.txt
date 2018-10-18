@@ -5,3 +5,5 @@ R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.pdb
 R:\Repos\kraken\Kraken.DSOFile\bin\Debug45\log4net.dll
 R:\Repos\kraken\Kraken.DSOFile\bin\Debug45\log4net.xml
 R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csproj.CoreCompileInputs.cache
+R:\Repos\kraken\Kraken.DSOFile\obj\Debug45\Kraken.DSOFile.csproj.CopyComplete

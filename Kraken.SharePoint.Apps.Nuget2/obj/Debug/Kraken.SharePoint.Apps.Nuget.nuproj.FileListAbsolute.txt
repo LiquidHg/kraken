@@ -3,3 +3,4 @@ R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\bin\Debug\Kraken.SharePoint.Apps.0
 R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\bin\Debug\Kraken.SharePoint.Apps.0.3.1-alpha05.symbols.nupkg
 R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.0.3.1-alpha05.nupkg
 R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.0.3.1-alpha05.symbols.nupkg
+R:\Repos\kraken\Kraken.SharePoint.Apps.Nuget2\obj\Debug\Kraken.SharePoint.Apps.Nuget.nuproj.CoreCompileInputs.cache

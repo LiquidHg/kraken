@@ -14,7 +14,8 @@
     <ProjectGuid>6b6957a7-f980-43c3-b241-d7044e1e3a3b</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">..\packages\NuProj.0.20.4-beta\tools\</NuProjPath>
+    <!--NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath-->
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
@@ -24,18 +25,20 @@
     <Description>Kraken is a battle tested library for developing SharePoint applications that's been around since before 2010 and is used in many projects. This package includes libraries useful for developing sandbox solutions and SharePoint configurations with limited trust. Note that it is also included in SPFarmLibrary, so you don't need to reference it seperately.</Description>
     <ProjectUrl>http://www.liquid-hg.com/apps/kraken</ProjectUrl>
     <LicenseUrl>https://opensource.org/licenses/LGPL-3.0</LicenseUrl>
+    <Language>en-us</Language>
     <DefaultLanguage>en-us</DefaultLanguage>
     <Copyright>Copyright ©2007-2016 Thomas Carpe and Liquid Mercury Solutions LLC; All rights reserved. If you need/want rights not granted under LGPL, please contact the copyright holders.</Copyright>
     <IconUrl>http://www.liquid-hg.com/apps/kraken/PublishingImages/Blue-Kraken-icon64.png</IconUrl>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <EmbedSourceFiles>true</EmbedSourceFiles>
     <GenerateSymbolPackage>true</GenerateSymbolPackage>
-    <NuSpecTemplate>Language.nuspec</NuSpecTemplate>
+    <!--NuSpecTemplate>Language.nuspec</NuSpecTemplate-->
     <Id>Kraken.SPSandboxLibrary</Id>
     <Title>Kraken SharePoint Sanbox Solution Library</Title>
     <Version>0.3.1-alpha05</Version>
     <Tags>SharePoint Sandbox WSP</Tags>
     <ReleaseNotes>v0.2.5: Ensured update to latest CSOM</ReleaseNotes>
+    <MinClientVersion>3.0</MinClientVersion>
     <!--
     0.1.3 Brings this package current with other Nuget packages.
     0.1.1 Updates to nuget packages to keep pace with consumer libs.
@@ -44,13 +47,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Dependency Include="Kraken.DotNet.Core">
-      <Version>0.3.1,0.3.99</Version>
+      <Version>0.3.1</Version>
       <TargetFramework>net45</TargetFramework>
     </Dependency>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Language.nuspec" />
-    <Content Include="push.cmd" />
+    <!--None Include="Language.nuspec" /-->
+    <None Include="push.cmd" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

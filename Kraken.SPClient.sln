@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.Core.FullTrust", "Kraken.Core.FullTrust\Kraken.Core.FullTrust.csproj", "{757C7239-0E1B-41BA-AED5-7A15AC141042}"
 EndProject
@@ -49,6 +49,11 @@ EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "Kraken.SPSandboxLibrary.Nuget", "Kraken.SPSandboxLibrary.Nuget2\Kraken.SPSandboxLibrary.Nuget.nuproj", "{6B6957A7-F980-43C3-B241-D7044E1E3A3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraken.SPSandboxLibrary", "Kraken.SPSandboxLibrary\Kraken.SPSandboxLibrary.csproj", "{DFF9B6EA-5C6E-4079-8506-181220FC7148}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3618CDEC-08ED-435E-BFBF-2038F43D03C3}"
+	ProjectSection(SolutionItems) = preProject
+		commands.json = commands.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2095,5 +2100,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B01E2414-60A2-49E8-B52B-E88C3F54BF0A}
 	EndGlobalSection
 EndGlobal

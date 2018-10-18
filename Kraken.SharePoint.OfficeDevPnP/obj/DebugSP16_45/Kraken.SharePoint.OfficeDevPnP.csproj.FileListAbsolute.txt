@@ -100,3 +100,5 @@ R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.Graph.
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\Microsoft.IdentityModel.Clients.ActiveDirectory.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\bin\DebugSP16_45\OfficeDevPnP.Core.xml
 R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csprojResolveAssemblyReference.cache
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csproj.CoreCompileInputs.cache
+R:\Repos\kraken\Kraken.SharePoint.OfficeDevPnP\obj\DebugSP16_45\Kraken.SharePoint.OfficeDevPnP.csproj.CopyComplete
